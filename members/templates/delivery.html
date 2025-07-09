@@ -336,17 +336,41 @@
     }
 
     .burger {
-      font-size: 30px;
-      cursor: pointer;
-      padding: 10px 15px;
-      color: #fff;
-      display: block;
+      width: 30px;
+      height: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       position: fixed;
-      top: 20px;
-      left: 20px;
+      top: 35px;
+      left: 50px;
       z-index: 2001;
-      background-color: #111;
-      border-radius: 5px;
+      cursor: pointer;
+      padding: 0;
+      background: none;
+      border: none;
+    }
+
+    .burger span {
+      height: 4px;
+      width: 100%;
+      background: #fff;
+      border-radius: 2px;
+      transition: 0.3s;
+      transform-origin: center;
+    }
+
+    /* Animate lines when sidebar is open */
+    #sidebarToggle:checked+.burger span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    #sidebarToggle:checked+.burger span:nth-child(2) {
+      opacity: 0;
+    }
+
+    #sidebarToggle:checked+.burger span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
     }
 
     .sidebar {
@@ -361,7 +385,7 @@
       z-index: 2000;
     }
 
-    #sidebarToggle:checked ~ .sidebar {
+    #sidebarToggle:checked~.sidebar {
       left: 0;
     }
 
@@ -390,8 +414,12 @@
 
 <body>
   <input type="checkbox" id="sidebarToggle" style="display: none;" />
-  <label for="sidebarToggle" class="burger">&#9776;</label>
-  <label for="sidebarToggle" class="overlay"></label>
+  <label for="sidebarToggle" class="burger">
+    <span></span>
+    <span></span>
+    <span></span>
+    </label>
+  
   
   <nav class="navigation-top">
     <div class="navigation-div">
