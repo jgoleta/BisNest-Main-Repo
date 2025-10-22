@@ -587,11 +587,11 @@
     <h1 class="page-title">Order Management</h1>
     <div class="main-container">
       <div class="search-bar">
-        <input type="text" id="search-order-id" placeholder="Search Customer or Employee:">
-        <div class="button-container">
-          <button class="add-button" onclick="toggleForm()">+ New</button>
-        </div>
-      </div>
+                <input type="text" id="searchInput" placeholder="Search Customer Name:" onkeyup="searchCustomer()">
+                <div class="button-container">
+                    <button class="toggle-form-button" onclick="toggleForm()">+ New</button>
+                </div>
+            </div>
       <div class="order-form-container">
         <form method="POST" class="order-form">
           {% csrf_token %}
@@ -712,6 +712,26 @@
         modalOverlay.style.display = 'none';
       });
     });
+
+    function searchCustomer() {
+            const input = document.getElementById("searchInput");
+            const filter = (input.value || "").toLowerCase();
+            const table = document.querySelector(".table tbody");
+            if (!table) return;
+            const rows = table.getElementsByTagName("tr");
+
+            for (let i = 0; i < rows.length; i++) {
+                const nameCell = rows[i].getElementsByTagName("td")[1]; 
+                if (nameCell) {
+                    const nameText = nameCell.textContent || nameCell.innerText;
+                    if (nameText.toLowerCase().indexOf(filter) > -1) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
   </script>
 
 </body>
