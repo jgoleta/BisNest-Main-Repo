@@ -361,7 +361,7 @@
 
         /*End Main Content*/
 
-        /*Sales Report Unique Styles*/
+        /*Sales Report */
         .form {
             display: flex;
             flex-wrap: wrap;
@@ -440,6 +440,131 @@
             .form {
                 flex-direction: column;
             }
+        }
+
+        .year-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: var(--palette-bg-light);
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .year-selector label {
+            font-weight: bold;
+            color: var(--palette-text);
+            font-size: 16px;
+        }
+
+        .year-selector select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #bbb;
+            background: #fff;
+            color: var(--palette-text);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .yearly-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, var(--palette-navbar) 0%, var(--palette-accent-dark) 100%);
+            color: var(--palette-header);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--elev-2);
+        }
+
+        .summary-card h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .summary-card .value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .monthly-breakdown {
+            margin-bottom: 25px;
+        }
+
+        .monthly-breakdown h3 {
+            color: var(--palette-text);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .monthly-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .monthly-table th,
+        .monthly-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .monthly-table th {
+            background-color: var(--palette-navbar);
+            color: #fff;
+        }
+
+        .monthly-table tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--palette-navbar);
+            border-bottom-color: var(--palette-navbar);
+        }
+
+        .tab:hover {
+            color: var(--palette-navbar);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
     </style>
 </head>
@@ -530,51 +655,237 @@
     <main class="main-content">
         <h1 class="page-title">Sales Report</h1>
         <div class="main-container">
-            <form method="POST" class="form">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="submit-button">Submit</button>
-            </form>
+            <div class="year-selector">
+                <label for="yearSelect">Select Year:</label>
+                <select id="yearSelect" onchange="filterByYear()">
+                    <option value="">All Years</option>
+                </select>
+            </div>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Product Name</th>
-                        <th>Quantity Sold</th>
-                        <th>Price</th>
-                        <th>Total (₱)</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody class="table-body">
-                    {% for sale in sales %}
-                    <tr>
-                        <td>{{ sale.date }}</td>
-                        <td>{{ sale.product_name }}</td>
-                        <td>{{ sale.kilos_sold }}</td>
-                        <td>₱{{ sale.price_per_kilo }}</td>
-                        <td class="row-total">₱{{ sale.total }}</td>
-                        <td>
-                            <form method="POST" action="{% url 'delete_sale' sale.id %}">
-                                {% csrf_token %}
-                                <button type="submit" class="delete-button">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4" style="text-align: right; font-weight: bold;">Grand Total:</td>
-                        <td id="grandTotal">₱0.00</td>
-                        <td></td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="yearly-summary">
+                <div class="summary-card">
+                    <h3>Total Sales</h3>
+                    <div class="value" id="totalSales">₱0.00</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Average Monthly</h3>
+                    <div class="value" id="avgMonthly">₱0.00</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Total Transactions</h3>
+                    <div class="value" id="totalTransactions">0</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Best Month</h3>
+                    <div class="value" id="bestMonth">-</div>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('detailed')">Detailed Sales</button>
+                <button class="tab" onclick="switchTab('monthly')">Monthly Sales</button>
+            </div>
+
+            <div id="detailed-tab" class="tab-content active">
+                <form method="POST" class="form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="submit-button">Submit</button>
+                </form>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Product Name</th>
+                            <th>Quantity Sold</th>
+                            <th>Price</th>
+                            <th>Total (₱)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        {% for sale in sales %}
+                        <tr>
+                            <td>{{ sale.date }}</td>
+                            <td>{{ sale.product_name }}</td>
+                            <td>{{ sale.kilos_sold }}</td>
+                            <td>₱{{ sale.price_per_kilo }}</td>
+                            <td class="row-total">₱{{ sale.total }}</td>
+                            <td>
+                                <form method="POST" action="{% url 'delete_sale' sale.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="delete-button">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" style="text-align: right; font-weight: bold;">Grand Total:</td>
+                            <td id="grandTotal">₱0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div id="monthly-tab" class="tab-content">
+                <div class="monthly-breakdown">
+                    <h3>Monthly Sales</h3>
+                    <table class="monthly-table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Total Sales (₱)</th>
+                                <th>Transactions</th>
+                                <th>Average per Transaction</th>
+                            </tr>
+                        </thead>
+                        <tbody id="monthlyTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
     <script>
+        let salesData = [];
+        let currentYear = new Date().getFullYear();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSalesData();
+            populateYearSelector();
+            filterByYear();
+            updateYearlySummary();
+            updateMonthlyBreakdown();
+        });
+
+        function loadSalesData() {
+            salesData = [];
+            document.querySelectorAll('.table-body tr').forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 5) {
+                    const date = cells[0].textContent.trim();
+                    const productName = cells[1].textContent.trim();
+                    const quantity = parseFloat(cells[2].textContent.replace(/[₱,]/g, '')) || 0;
+                    const price = parseFloat(cells[3].textContent.replace(/[₱,]/g, '')) || 0;
+                    const total = parseFloat(cells[4].textContent.replace(/[₱,]/g, '')) || 0;
+
+                    salesData.push({
+                        date: date,
+                        productName: productName,
+                        quantity: quantity,
+                        price: price,
+                        total: total
+                    });
+                }
+            });
+        }
+
+        function populateYearSelector() {
+            const years = [...new Set(salesData.map(sale => new Date(sale.date).getFullYear()))];
+            years.sort((a, b) => b - a);
+            
+            const yearSelect = document.getElementById('yearSelect');
+            yearSelect.innerHTML = '<option value="">All Years</option>';
+            years.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                if (year === currentYear) {
+                    option.selected = true;
+                }
+                yearSelect.appendChild(option);
+            });
+        }
+
+        function filterByYear() {
+            const selectedYear = document.getElementById('yearSelect').value;
+            currentYear = selectedYear || new Date().getFullYear();
+            updateYearlySummary();
+            updateMonthlyBreakdown();
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        function updateYearlySummary() {
+            const filteredData = currentYear ? 
+                salesData.filter(sale => new Date(sale.date).getFullYear() == currentYear) : 
+                salesData;
+
+            const totalSales = filteredData.reduce((sum, sale) => sum + sale.total, 0);
+            const totalTransactions = filteredData.length;
+            const avgMonthly = totalSales / 12;
+
+            const monthlyData = getMonthlyData(filteredData);
+            const bestMonthData = monthlyData.reduce((max, month) => 
+                month.total > max.total ? month : max, {month: 'N/A', total: 0});
+
+            document.getElementById('totalSales').textContent = `₱${totalSales.toFixed(2)}`;
+            document.getElementById('avgMonthly').textContent = `₱${avgMonthly.toFixed(2)}`;
+            document.getElementById('totalTransactions').textContent = totalTransactions;
+            document.getElementById('bestMonth').textContent = bestMonthData.month;
+        }
+
+        function updateMonthlyBreakdown() {
+            const filteredData = currentYear ? 
+                salesData.filter(sale => new Date(sale.date).getFullYear() == currentYear) : 
+                salesData;
+
+            const monthlyData = getMonthlyData(filteredData);
+            const monthlyTableBody = document.getElementById('monthlyTableBody');
+            
+            monthlyTableBody.innerHTML = '';
+            monthlyData.forEach(month => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${month.month}</td>
+                    <td>₱${month.total.toFixed(2)}</td>
+                    <td>${month.transactions}</td>
+                    <td>₱${month.avgPerTransaction.toFixed(2)}</td>
+                `;
+                monthlyTableBody.appendChild(row);
+            });
+        }
+
+        function getMonthlyData(data) {
+            const months = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+
+            const monthlyTotals = {};
+            
+            months.forEach(month => {
+                monthlyTotals[month] = {
+                    total: 0,
+                    transactions: 0
+                };
+            });
+
+            data.forEach(sale => {
+                const monthIndex = new Date(sale.date).getMonth();
+                const monthName = months[monthIndex];
+                monthlyTotals[monthName].total += sale.total;
+                monthlyTotals[monthName].transactions += 1;
+            });
+
+            return months.map(month => ({
+                month: month,
+                total: monthlyTotals[month].total,
+                transactions: monthlyTotals[month].transactions,
+                avgPerTransaction: monthlyTotals[month].transactions > 0 ? 
+                    monthlyTotals[month].total / monthlyTotals[month].transactions : 0
+            }));
+        }
         window.addEventListener('load', () => {
             let total = 0;
             document.querySelectorAll(".row-total").forEach(cell => {
