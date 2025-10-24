@@ -93,7 +93,7 @@
       color: var(--palette-accent) !important;
     }
 
-    .web-name {
+    .page-name {
       font-size: 28px !important;
       font-weight: 800 !important;
       color: var(--palette-navbar) !important;
@@ -103,6 +103,12 @@
     /*End Navigation*/
 
     /*Sidebar*/
+    .web-name {
+      font-size: 28px !important;
+      font-weight: 800 !important;
+      justify-content: center;
+    }
+
     #sidebarToggle:checked+.burger span:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px) !important;
     }
@@ -152,12 +158,14 @@
     .sidebar ul {
       padding: 8px !important;
       list-style: none !important;
+
     }
 
     .sidebar ul li {
       border-radius: 10px !important;
       margin: 6px 6px !important;
       padding: 5px 30px !important;
+
     }
 
     .sidebar ul li a {
@@ -167,6 +175,11 @@
       gap: 12px !important;
       color: inherit !important;
       text-decoration: none !important;
+    }
+
+    .sidebar h1 {
+      text-align: center !important;
+      margin: 20px !important;
     }
 
     .sidebar ul li:hover {
@@ -242,11 +255,6 @@
       visibility: visible;
     }
 
-    .line {
-      margin-left: 28px;
-      padding-bottom: 10px;
-    }
-
     /*End Sidebar*/
 
     /*Button*/
@@ -271,16 +279,21 @@
       fill: currentColor !important;
     }
 
+
+
     .delete-button,
     .delete-modal-btn,
     .delete-btn {
       background: #d63c3c !important;
-      color: #fff !important;
-      padding: 12px 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
       font-weight: bold;
       border: none;
-      border-radius: 10px;
-      background-color: #111;
+      border-radius: 6px;
       color: #fff;
       cursor: pointer;
       transition: background 0.3s, color 0.3s;
@@ -292,6 +305,22 @@
       background: #b40202 !important;
       color: #ffffff !important;
       border: none;
+    }
+
+    .edit-button {
+      background-color: var(--palette-navbar);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
     }
 
     .toggle-form-button,
@@ -312,27 +341,19 @@
 
     .toggle-form-button:hover,
     .add-button:hover,
-    .submit-button:hover {
+    .submit-button:hover,
+    .edit-button:hover {
       background-color: #4f46e5 !important;
       border: none !important;
     }
+
+    .button-container {
+      margin-left: auto;
+    }
+
     /*End Button*/
 
     /*Main Content*/
-    .page-title {
-      text-align: center;
-      font-size: 44px;
-      max-width: 90vw;
-      height: 11vh;
-      margin: 5vh auto;
-      padding: 2vw;
-      background-color: #1e293b;
-      color: #fff;
-      margin-bottom: -4.5%;
-      margin-top: 20px;
-      border-radius: 16px;
-      padding-top: 15px;
-    }
 
     .main-content {
       flex: 1;
@@ -343,20 +364,36 @@
       margin-top: 80px;
     }
 
-    .main-container {
-      overflow: auto;
-      max-width: 90vw;
-      height: 70vh;
-      margin: 5vh auto;
-      padding: 2vw;
-      background-color: #fff;
-      box-shadow: 0vw 0vw 1vw #111;
-      border: 1px solid #e0e0e0;
+    .search-bar {
+      margin: 10px 0;
+      margin-top: -10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-bar input {
+      padding: 10px 14px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      font-size: 15px;
+      max-width: 500px;
+      flex: 1;
+      background: #fff;
+      color: #111;
     }
 
     /*End Main Content*/
 
     /*Payment Unique Style*/
+
+    .action-buttons {
+      display: inline-flex;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: center;
+    }
+
     .submitted-payments .table-header,
     .submitted-payments .table-row {
       text-align: center;
@@ -384,7 +421,6 @@
       padding: 12px 0;
       text-align: center;
       font-weight: bold;
-      border-radius: 10px;
     }
 
     .table-body {
@@ -398,6 +434,19 @@
       padding: 12px 0;
       border-bottom: 1px solid #ddd;
       align-items: center;
+    }
+
+    .table-input-row {
+      background-color: #ffffff !important;
+      border: none !important;
+      box-shadow: none !important;
+      margin-bottom: 20px !important;
+    }
+
+    .table-input-row div {
+      justify-content: center !important;
+
+
     }
 
     .table-row select,
@@ -442,7 +491,7 @@
 
   <nav class="navigation-top">
     <div class="navigation-div">
-      <h1 class="web-name">BisNest</h1>
+      <h1 class="page-name">Payment Management</h1>
       <ul style="margin-left: 45%;">
         <li><a style="color: #1e293b;" href="{% url 'about' %}">About</a></li>
         <li><a style="color: #1e293b;" href="#contact">Contact</a></li>
@@ -505,21 +554,12 @@
   </nav>
 
   <main class="main-content">
-    <h1 class="page-title">Payment Management</h1>
     <div class="main-container">
       <div class="table-container">
-        <div class="table-header">
-          <div>Payment ID</div>
-          <div>Customer Name</div>
-          <div>Amount</div>
-          <div>Date</div>
-          <div>Payment Method</div>
-          <div>Action</div>
-        </div>
         <div class="table-body">
           <form method="POST" class="table-body" style="margin-top: 20px;">
             {% csrf_token %}
-            <div class="table-row">
+            <div class="table-input-row table-row">
               <div>{{ form.payment_id }}</div>
               <div>{{ form.customer_id }}</div>
               <div>{{ form.amount }}</div>
@@ -552,9 +592,26 @@
             <div>{{ p.date }}</div>
             <div>{{ p.method }}</div>
             <div>
+              <button type="button" class="edit-button" data-id="{{ cust.id }}" data-name="{{ cust.name }}"
+                data-phone="{{ cust.phone }}" data-address="{{ cust.address }}" title="Edit customer"
+                aria-label="Edit customer" style="margin-right:8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true" focusable="false">
+                  <path d="M3 21v-3.75L14.81 5.44a2 2 0 0 1 2.83 0l0.92 0.92a2 2 0 0 1 0 2.83L6.75 21H3z"
+                    stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                    stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
               <form method="POST" action="{% url 'delete_payment' p.id %}">
                 {% csrf_token %}
-                <button type="submit" class="delete-button">Delete</button>
+                <button type="submit" class="delete-button"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                    height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path
+                      d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                    <path
+                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                  </svg></button>
               </form>
             </div>
           </div>
