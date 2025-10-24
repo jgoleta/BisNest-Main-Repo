@@ -59,21 +59,6 @@
     }
 
     .navigation-div {
-      /* Table wrapper + sticky header */
-      .table-wrapper {
-        max-height: 60vh;
-        overflow: auto;
-        border-radius: 10px;
-        background: #fff;
-      }
-
-      .table-wrapper thead th {
-        position: sticky;
-        top: 0;
-        background: var(--palette-navbar);
-        color: #fff;
-        z-index: 5;
-      }
       max-width: 1200px !important;
       margin: auto !important;
       height: 90px !important;
@@ -346,7 +331,8 @@
 
     .toggle-form-button,
     .add-button,
-    .submit-button {
+    .submit-button,
+    .cancel-button {
       padding: 12px 20px;
       font-weight: bold;
       border: none;
@@ -359,11 +345,15 @@
       box-shadow: #111827 0px 2px 7px;
     }
 
+    .toggle-form-button {
+      width: 250px;
+    }
 
     .toggle-form-button:hover,
     .add-button:hover,
     .submit-button:hover,
-    .edit-button:hover {
+    .edit-button:hover,
+    .cancel-button:hover {
       background-color: #4f46e5 !important;
       border: none !important;
     }
@@ -375,8 +365,6 @@
     /*End Button*/
 
     /*Main Content*/
-
-
     .main-content {
       flex: 1;
       overflow-y: auto;
