@@ -1,5 +1,5 @@
 from django import forms
-from .models import Member
+from .models import Employee
 from .models import Customer
 from .models import Delivery
 from .models import Payment
@@ -7,9 +7,9 @@ from .models import Order
 from .models import Supply
 from .models import SalesReport
 
-class MemberForm(forms.ModelForm):
+class EmployeeForm(forms.ModelForm):
     class Meta:
-        model = Member
+        model = Employee
         fields = ['name', 'position', 'schedule', 'salary']
 
 class CustomerForm(forms.ModelForm):
@@ -76,8 +76,8 @@ class SupplyForm(forms.ModelForm):
 class SalesReportForm(forms.ModelForm):
     class Meta:
         model = SalesReport
-        fields = ['date', 'product_name', 'quantity_sold', 'price']
+        fields = ['date', 'product', 'quantity_sold', 'price']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
-            'product_name': forms.TextInput(attrs={'class':'form-control'}),
+            'product': forms.TextInput(attrs={'class':'form-control'}),
         }
