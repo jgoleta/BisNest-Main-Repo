@@ -1,5 +1,5 @@
 from django import forms
-from .models import Member
+from .models import Employee
 from .models import Customer
 from .models import Delivery
 from .models import Payment
@@ -7,9 +7,9 @@ from .models import Order
 from .models import Supply
 from .models import SalesReport
 
-class MemberForm(forms.ModelForm):
+class EmployeeForm(forms.ModelForm):
     class Meta:
-        model = Member
+        model = Employee
         fields = ['name', 'position', 'schedule', 'salary']
 
 class CustomerForm(forms.ModelForm):
