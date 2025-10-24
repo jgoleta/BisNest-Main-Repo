@@ -1,13 +1,13 @@
 {
     "builds": [{
-        "src": "goletan1am/wsgi.py",
+        "src": "backend/wsgi.py",
         "use": "@vercel/python",
         "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
     }],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "goletan1am/wsgi.py"
+            "dest": "backend/wsgi.py"
         }
     ]
 }
