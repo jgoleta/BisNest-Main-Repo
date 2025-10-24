@@ -26,7 +26,7 @@ class Customer(models.Model):
 class Delivery(models.Model):
     delivery_id = models.CharField(max_length=20)
     order_id = models.CharField(max_length=20)
-    customer = models.CharField(max_length=100)
+    customer_name = models.CharField(max_length=100)
     address = models.TextField()
     scheduled_date = models.DateField()
     status = models.CharField(max_length=50)
@@ -36,7 +36,7 @@ class Delivery(models.Model):
     
 class Payment(models.Model):
     payment_id = models.CharField(max_length=10, unique=True)
-    customer_id = models.CharField(max_length=50)
+    customer_name = models.CharField(max_length=50)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField()
     method = models.CharField(max_length=50)
@@ -46,8 +46,8 @@ class Payment(models.Model):
     
 class Order(models.Model):
     order_id = models.CharField(max_length=10, unique=True)
-    customer_id = models.CharField(max_length=50)
-    employee_id = models.CharField(max_length=50)
+    customer_name = models.CharField(max_length=50)
+    employee_name = models.CharField(max_length=50)
     product_id = models.CharField(max_length=10)
     product_name = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
