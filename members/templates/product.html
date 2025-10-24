@@ -7,359 +7,393 @@
   <title>Product | BisNest</title>
   <style>
     :root {
-            --palette-navbar: #1e293b;
-            --palette-sidebar: #414957;
-            --palette-header: #ffffff;
-            --palette-accent: #6366f1;
-            --palette-accent-dark: #4f46e5;
-            --palette-bg-light: #f8fafc;
-            --page-bg: #ffffff;
-            --palette-text: #111827;
-            --elev-1: 0 10px 30px rgba(16, 24, 40, 0.06);
-            --elev-2: 0 18px 40px rgba(16, 24, 40, 0.09);
-            --muted: rgba(17, 24, 39, 0.45);
-            --success: #16a34a;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-        }
+      --palette-navbar: #1e293b;
+      --palette-sidebar: #414957;
+      --palette-header: #ffffff;
+      --palette-accent: #6366f1;
+      --palette-accent-dark: #4f46e5;
+      --palette-bg-light: #f8fafc;
+      --page-bg: #ffffff;
+      --palette-text: #111827;
+      --elev-1: 0 10px 30px rgba(16, 24, 40, 0.06);
+      --elev-2: 0 18px 40px rgba(16, 24, 40, 0.09);
+      --muted: rgba(17, 24, 39, 0.45);
+      --success: #16a34a;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body,
-        html {
-            height: 100%;
-            overflow: hidden;
-        }
+    body,
+    html {
+      height: 100%;
+      overflow: hidden;
+    }
 
-        body {
-            font-family: "Sen", sans-serif;
-            background-color: var(--page-bg);
-            color: var(--palette-text);
-        }
+    body {
+      font-family: "Sen", sans-serif;
+      background-color: var(--page-bg);
+      color: var(--palette-text);
+    }
 
-        /*Navigation*/
-        .navigation-top {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            z-index: 1001 !important;
-        }
+    /*Navigation*/
+    .navigation-top {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      z-index: 1001 !important;
+    }
 
-        nav.navigation-top {
-            background: var(--palette-header) !important;
-            padding: 0 20px !important;
-            height: 90px !important;
-            color: var(--palette-navbar) !important;
-            box-shadow: 0px 4px 9px #1e293b !important;
-        }
+    nav.navigation-top {
+      background: var(--palette-header) !important;
+      padding: 0 20px !important;
+      height: 90px !important;
+      color: var(--palette-navbar) !important;
+      box-shadow: 0px 4px 9px #1e293b !important;
+    }
 
-        .navigation-div {
-            max-width: 1200px !important;
-            margin: auto !important;
-            height: 90px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-        }
+    .navigation-div {
+      max-width: 1200px !important;
+      margin: auto !important;
+      height: 90px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+    }
 
-        .nav-logo {
-            height: 60px !important;
-            border-radius: 50% !important;
-            background-color: var(--palette-header);
-            padding: 5px !important;
-            margin-left: 50% !important;
-            border: #111827 1px solid !important;
-        }
+    .nav-logo {
+      height: 60px !important;
+      border-radius: 50% !important;
+      background-color: var(--palette-header);
+      padding: 5px !important;
+      margin-left: 50% !important;
+      border: #111827 1px solid !important;
+    }
 
-        nav.navigation-top ul {
-            list-style: none !important;
-            display: flex !important;
-            gap: 30px !important;
-        }
+    nav.navigation-top ul {
+      list-style: none !important;
+      display: flex !important;
+      gap: 30px !important;
+    }
 
-        nav.navigation-top li a {
-            color: var(--palette-header);
-            font-size: 16px !important;
-            text-decoration: none !important;
-            font-weight: 600 !important;
-        }
+    nav.navigation-top li a {
+      color: var(--palette-header);
+      font-size: 16px !important;
+      text-decoration: none !important;
+      font-weight: 600 !important;
+    }
 
-        nav.navigation-top li a:hover {
-            color: var(--palette-accent) !important;
-        }
+    nav.navigation-top li a:hover {
+      color: var(--palette-accent) !important;
+    }
 
-        .web-name {
-            font-size: 28px !important;
-            font-weight: 800 !important;
-            color: var(--palette-navbar) !important;
-            margin-left: -10% !important;
-        }
+    .page-name {
+      font-size: 28px !important;
+      font-weight: 800 !important;
+      color: var(--palette-navbar) !important;
+      margin-left: -10% !important;
+    }
 
-        /*End Navigation*/
+    /*End Navigation*/
 
-        /*Sidebar*/
-        #sidebarToggle:checked+.burger span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px) !important;
-        }
+    /*Sidebar*/
+    .web-name {
+      font-size: 28px !important;
+      font-weight: 800 !important;
+      justify-content: center;
+    }
 
-        #sidebarToggle:checked+.burger span:nth-child(2) {
-            opacity: 0 !important;
-        }
+    #sidebarToggle:checked+.burger span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px) !important;
+    }
 
-        #sidebarToggle:checked+.burger span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px) !important;
-        }
+    #sidebarToggle:checked+.burger span:nth-child(2) {
+      opacity: 0 !important;
+    }
 
-        .sidebar {
-            background: var(--palette-sidebar) !important;
-            color: var(--palette-header) !important;
-        }
+    #sidebarToggle:checked+.burger span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px) !important;
+    }
 
-        .sidebar {
-            background: var(--palette-sidebar) !important;
-            color: var(--palette-header) !important;
-        }
+    .sidebar {
+      background: var(--palette-sidebar) !important;
+      color: var(--palette-header) !important;
+    }
 
-        .sidebar ul li a {
-            color: var(--palette-header) !important;
-        }
+    .sidebar {
+      background: var(--palette-sidebar) !important;
+      color: var(--palette-header) !important;
+    }
 
-        .sidebar {
-            position: fixed !important;
-            top: 90px !important;
-            left: -300px !important;
-            width: 300px !important;
-            height: calc(100% - 90px) !important;
-            background-color: var(--palette-navbar) !important;
-            color: var(--palette-header);
-            overflow-y: auto !important;
-            transition: left 0.3s ease !important;
-            z-index: 2000 !important;
-            border-right: none !important;
-            border-bottom-right-radius: 40px !important;
-            border-top-right-radius: 40px !important;
-        }
+    .sidebar ul li a {
+      color: var(--palette-header) !important;
+    }
 
-        #sidebarToggle:checked~.sidebar {
-            left: 0 !important;
-        }
+    .sidebar {
+      position: fixed !important;
+      top: 90px !important;
+      left: -300px !important;
+      width: 300px !important;
+      height: calc(100% - 90px) !important;
+      background-color: var(--palette-navbar) !important;
+      color: var(--palette-header);
+      overflow-y: auto !important;
+      transition: left 0.3s ease !important;
+      z-index: 2000 !important;
+      border-right: none !important;
+      border-bottom-right-radius: 40px !important;
+      border-top-right-radius: 40px !important;
+    }
 
-        .sidebar ul {
-            padding: 8px !important;
-            list-style: none !important;
-        }
+    #sidebarToggle:checked~.sidebar {
+      left: 0 !important;
+    }
 
-        .sidebar ul li {
-            border-radius: 10px !important;
-            margin: 6px 6px !important;
-            padding: 5px 30px !important;
-        }
+    .sidebar ul {
+      padding: 8px !important;
+      list-style: none !important;
 
-        .sidebar ul li a {
-            padding: 10px 12px !important;
-            display: flex !important;
-            align-items: center !important;
-            gap: 12px !important;
-            color: inherit !important;
-            text-decoration: none !important;
-        }
+    }
 
-        .sidebar ul li:hover {
-            background: linear-gradient(165deg,
-                    rgba(255, 255, 255, 0.2),
-                    rgba(241, 236, 230, 0.2)) !important;
-            text-decoration: none !important;
-            border-radius: 10px !important;
-            margin-left: 4px !important;
-            transition: background 0.45s ease,
-                transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1) !important;
-            transform: translateX(6px) !important;
-        }
+    .sidebar ul li {
+      border-radius: 10px !important;
+      margin: 6px 6px !important;
+      padding: 5px 30px !important;
 
-        .sidebar ul li.active,
-        .sidebar ul li a.active {
-            background: var(--palette-accent-dark) !important;
-            color: var(--palette-header) !important;
-            box-shadow: 0 8px 22px rgba(79, 70, 229, 0.16) !important;
-            border-left: none !important;
-            text-decoration: none !important;
-        }
+    }
 
-        .sidebar ul li.selected {
-            background: var(--palette-accent-dark) !important;
-            color: var(--palette-header) !important;
-            box-shadow: 0 8px 22px rgba(79, 70, 229, 0.16) !important;
-            border-left: none !important;
-        }
+    .sidebar ul li a {
+      padding: 10px 12px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      color: inherit !important;
+      text-decoration: none !important;
+    }
 
-        .burger {
-            width: 30px !important;
-            height: 24px !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: space-between !important;
-            position: fixed !important;
-            top: 35px !important;
-            left: 50px !important;
-            z-index: 2001 !important;
-            cursor: pointer !important;
-            padding: 0 !important;
-            background: none !important;
-            border: none !important;
-        }
+    .sidebar h1 {
+      text-align: center !important;
+      margin: 20px !important;
+    }
 
-        .burger span {
-            height: 4px !important;
-            width: 100% !important;
-            background: var(--palette-navbar) !important;
-            border-radius: 2px !important;
-            transition: 0.3s !important;
-            transform-origin: center !important;
-        }
+    .sidebar ul li:hover {
+      background: linear-gradient(165deg,
+          rgba(255, 255, 255, 0.2),
+          rgba(241, 236, 230, 0.2)) !important;
+      text-decoration: none !important;
+      border-radius: 10px !important;
+      margin-left: 4px !important;
+      transition: background 0.45s ease,
+        transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1) !important;
+      transform: translateX(6px) !important;
+    }
 
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 90px;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 90px);
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1500;
-            opacity: 0;
-            transition: all 0.3s;
-            visibility: hidden;
-        }
+    .sidebar ul li.active,
+    .sidebar ul li a.active {
+      background: var(--palette-accent-dark) !important;
+      color: var(--palette-header) !important;
+      box-shadow: 0 8px 22px rgba(79, 70, 229, 0.16) !important;
+      border-left: none !important;
+      text-decoration: none !important;
+    }
 
-        #sidebarToggle:checked~.overlay {
-            display: block;
-            opacity: 1;
-            visibility: visible;
-        }
+    .sidebar ul li.selected {
+      background: var(--palette-accent-dark) !important;
+      color: var(--palette-header) !important;
+      box-shadow: 0 8px 22px rgba(79, 70, 229, 0.16) !important;
+      border-left: none !important;
+    }
 
-        .line {
-            margin-left: 28px;
-            padding-bottom: 10px;
-        }
+    .burger {
+      width: 30px !important;
+      height: 24px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      position: fixed !important;
+      top: 35px !important;
+      left: 50px !important;
+      z-index: 2001 !important;
+      cursor: pointer !important;
+      padding: 0 !important;
+      background: none !important;
+      border: none !important;
+    }
 
-        /*End Sidebar*/
+    .burger span {
+      height: 4px !important;
+      width: 100% !important;
+      background: var(--palette-navbar) !important;
+      border-radius: 2px !important;
+      transition: 0.3s !important;
+      transform-origin: center !important;
+    }
 
-        /*Button*/
-        .btn-signout {
-            display: inline-flex !important;
-            align-items: center !important;
-            gap: 8px !important;
-            background: transparent !important;
-            border: none !important;
-            color: var(--palette-header);
-            min-width: 120px !important;
-            padding: 8px 12px !important;
-            font-size: medium;
-            cursor: pointer;
-        }
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 90px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 90px);
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1500;
+      opacity: 0;
+      transition: all 0.3s;
+      visibility: hidden;
+    }
 
-        .btn-signout .signout-icon {
-            width: 18px !important;
-            height: 18px !important;
-            display: inline-block !important;
-            vertical-align: middle !important;
-            fill: currentColor !important;
-        }
+    #sidebarToggle:checked~.overlay {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
 
-        .delete-button,
-        .delete-modal-btn,
-        .delete-btn {
-            background: #d63c3c !important;
-            color: #fff !important;
-            padding: 12px 20px;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            background-color: #111;
-            color: #fff;
-            cursor: pointer;
-            transition: background 0.3s, color 0.3s;
-        }
+    /*End Sidebar*/
 
-        .delete-button:hover,
-        .delete-modal-btn:hover,
-        .delete-btn:hover {
-            background: #b40202 !important;
-            color: #ffffff !important;
-            border: none;
-        }
+    /*Button*/
+    .btn-signout {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      background: transparent !important;
+      border: none !important;
+      color: var(--palette-header);
+      min-width: 120px !important;
+      padding: 8px 12px !important;
+      font-size: medium;
+      cursor: pointer;
+    }
 
-        .toggle-form-button,
-        .add-button,
-        .submit-button {
-            padding: 12px 20px;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            background-color: var(--palette-navbar);
-            color: #fff;
-            cursor: pointer;
-            transition: background 0.3s, color 0.3s;
-            width: 100px;
-            box-shadow: #111827 0px 2px 7px;
-        }
+    .btn-signout .signout-icon {
+      width: 18px !important;
+      height: 18px !important;
+      display: inline-block !important;
+      vertical-align: middle !important;
+      fill: currentColor !important;
+    }
 
+    /* Action buttons wrapper to align edit/delete */
+    .action-buttons {
+      display: inline-flex;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .toggle-form-button:hover,
-        .add-button:hover,
-        .submit-button:hover {
-            background-color: #4f46e5 !important;
-            border: none !important;
-        }
+    .delete-button,
+    .delete-modal-btn,
+    .delete-btn {
+      background: #d63c3c !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
 
-        .button-container {
-            margin-left: auto;
-        }
+    .delete-button:hover,
+    .delete-modal-btn:hover,
+    .delete-btn:hover {
+      background: #b40202 !important;
+      color: #ffffff !important;
+      border: none;
+    }
 
-        /*End Button*/
+    .edit-button {
+      background-color: var(--palette-navbar);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
 
-        /*Main Content*/
-        .page-title {
-            text-align: center;
-            font-size: 44px;
-            max-width: 90vw;
-            height: 11vh;
-            margin: 5vh auto;
-            padding: 2vw;
-            background-color: #1e293b;
-            color: #fff;
-            margin-bottom: -4.5%;
-            margin-top: 20px;
-            border-radius: 16px;
-            padding-top: 15px;
-        }
+    .toggle-form-button,
+    .add-button,
+    .submit-button,
+    .cancel-button {
+      padding: 12px 20px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      background-color: var(--palette-navbar);
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      width: 100px;
+      box-shadow: #111827 0px 2px 7px;
+    }
 
-        .main-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 40px;
-            background: #fff;
-            height: 100%;
-            margin-top: 80px;
-        }
+    .toggle-form-button {
+      width: 250px;
+    }
 
-        .main-container {
-            overflow: auto;
-            max-width: 90vw;
-            height: 70vh;
-            margin: 5vh auto;
-            padding: 2vw;
-            background-color: #fff;
-            box-shadow: 0vw 0vw 1vw #111;
-            border: 1px solid #e0e0e0;
-        }
+    .toggle-form-button:hover,
+    .add-button:hover,
+    .submit-button:hover,
+    .edit-button:hover,
+    .cancel-button:hover {
+      background-color: #4f46e5 !important;
+      border: none !important;
+    }
 
-        /*End Main Content*/
+    .button-container {
+      margin-left: auto;
+    }
+
+    /*End Button*/
+
+    /*Main Content*/
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px;
+      background: #fff;
+      height: 100%;
+      margin-top: 80px;
+    }
+
+    .search-bar {
+      margin: 10px 0;
+      margin-top: -10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-bar input {
+      padding: 10px 14px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      font-size: 15px;
+      max-width: 500px;
+      flex: 1;
+      background: #fff;
+      color: #111;
+    }
+
+    /*End Main Content*/
 
     .parts-logo {
       width: 80px;
@@ -584,139 +618,132 @@
       border: 1px solid #111;
       background: #f0f0f0;
     }
-
-   
   </style>
 </head>
 
 <body>
   <div class="bg-shape"></div>
-    <input type="checkbox" id="sidebarToggle" style="display: none;">
-    <label for="sidebarToggle" class="burger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </label>
-    <label for="sidebarToggle" class="overlay"></label>
+  <input type="checkbox" id="sidebarToggle" style="display: none;">
+  <label for="sidebarToggle" class="burger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </label>
+  <label for="sidebarToggle" class="overlay"></label>
 
-    <nav class="navigation-top">
-        <div class="navigation-div">
-            <h1 class="web-name">BisNest</h1>
-            <ul style="margin-left: 45%;">
-                <li><a style="color: #1e293b;" href="{% url 'about' %}">About</a></li>
-                <li><a style="color: #1e293b;" href="#contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
+  <nav class="navigation-top">
+    <div class="navigation-div">
+      <h1 class="page-name">Product Management</h1>
+      <ul style="margin-left: 45%;">
+        <li><a style="color: #1e293b;" href="{% url 'about' %}">About</a></li>
+        <li><a style="color: #1e293b;" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
 
-    <nav class="sidebar">
-        <ul>
-            <ul>
-                <li><a href="{% url 'menu' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
-                            style="vertical-align:middle;margin-right:8px">
-                            <path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z" />
-                        </svg>Home</a></li>
-                <li><a href="{% url 'payment' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
-                            style="vertical-align:middle;margin-right:8px">
-                            <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-5 0-9 2.5-9 6v1h18v-1c0-3.5-4-6-9-6z" />
-                        </svg>Employee</a></li>
-                <li><a href="{% url 'customer' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
-                            style="vertical-align:middle;margin-right:8px">
-                            <path
-                                d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zM8 13c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5C23 14.17 18.33 13 16 13z" />
-                        </svg>Customer</a></li>
-                <li><a href="{% url 'product' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
-                            style="vertical-align:middle;margin-right:8px">
-                            <path d="M21 8l-9-5-9 5v8l9 5 9-5V8zM12 3v18" />
-                        </svg>Product</a></li>
-                <li><a href="{% url 'history' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
-                            style="vertical-align:middle;margin-right:8px">
-                            <path d="M7 3h10v4H7zM7 9h10v12H7zM9 11h6v2H9zM9 15h6v2H9z" />
-                        </svg>Order</a></li>
-                <li><a href="{% url 'payment' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
-                            style="vertical-align:middle;margin-right:8px">
-                            <rect x="2" y="5" width="20" height="14" rx="2" />
-                            <path d="M2 10h20" fill="#fff" />
-                        </svg>Payment</a></li>
-                <li><a href="{% url 'delivery' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
-                            style="vertical-align:middle;margin-right:8px">
-                            <path d="M3 7h13l4 4v6h-2a3 3 0 0 1-6 0H8a3 3 0 0 1-6 0V7zM16 8v4h3" />
-                        </svg>Delivery</a></li>
-                <li><a href="{% url 'supply' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
-                            style="vertical-align:middle;margin-right:8px">
-                            <path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" />
-                        </svg>Supply</a></li>
-                <li><a href="{% url 'sales' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
-                            style="vertical-align:middle;margin-right:8px">
-                            <rect x="3" y="11" width="4" height="10" />
-                            <rect x="10" y="7" width="4" height="14" />
-                            <rect x="17" y="3" width="4" height="18" />
-                        </svg>Sales Report</a></li>
-            </ul>
-            <ul>
-                <div class="line">_______________________</div>
-                <li><a href="{% url 'logout_view' %}" class="btn-signout"><svg class="signout-icon"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3h-8v2h8v14h-8v2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
-                        </svg>Sign Out</a></li>
-            </ul>
-        </ul>
-    </nav>
+  <nav class="sidebar">
+    <ul>
+      <ul>
+        <h1 class="web-name">BisNest</h1>
+        <li><a href="{% url 'menu' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
+              <path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z" />
+            </svg>Home</a></li>
+        <li><a href="{% url 'employeesinfo' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
+              style="vertical-align:middle;margin-right:8px">
+              <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-5 0-9 2.5-9 6v1h18v-1c0-3.5-4-6-9-6z" />
+            </svg>Employee</a></li>
+        <li><a href="{% url 'customer' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
+              <path
+                d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zM8 13c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5C23 14.17 18.33 13 16 13z" />
+            </svg>Customer</a></li>
+        <li><a href="{% url 'product' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
+              <path d="M21 8l-9-5-9 5v8l9 5 9-5V8zM12 3v18" />
+            </svg>Product</a></li>
+        <li><a href="{% url 'history' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
+              <path d="M7 3h10v4H7zM7 9h10v12H7zM9 11h6v2H9zM9 15h6v2H9z" />
+            </svg>Order</a></li>
+        <li><a href="{% url 'payment' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <path d="M2 10h20" fill="#fff" />
+            </svg>Payment</a></li>
+        <li><a href="{% url 'delivery' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
+              <path d="M3 7h13l4 4v6h-2a3 3 0 0 1-6 0H8a3 3 0 0 1-6 0V7zM16 8v4h3" />
+            </svg>Delivery</a></li>
+        <li><a href="{% url 'supply' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
+              <path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" />
+            </svg>Supply</a></li>
+        <li><a href="{% url 'sales' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
+              <rect x="3" y="11" width="4" height="10" />
+              <rect x="10" y="7" width="4" height="14" />
+              <rect x="17" y="3" width="4" height="18" />
+            </svg>Sales Report</a></li>
+      </ul>
+      <ul>
+        <hr>
+        <li><a href="{% url 'logout_view' %}" class="btn-signout"><svg class="signout-icon"
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3h-8v2h8v14h-8v2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
+            </svg>Sign Out</a></li>
+      </ul>
+    </ul>
+  </nav>
 
   <main class="main-content">
-    <h1 class="page-title">Product Management</h1>
-    <div class="main-container">
-      <div style="display: flex; justify-content: flex-end; margin-bottom: 20px; gap: 10px;">
-        <button id="add-product-btn" class="toggle-form-button">+ New</button>
-      </div>
-      <div id="product-list" style="display: flex; flex-direction: column; align-items: center; gap: 2rem; margin-top: 30px;"></div>
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 20px; gap: 10px;">
+      <button id="add-product-btn" class="toggle-form-button">+ New</button>
+    </div>
+    <div id="product-list"
+      style="display: flex; flex-direction: column; align-items: center; gap: 2rem; margin-top: 30px;"></div>
 
-      <!-- Add Product Modal -->
-      <div id="add-product-modal" class="modal" role="dialog" aria-modal="true">
-        <div class="modal-content">
-          <span class="close-add-modal close-button">&times;</span>
-          <h2>Add Product</h2>
-          <div class="modal-divider"></div>
-          <form id="add-product-form">
-            <div style="margin-bottom: 18px; text-align: left;">
-              <label for="add-product-name">Product Name:</label>
-              <input type="text" id="add-product-name" required style="width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;">
-            </div>
-            <div style="margin-bottom: 18px; text-align: left;">
-              <label for="add-product-image">Image URL:</label>
-              <input type="text" id="add-product-image" required style="width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;">
-            </div>
-            <div style="margin-bottom: 18px; text-align: left;">
-              <label for="add-product-price">Price (₱):</label>
-              <input type="number" id="add-product-price" required min="0" step="0.01" style="width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;">
-            </div>
-            <button type="submit" class="submit-button" style="margin-top: 18px; min-width: 120px; font-size: 1.1rem; float: right;">Add</button>
-          </form>
-        </div>
-      </div>
-
-      <div id="product-modal" class="modal" role="dialog" aria-modal="true">
-        <div class="modal-content">
-          <span class="close-button" id="close-edit-modal">&times;</span>
-          <h2 id="modal-product-name">Product Name</h2>
-          <div class="modal-divider"></div>
-          <p><strong>ID:</strong> <span id="modal-product-id"></span></p>
-          <p><strong>Price:</strong>
-            <input type="text" id="modal-product-price">
-          </p>
-          <div class="modal-actions">
-            <button id="save-price-btn" class="submit-button">Save</button>
-            <button id="delete-modal-btn" class="delete-modal-btn">Delete</button>
+    <!-- Add Product Modal -->
+    <div id="add-product-modal" class="modal" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <span class="close-add-modal close-button">&times;</span>
+        <h2>Add Product</h2>
+        <div class="modal-divider"></div>
+        <form id="add-product-form">
+          <div style="margin-bottom: 18px; text-align: left;">
+            <label for="add-product-name">Product Name:</label>
+            <input type="text" id="add-product-name" required
+              style="width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;">
           </div>
+          <div style="margin-bottom: 18px; text-align: left;">
+            <label for="add-product-image">Image URL:</label>
+            <input type="text" id="add-product-image" required
+              style="width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;">
+          </div>
+          <div style="margin-bottom: 18px; text-align: left;">
+            <label for="add-product-price">Price (₱):</label>
+            <input type="number" id="add-product-price" required min="0" step="0.01"
+              style="width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;">
+          </div>
+          <button type="submit" class="submit-button"
+            style="margin-top: 18px; min-width: 120px; font-size: 1.1rem; float: right;">Add</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="product-modal" class="modal" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <span class="close-button" id="close-edit-modal">&times;</span>
+        <h2 id="modal-product-name">Product Name</h2>
+        <div class="modal-divider"></div>
+        <p><strong>ID:</strong> <span id="modal-product-id"></span></p>
+        <p><strong>Price:</strong>
+          <input type="text" id="modal-product-price">
+        </p>
+        <div class="modal-actions">
+          <button id="save-price-btn" class="submit-button">Save</button>
+          <button id="delete-modal-btn" class="delete-modal-btn">Delete</button>
         </div>
       </div>
     </div>
@@ -766,7 +793,7 @@
           <p class="product-price-label">₱${parseFloat(product.price).toFixed(2)}</p>
           <p class="product-price-name">${product.name}</p>
         `;
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', function (e) {
           document.querySelectorAll('.product-button-style.selected').forEach(el => el.classList.remove('selected'));
           btn.classList.add('selected');
           if (!e.target.classList.contains('delete-product-btn')) {
@@ -778,7 +805,7 @@
     }
 
     let selectedProductId = null;
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
       if (e.target.classList.contains('product-button-style')) {
         selectedProductId = e.target.getAttribute('data-id');
       } else if (e.target.closest('.product-button-style')) {
@@ -804,7 +831,7 @@
         addProductForm.reset();
       }
     });
-    addProductForm.addEventListener('submit', function(e) {
+    addProductForm.addEventListener('submit', function (e) {
       e.preventDefault();
       const name = document.getElementById('add-product-name').value.trim();
       const image = document.getElementById('add-product-image').value.trim();

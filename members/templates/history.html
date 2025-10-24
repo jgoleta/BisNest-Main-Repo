@@ -570,8 +570,9 @@
               width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
               <path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z" />
             </svg>Home</a></li>
-        <li><a href="{% url 'employeesinfo' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
+        <li><a href="{% url 'employeesinfo' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
+              style="vertical-align:middle;margin-right:8px">
               <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-5 0-9 2.5-9 6v1h18v-1c0-3.5-4-6-9-6z" />
             </svg>Employee</a></li>
         <li><a href="{% url 'customer' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -620,11 +621,11 @@
   <main class="main-content">
     <div class="main-container">
       <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search Customer Name:" onkeyup="searchCustomer()">
-                <div class="button-container">
-                    <button class="toggle-form-button" onclick="toggleForm()">+ New</button>
-                </div>
-            </div>
+        <input type="text" id="searchInput" placeholder="Search Customer Name:" onkeyup="searchCustomer()">
+        <div class="button-container">
+          <button class="toggle-form-button" onclick="toggleForm()">+ New</button>
+        </div>
+      </div>
       <div class="order-form-container">
         <h2 class="form-title" id="formTitle">Order Information</h2>
         <form method="POST" class="order-form">
@@ -637,59 +638,61 @@
       </div>
       <div class="modal-overlay" id="modalOverlay" style="display: none;"></div>
       <div class="order-table-container">
-          <div class="table-wrapper">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Order Name</th>
-              <th>Customer Name</th>
-              <th>Employee Name</th>
-              <th>Product Name</th>
-              <th>Amount</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for o in orders %}
-            <tr>
-              <td>{{ o.order_id }}</td>
-              <td>{{ o.customer_name }}</td>
-              <td>{{ o.employee_name }}</td>
-              <td>{{ o.product_name }}</td>
-              <td>₱{{ o.amount }}</td>
-              <td>{{ o.date }}</td>
-              <td>
-                <div class="action-buttons">
-                  <button type="button" class="edit-button" data-id="{{ cust.id }}" data-name="{{ cust.name }}"
-                    data-phone="{{ cust.phone }}" data-address="{{ cust.address }}" title="Edit customer"
-                    aria-label="Edit customer">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true" focusable="false">
-                    <path d="M3 21v-3.75L14.81 5.44a2 2 0 0 1 2.83 0l0.92 0.92a2 2 0 0 1 0 2.83L6.75 21H3z"
-                      stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                      stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </button>
-                
-                  <form method="POST" action="{% url 'delete_order' o.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="delete-button" aria-label="Delete order"><svg xmlns="http://www.w3.org/2000/svg" width="16"
-                      height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                      <path
-                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                      <path
-                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                    </svg></button>
-                  </form>
-                </div>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-          </div>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Order Name</th>
+                <th>Customer Name</th>
+                <th>Employee Name</th>
+                <th>Product Name</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for o in orders %}
+              <tr>
+                <td>{{ o.order_id }}</td>
+                <td>{{ o.customer_name }}</td>
+                <td>{{ o.employee_name }}</td>
+                <td>{{ o.product_name }}</td>
+                <td>₱{{ o.amount }}</td>
+                <td>{{ o.date }}</td>
+                <td>
+                  <div class="action-buttons">
+                    <button type="button" class="edit-button" data-id="{{ cust.id }}" data-name="{{ cust.name }}"
+                      data-phone="{{ cust.phone }}" data-address="{{ cust.address }}" title="Edit customer"
+                      aria-label="Edit customer">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true" focusable="false">
+                        <path d="M3 21v-3.75L14.81 5.44a2 2 0 0 1 2.83 0l0.92 0.92a2 2 0 0 1 0 2.83L6.75 21H3z"
+                          stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+                        <path
+                          d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                          stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </button>
+
+                    <form method="POST" action="{% url 'delete_order' o.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="delete-button" aria-label="Delete order"><svg
+                          xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                          class="bi bi-trash" viewBox="0 0 16 16">
+                          <path
+                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                          <path
+                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                        </svg></button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </main>
@@ -770,24 +773,24 @@
     });
 
     function searchCustomer() {
-            const input = document.getElementById("searchInput");
-            const filter = (input.value || "").toLowerCase();
-            const table = document.querySelector(".table tbody");
-            if (!table) return;
-            const rows = table.getElementsByTagName("tr");
+      const input = document.getElementById("searchInput");
+      const filter = (input.value || "").toLowerCase();
+      const table = document.querySelector(".table tbody");
+      if (!table) return;
+      const rows = table.getElementsByTagName("tr");
 
-            for (let i = 0; i < rows.length; i++) {
-                const nameCell = rows[i].getElementsByTagName("td")[1]; 
-                if (nameCell) {
-                    const nameText = nameCell.textContent || nameCell.innerText;
-                    if (nameText.toLowerCase().indexOf(filter) > -1) {
-                        rows[i].style.display = "";
-                    } else {
-                        rows[i].style.display = "none";
-                    }
-                }
-            }
+      for (let i = 0; i < rows.length; i++) {
+        const nameCell = rows[i].getElementsByTagName("td")[1];
+        if (nameCell) {
+          const nameText = nameCell.textContent || nameCell.innerText;
+          if (nameText.toLowerCase().indexOf(filter) > -1) {
+            rows[i].style.display = "";
+          } else {
+            rows[i].style.display = "none";
+          }
         }
+      }
+    }
   </script>
 
 </body>

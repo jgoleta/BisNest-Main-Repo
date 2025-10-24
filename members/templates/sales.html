@@ -643,7 +643,7 @@
 
     <nav class="navigation-top">
         <div class="navigation-div">
-            <h1 class="page-name">Sales Report</h1>
+            <h1 class="page-name">Supply Management</h1>
             <ul style="margin-left: 45%;">
                 <li><a style="color: #1e293b;" href="{% url 'about' %}">About</a></li>
                 <li><a style="color: #1e293b;" href="#contact">Contact</a></li>
@@ -858,14 +858,14 @@
                 if (cells.length >= 5) {
                     const date = cells[0].textContent.trim();
                     const productName = cells[1].textContent.trim();
-                    const quantity = parseFloat(cells[2].textContent.replace(/[₱,]/g, '')) || 0;
+                    const quantity_sold = parseFloat(cells[2].textContent.replace(/[₱,]/g, '')) || 0;
                     const price = parseFloat(cells[3].textContent.replace(/[₱,]/g, '')) || 0;
                     const total = parseFloat(cells[4].textContent.replace(/[₱,]/g, '')) || 0;
 
                     salesData.push({
                         date: date,
                         productName: productName,
-                        quantity: quantity,
+                        quantity_sold: quantity_sold,
                         price: price,
                         total: total
                     });
