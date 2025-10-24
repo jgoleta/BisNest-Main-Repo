@@ -70,12 +70,12 @@ class Supply(models.Model):
 class SalesReport(models.Model):
     date = models.DateField()
     product_name = models.CharField(max_length=100)
-    kilos_sold = models.DecimalField(max_digits=10, decimal_places=2)
-    price_per_kilo = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity_sold = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     @property
     def total(self):
-        return self.kilos_sold * self.price_per_kilo
+        return self.quantity_sold * self.price
 
     def __str__(self):
         return f"{self.date} - {self.product_name}"
