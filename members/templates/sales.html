@@ -149,7 +149,7 @@
                         {% for sale in sales %}
                         <tr>
                             <td>{{ sale.date }}</td>
-                            <td>{{ sale.product_name }}</td>
+                            <td>{{ sale.product.name }}</td>
                             <td>{{ sale.quantity_sold }}</td>
                             <td>₱{{ sale.price }}</td>
                             <td class="row-total">₱{{ sale.total }}</td>

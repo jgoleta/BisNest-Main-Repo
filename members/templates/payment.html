@@ -92,7 +92,7 @@
             {% csrf_token %}
             <div class="table-input-row table-row">
               <div>{{ form.payment_id }}</div>
-              <div>{{ form.customer_name }}</div>
+              <div>{{ form.customer.name }}</div>
               <div>{{ form.amount }}</div>
               <div>{{ form.date }}</div>
               <div>{{ form.method }}</div>
@@ -118,7 +118,7 @@
           {% for p in payments %}
           <div class="table-row">
             <div>{{ p.payment_id }}</div>
-            <div>{{ p.customer_name }}</div>
+            <div>{{ p.customer.name }}</div>
             <div>₱{{ p.amount }}</div>
             <div>{{ p.date }}</div>
             <div>{{ p.method }}</div>
