@@ -7,6 +7,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
 
 @csrf_exempt
 def update_delivery_status(request, delivery_id):
@@ -39,14 +41,14 @@ def login_view(request):
         user = authenticate(request, username=username, password=password) if username else None
         if user is not None:
             login(request, user)
-            return redirect('menuPage')  
+            return redirect('menu')  
         else:
             messages.error(request, 'Invalid email or password.')
     return render(request, 'login.html')
 
 def logout_view(request):
     logout(request)
-    return redirect('login_view')
+    return redirect('loginPage')
 
 def loginPage(request):
     return render(request, 'login.html')
