@@ -65,22 +65,8 @@ class SupplyForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'supply_id': forms.TextInput(attrs={'readonly': True, 'class': 'form-control'}),
-            'supplier': forms.Select(attrs={'class': 'form-control'}, choices=[
-                ('', 'Select Supplier'),
-                ('Golden Poultry Farm', 'Golden Poultry Farm'),
-                ('Fresh Chicken Co.', 'Fresh Chicken Co.'),
-                ('Prime Poultry', 'Prime Poultry'),
-                ('New Supplier', 'New Supplier'),
-            ]),
-            'product': forms.Select(attrs={'class': 'form-control'}, choices=[
-                ('Whole Chicken', 'Whole Chicken'),
-                ('Chicken Feet', 'Chicken Feet'),
-                ('Chicken Head', 'Chicken Head'),
-                ('Chicken Liver', 'Chicken Liver'),
-                ('Chicken Intestine', 'Chicken Intestine'),
-                ('Chicken Blood', 'Chicken Blood'),
-                ('Chicken Gizzard', 'Chicken Gizzard'),
-            ]),
+            'supplier': forms.TextInput(attrs={'class': 'form-control'}),
+            'product': forms.Select(attrs={'class': 'form-control'}),
             'quantity': forms.NumberInput(attrs={'class': 'form-control', 'step': 0.01, 'placeholder': 'Enter quantity'}),
             'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'step': 0.01, 'placeholder': '0.00'}),
@@ -90,16 +76,8 @@ class SupplyForm(forms.ModelForm):
 class SalesReportForm(forms.ModelForm):
     class Meta:
         model = SalesReport
-        fields = ['date', 'product_name', 'kilos_sold', 'price_per_kilo']
+        fields = ['date', 'product_name', 'quantity_sold', 'price']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
-            'product_name': forms.Select(choices=[
-                ('Whole Chicken', 'Whole Chicken'),
-                ('Chicken Feet', 'Chicken Feet'),
-                ('Chicken Head', 'Chicken Head'),
-                ('Chicken Liver', 'Chicken Liver'),
-                ('Chicken Intestine', 'Chicken Intestine'),
-                ('Chicken Blood', 'Chicken Blood'),
-                ('Chicken Gizzard', 'Chicken Gizzard'),
-            ])
+            'product_name': forms.TextInput(attrs={'class':'form-control'}),
         }
