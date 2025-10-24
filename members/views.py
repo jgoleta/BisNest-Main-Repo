@@ -8,9 +8,6 @@ from django.contrib import messages
 
 # Public
 def members(request):
-    """
-    Default route (renders login page by default)
-    """
     template = loader.get_template('login.html')
     return HttpResponse(template.render())
 
