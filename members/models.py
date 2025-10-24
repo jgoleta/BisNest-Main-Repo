@@ -46,7 +46,7 @@ class Order(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.order_id}"
@@ -55,14 +55,14 @@ class Payment(models.Model):
     payment_id = models.CharField(max_length=10, unique=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
     method = models.CharField(max_length=50)
 
     def __str__(self):
         return self.payment_id
 
 class Delivery(models.Model):
-    delivery_id = models.CharField(max_length=20)
+    delivery_id = models.CharField(max_length=20, unique=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
     scheduled_date = models.DateField()
@@ -86,9 +86,8 @@ class Supply(models.Model):
 
 class SalesReport(models.Model):
     date = models.DateField()
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
     quantity_sold = models.DecimalField(max_digits=10, decimal_places=2)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
