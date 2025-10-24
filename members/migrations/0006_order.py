@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('order_id', models.CharField(max_length=10, unique=True)),
-                ('customer_id', models.CharField(max_length=50)),
-                ('employee_id', models.CharField(max_length=50)),
+                ('customer_name', models.CharField(max_length=50)),
+                ('employee_name', models.CharField(max_length=50)),
                 ('product_id', models.CharField(max_length=10)),
                 ('product_name', models.CharField(max_length=100)),
                 ('amount', models.DecimalField(decimal_places=2, max_digits=10)),

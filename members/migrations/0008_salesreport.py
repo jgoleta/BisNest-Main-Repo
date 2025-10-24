@@ -16,8 +16,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date', models.DateField()),
                 ('product_name', models.CharField(max_length=100)),
-                ('kilos_sold', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('price_per_kilo', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('quantity_sold', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
             ],
         ),
     ]
