@@ -45,9 +45,16 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2, default=1)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(auto_now_add=True)
 
+    # Function to automatically compute amount due based on product price and quantity ordered
+    def save(self, *args, **kwargs):
+        if self.product and self.quantity:
+            self.amount = self.product.price * self.quantity
+        super().save(*args, **kwargs)
+    
     def __str__(self):
         return f"{self.order_id}"
 
@@ -58,6 +65,9 @@ class Payment(models.Model):
     date = models.DateField(auto_now_add=True)
     method = models.CharField(max_length=50)
 
+    def outstandingBalance(self):
+        return f"Outstanding Balance: {self.amount - self.order.amount}"
+    
     def __str__(self):
         return self.payment_id
 
@@ -88,12 +98,14 @@ class SalesReport(models.Model):
     date = models.DateField()
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
-    quantity_sold = models.DecimalField(max_digits=10, decimal_places=2)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-
+    
     @property
     def total(self):
-        return self.quantity_sold * self.price
+        return self.order.quantity
+    
+    @property
+    def profit(self):
+        return self.order.amount
 
     def __str__(self):
         pname = self.product.name if self.product else "Unknown"
