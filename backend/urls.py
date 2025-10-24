@@ -8,21 +8,20 @@ URL configuration for goletan1am project.
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.decorators import login_required
-from backend import index  # ✅ keeps your data + logic in backend
-# no need for members.views — we’ll use backend.index directly
+from backend import index  
 
 urlpatterns = [
     # --- Admin ---
     path('admin/', admin.site.urls),
 
-    # --- Public / Authentication Routes ---
+    # --- public---
     path('', index.loginPage, name='loginPage'),
     path('login/', index.login_view, name='login_view'),
     path('logout/', index.logout_view, name='logout_view'),
     path('register/', index.register_view, name='register_view'),
     path('signup/', index.signupPage, name='signupPage'),
 
-    # --- Protected Routes (with data + protection) ---
+    # --- protected---
     path('menu/', login_required(index.menuPage, login_url='/login/'), name='menu'),
     path('employeesinfo/', login_required(index.employeesInfoPage, login_url='/login/'), name='employeesinfo'),
     path('history/', login_required(index.orderHistoryPage, login_url='/login/'), name='history'),
@@ -34,7 +33,7 @@ urlpatterns = [
     path('sales/', login_required(index.salesPage, login_url='/login/'), name='sales'),
     path('about/', login_required(index.aboutPage, login_url='/login/'), name='about'),
 
-    # --- Data Operations (CRUD) ---
+    # --- crud ---
     path('employee-info/delete/<int:employee_id>/', index.delete_employee, name='delete_employee'),
     path('customer/delete/<int:customer_id>/', index.delete_customer, name='delete_customer'),
     path('delivery/delete/<int:delivery_id>/', index.delete_delivery, name='delete_delivery'),
