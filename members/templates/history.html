@@ -608,7 +608,7 @@
             </svg>Sales Report</a></li>
       </ul>
       <ul>
-        <div class="line">_______________________</div>
+        <hr>
         <li><a href="{% url 'logout_view' %}" class="btn-signout"><svg class="signout-icon"
               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3h-8v2h8v14h-8v2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
@@ -654,8 +654,8 @@
             {% for o in orders %}
             <tr>
               <td>{{ o.order_id }}</td>
-              <td>{{ o.customer_id }}</td>
-              <td>{{ o.employee_id }}</td>
+              <td>{{ o.customer_name }}</td>
+              <td>{{ o.employee_name }}</td>
               <td>{{ o.product_name }}</td>
               <td>₱{{ o.amount }}</td>
               <td>{{ o.date }}</td>
