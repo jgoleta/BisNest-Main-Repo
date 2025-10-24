@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from members.models import Member, Customer, Delivery, Payment, Order, Supply, SalesReport
-from members.forms import SupplyForm, MemberForm, CustomerForm, DeliveryForm, PaymentForm, OrderForm, SalesReportForm
+from members.models import Employee, Customer, Delivery, Payment, Order, Supply, SalesReport
+from members.forms import SupplyForm, EmployeeForm, CustomerForm, DeliveryForm, PaymentForm, OrderForm, SalesReportForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import JsonResponse
