@@ -62,21 +62,21 @@ def loginPage(request):
 
 def employeesInfoPage(request):
     if request.method == 'POST':
-        form = MemberForm(request.POST)
+        form = EmployeeForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('employeesInfoPage')  
     else:
-        form = MemberForm()
+        form = EmployeeForm()
 
-    employees = Member.objects.all() 
+    employees = Employee.objects.all() 
     return render(request, 'employeesinfo.html', {
         'form': form,
         'employees': employees
     })
 
 def delete_employee(request, employee_id):
-    employee = get_object_or_404(Member, pk=employee_id)
+    employee = get_object_or_404(Employee, pk=employee_id)
     employee.delete()
     return redirect('employeesInfoPage')
 
