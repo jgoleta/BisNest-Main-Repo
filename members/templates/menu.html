@@ -41,22 +41,6 @@
             color: var(--palette-text);
         }
 
-        .main-content {
-            margin-top: 90px;
-            margin-left: 0;
-            padding: 40px;
-            transition: margin-left 0.3s ease;
-            height: calc(100vh - 90px);
-            overflow-y: auto;
-        }
-
-        h1 {
-            font-size: 35px;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #111;
-        }
-
         /*Navigation*/
         .navigation-top {
             position: fixed !important;
@@ -109,17 +93,22 @@
             color: var(--palette-accent) !important;
         }
 
-        .web-name {
+        .page-name {
             font-size: 28px !important;
             font-weight: 800 !important;
             color: var(--palette-navbar) !important;
             margin-left: -10% !important;
-            padding-top: 20px !important;
         }
 
         /*End Navigation*/
 
         /*Sidebar*/
+        .web-name {
+            font-size: 28px !important;
+            font-weight: 800 !important;
+            justify-content: center;
+        }
+
         #sidebarToggle:checked+.burger span:nth-child(1) {
             transform: rotate(45deg) translate(5px, 5px) !important;
         }
@@ -169,12 +158,14 @@
         .sidebar ul {
             padding: 8px !important;
             list-style: none !important;
+
         }
 
         .sidebar ul li {
             border-radius: 10px !important;
             margin: 6px 6px !important;
             padding: 5px 30px !important;
+
         }
 
         .sidebar ul li a {
@@ -184,6 +175,11 @@
             gap: 12px !important;
             color: inherit !important;
             text-decoration: none !important;
+        }
+
+        .sidebar h1 {
+            text-align: center !important;
+            margin: 20px !important;
         }
 
         .sidebar ul li:hover {
@@ -259,11 +255,6 @@
             visibility: visible;
         }
 
-        .line {
-            margin-left: 28px;
-            padding-bottom: 10px;
-        }
-
         /*End Sidebar*/
 
         /*Button*/
@@ -287,6 +278,25 @@
             vertical-align: middle !important;
             fill: currentColor !important;
         }
+
+        /*End Button*/
+
+        /*Main Content*/
+
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            background: #fff;
+            height: 100%;
+            margin-top: 80px;
+        }
+
+        /*End Main Content*/
+
+
+        /*Dashboard Unique Style*/
 
         .dashboard-button,
         .dashboard-button-order {
@@ -326,27 +336,6 @@
             gap: 12px !important;
             margin-left: 76% !important;
             padding-bottom: 20px !important;
-        }
-
-        /*End Button*/
-
-
-        /*Dashboard Unique Style*/
-        .page-title {
-            text-align: center;
-            font-size: 44px;
-            max-width: 110vw;
-            height: 8vh;
-            margin: 5vh auto;
-            padding: 2vw;
-            background-color: #1e293b;
-            color: #fff;
-            margin-top: 20px;
-            border-radius: 16px;
-            padding-top: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0vw 0vw 0.4vw #111;
-            margin-top: 5px;
         }
 
         .stats-grid {
@@ -433,7 +422,7 @@
 
     <nav class="navigation-top">
         <div class="navigation-div">
-            <h1 class="web-name">BisNest</h1>
+            <h1 class="page-name">Dashboard</h1>
             <ul style="margin-left: 45%;">
                 <li><a style="color: #1e293b;" href="{% url 'aboutPage' %}">About</a></li>
                 <li><a style="color: #1e293b;" href="#contact">Contact</a></li>
@@ -444,7 +433,7 @@
     <nav class="sidebar">
         <ul>
             <ul>
-
+                <h1 class="web-name">BisNest</h1>
                 <li><a href="{% url 'menuPage' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
                             style="vertical-align:middle;margin-right:8px">
@@ -496,7 +485,7 @@
                         </svg>Sales Report</a></li>
             </ul>
             <ul class="information">
-                <div class="line">_______________________</div>
+                <hr>
                 <li><a href="{% url 'loginPage' %}" class="btn-signout"><svg class="signout-icon"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3h-8v2h8v14h-8v2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
@@ -506,11 +495,11 @@
     </nav>
     <div class="container">
         <main class="main-content">
-            <h1 class="page-title">Dashboard</h1>
             <ul class="dashboard-button-container">
                 <li class="dashboard-button" id="generateReportBtn">Generate Report</li>
                 <li class="dashboard-button" id="refreshBtn">Refresh Data</li>
-                <li href="{% url 'orderHistoryPage' %}" onclick="" class="dashboard-button-order" id="addOrderBtn">New Order
+                <li href="{% url 'orderHistoryPage' %}" onclick="" class="dashboard-button-order" id="addOrderBtn">New
+                    Order
                 </li>
             </ul>
 
