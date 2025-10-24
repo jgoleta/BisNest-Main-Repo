@@ -76,7 +76,7 @@ class SupplyForm(forms.ModelForm):
 class SalesReportForm(forms.ModelForm):
     class Meta:
         model = SalesReport
-        fields = ['date', 'product', 'quantity_sold', 'price']
+        fields = ['date', 'order', 'product',]
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
             'product': forms.TextInput(attrs={'class':'form-control'}),
