@@ -2,7 +2,7 @@
 .venv/
 venv/
 
-# Ignore Python bytecode
+# Ignore pycache
 __pycache__/
 *.pyc
 *.pyo
