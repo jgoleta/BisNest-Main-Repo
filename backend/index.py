@@ -89,7 +89,7 @@ def paymentPage(request):
         form = PaymentForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('paymentPage')
+            return redirect('payment')
     else:
         form = PaymentForm(initial={
             'payment_id': f'P{Payment.objects.count()+1:04d}'  
@@ -104,7 +104,7 @@ def paymentPage(request):
 def delete_payment(request, payment_id):
     payment = get_object_or_404(Payment, pk=payment_id)
     payment.delete()
-    return redirect('paymentPage')
+    return redirect('payment')
 
 def orderHistoryPage(request):
     if request.method == 'POST':
@@ -154,7 +154,7 @@ def customerInfoPage(request):
         form = CustomerForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('customerInfoPage')
+            return redirect('customer')
     else:
         form = CustomerForm()
 
@@ -167,7 +167,7 @@ def customerInfoPage(request):
 def delete_customer(request, customer_id):
     customer = get_object_or_404(Customer, pk=customer_id)
     customer.delete()
-    return redirect('customerInfoPage')
+    return redirect('customer')
 
 def productPage(request):
     return render(request, 'product.html')
