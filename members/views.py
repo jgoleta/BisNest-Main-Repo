@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.template import loader
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .models import Product
 
 
 # Public
@@ -36,10 +38,11 @@ def logout_view(request):
     logout(request)
     return redirect("login")
 
-
+# def get_product_price(request, pk):
+#     product = Product.objects.get(pk=pk)
+#     return JsonResponse({'price': float(product.price)})
 
 # protected
-
 
 @login_required(login_url='/login/')
 def menu_view(request):

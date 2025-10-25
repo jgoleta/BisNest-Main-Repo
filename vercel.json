@@ -9,5 +9,6 @@
             "src": "/(.*)",
             "dest": "backend/wsgi.py"
         }
-    ]
+    ],
+    "buildCommand": "python manage.py collectstatic --noinput"
 }

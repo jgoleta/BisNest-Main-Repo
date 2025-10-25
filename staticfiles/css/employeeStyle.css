@@ -1,0 +1,136 @@
+/*Employee Unique Style*/
+.button-container {
+  margin-left: auto;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1001;
+  display: none;
+}
+
+.employee-form-container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1002;
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e0e0e0;
+  width: 750px;
+  max-width: 90vw;
+}
+
+@media (max-width: 800px) {
+  .employee-form-container {
+    width: 95vw;
+    padding: 10px;
+  }
+}
+
+.employee-form label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+  color: #111;
+}
+
+.employee-form input,
+.employee-form textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  background: #fff;
+  color: #111;
+  margin-bottom: 6px;
+}
+
+.submit-wrapper {
+  text-align: right;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  background-color: #fff;
+  margin-top: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  color: #111;
+}
+
+.table th,
+.table td {
+  padding: 14px 16px;
+  text-align: center;
+  border: none;
+  font-size: 15px;
+}
+
+.table th {
+  background-color: var(--palette-navbar);
+  color: #fff;
+  font-size: 16px;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+tr.selected {
+  background-color: #777;
+  color: #fff;
+  font-weight: bold;
+}
+
+th.asc::after {
+  content: " ▲";
+}
+
+th.desc::after {
+  content: " ▼";
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  background-color: #2ecc71;
+  color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px #111;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.notification.show {
+  opacity: 1;
+}
+
+.notification.error {
+  background-color: #0e0202;
+}
+
+.form-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #111;
+}
