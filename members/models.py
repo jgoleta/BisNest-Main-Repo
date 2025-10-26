@@ -48,7 +48,7 @@ class Order(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.DecimalField(max_digits=10, decimal_places=2, default=1)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     date = models.DateField(auto_now_add=True)
 
     # Function to automatically compute amount due based on product price and quantity ordered
