@@ -8,12 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sales | BisNest</title>
     <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
-    <link rel="stylesheet" href="{% static 'css/saleslStyle.css' %}">
-    <style>
-        
+    <link rel="stylesheet" href="{% static 'css/salesStyle.css' %}">
 
-        
-    </style>
 </head>
 
 <body>
@@ -39,6 +35,7 @@
     <nav class="sidebar">
         <ul>
             <ul>
+                <h1 class="web-name">BisNest</h1>
                 <li><a href="{% url 'menu' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
                             style="vertical-align:middle;margin-right:8px">
@@ -90,7 +87,7 @@
                         </svg>Sales Report</a></li>
             </ul>
             <ul>
-                <div class="line">_______________________</div>
+                <hr>
                 <li><a href="{% url 'logout_view' %}" class="btn-signout"><svg class="signout-icon"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3h-8v2h8v14h-8v2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
@@ -231,7 +228,7 @@
                 <label for="dateSelect">Select Date:</label>
                 <input type="date" id="dateSelect" onchange="filterByDate()">
             </div>
-            
+
             <div class="daily-summary">
                 <div class="summary-card">
                     <h3>Daily Total</h3>
@@ -270,7 +267,7 @@
                 <input type="week" id="weekSelect" onchange="filterByWeek()">
                 <div class="week-display" id="weekDisplay">Week of Oct 20–26, 2025</div>
             </div>
-            
+
             <div class="weekly-summary">
                 <div class="summary-card">
                     <h3>Weekly Total</h3>
@@ -457,7 +454,7 @@
                 const pastDaysOfYear = Math.floor((today - firstDayOfYear) / 86400000);
                 const weekNumber = Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
                 const currentWeek = `${year}-W${weekNumber.toString().padStart(2, '0')}`;
-                
+
                 weekInput.value = currentWeek;
                 updateWeekDisplay(currentWeek);
             }
@@ -484,7 +481,7 @@
             if (!selectedWeek) return;
 
             updateWeekDisplay(selectedWeek);
-            
+
             const [year, week] = selectedWeek.split('-W');
             if (!year || !week) return;
 
@@ -493,7 +490,7 @@
             const daysToAdd = (parseInt(week) - 1) * 7;
             const weekStart = new Date(firstDayOfYear);
             weekStart.setDate(firstDayOfYear.getDate() + daysToAdd - firstDayOfYear.getDay());
-            
+
             const weekEnd = new Date(weekStart);
             weekEnd.setDate(weekStart.getDate() + 6);
 
@@ -524,7 +521,7 @@
             const daysToAdd = (parseInt(week) - 1) * 7;
             const weekStart = new Date(firstDayOfYear);
             weekStart.setDate(firstDayOfYear.getDate() + daysToAdd - firstDayOfYear.getDay());
-            
+
             const weekEnd = new Date(weekStart);
             weekEnd.setDate(weekStart.getDate() + 6);
 
@@ -593,7 +590,7 @@
         function updateWeeklySummary(data, weekStart) {
             const totalSales = data.reduce((sum, sale) => sum + sale.total, 0);
             const totalTransactions = data.length;
-            const dailyAverage = totalSales / 7; 
+            const dailyAverage = totalSales / 7;
 
             document.getElementById('weeklyTotal').textContent = `₱${totalSales.toFixed(2)}`;
             document.getElementById('weeklyTransactions').textContent = totalTransactions;
@@ -620,7 +617,7 @@
             days.forEach(day => {
                 const dayData = dailyData[day];
                 const avgPerTransaction = dayData.transactions > 0 ? dayData.total / dayData.transactions : 0;
-                
+
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${day}</td>

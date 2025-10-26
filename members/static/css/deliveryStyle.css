@@ -451,11 +451,37 @@ nav.navigation-top li a:hover {
   font-weight: bold;
 }
 
-.form-control {
+.delivery-form input,
+.delivery-form textarea,
+.delivery-form select {
   width: 100%;
+  margin-top: 6px;
+  margin-bottom: 10px;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+  font-family: 'Sen', sans-serif;
+}
+
+.delivery-form select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.delivery-form label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: #111;
+}
+
+.delivery-form p {
+  margin-bottom: 8px;
 }
 
 .status-select,

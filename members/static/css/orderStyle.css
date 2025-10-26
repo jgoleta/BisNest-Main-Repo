@@ -45,9 +45,11 @@
     }
 
     .order-form input,
-    .order-form textarea {
+    .order-form textarea,
+    .order-form select {
       width: 100%;
       margin-top: 6px;
+      margin-bottom: 10px;
       padding: 10px;
       border-radius: 6px;
       border: 1px solid #bbb;
@@ -65,7 +67,7 @@
       border-spacing: 0;
       overflow: hidden;
       background-color: #ffffff;
-      margin-top: 20px;
+      margin-top: 10px;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
       color: #111;
     }
