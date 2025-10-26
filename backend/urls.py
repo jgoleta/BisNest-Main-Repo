@@ -42,4 +42,8 @@ urlpatterns = [
     path('delete-supply/<int:supply_id>/', index.delete_supply, name='delete_supply'),
     path('delete-sale/<int:sale_id>/', index.delete_sale, name='delete_sale'),
     path('update_delivery_status/<int:delivery_id>/', index.update_delivery_status, name='update_delivery_status'),
+
+    # --- product AJAX endpoints ---
+    path('product/update/', index.update_product, name='update_product'),
+    path('product/delete/', index.delete_product, name='delete_product'),
 ]
