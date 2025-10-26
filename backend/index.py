@@ -65,7 +65,7 @@ def employeesInfoPage(request):
         form = EmployeeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('employeesInfoPage')  
+            return redirect('employeesinfo')  
     else:
         form = EmployeeForm()
 
@@ -78,7 +78,7 @@ def employeesInfoPage(request):
 def delete_employee(request, employee_id):
     employee = get_object_or_404(Employee, pk=employee_id)
     employee.delete()
-    return redirect('employeesInfoPage')
+    return redirect('employeesinfo')
 
 def menuPage(request):
     return render(request, 'menu.html')
@@ -125,7 +125,7 @@ def orderHistoryPage(request):
             product_name = form.cleaned_data.get('product_name')
             order.product_id = product_map.get(product_name, 'P0')
             order.save()
-            return redirect('orderHistoryPage')
+            return redirect('history')
         else:
             print("❌ INVALID form")
             print(form.errors)
@@ -143,7 +143,7 @@ def orderHistoryPage(request):
 def delete_order(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
     order.delete()
-    return redirect('orderHistoryPage')
+    return redirect('history')
 
 
 def signupPage(request):
@@ -177,7 +177,7 @@ def deliveryPage(request):
         form = DeliveryForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('deliveryPage')
+            return redirect('delivery')
     else:
         form = DeliveryForm()
 
@@ -190,14 +190,14 @@ def deliveryPage(request):
 def delete_delivery(request, delivery_id):
     delivery = get_object_or_404(Delivery, pk=delivery_id)
     delivery.delete()
-    return redirect('deliveryPage')
+    return redirect('delivery')
 
 def salesPage(request):
     if request.method == 'POST':
         form = SalesReportForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('salesPage')
+            return redirect('sales')
     else:
         form = SalesReportForm()
 
@@ -210,14 +210,14 @@ def salesPage(request):
 def delete_sale(request, sale_id):
     sale = get_object_or_404(SalesReport, pk=sale_id)
     sale.delete()
-    return redirect('salesPage')
+    return redirect('sales')
 
 def supplyPage(request):
     if request.method == 'POST':
         form = SupplyForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('supplyPage')
+            return redirect('supply')
     else:
         form = SupplyForm(initial={
             'supply_id': f"SUP{Supply.objects.count() + 1:04d}"
@@ -235,7 +235,7 @@ def aboutPage(request):
 def delete_supply(request, supply_id):
     supply = get_object_or_404(Supply, pk=supply_id)
     supply.delete()
-    return redirect('supplyPage')
+    return redirect('supply')
 
 def register_view(request):
     if request.method == 'POST':
