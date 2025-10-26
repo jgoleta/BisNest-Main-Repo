@@ -62,10 +62,23 @@ def loginPage(request):
 
 def employeesInfoPage(request):
     if request.method == 'POST':
-        form = EmployeeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('employeesinfo')  
+        edit_id = request.POST.get('edit_id')
+
+        if edit_id:  # existing employee edit
+            employee = get_object_or_404(Employee, pk=edit_id)
+            # mga pdeng iedit
+            employee.name = request.POST.get('name', employee.name)
+            employee.position = request.POST.get('position', employee.position)
+            employee.schedule = request.POST.get('schedule', employee.schedule)
+            employee.salary = request.POST.get('salary', employee.salary)
+            employee.save()
+            return redirect('employeesinfo')
+
+        else:  # create
+            form = EmployeeForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('employeesinfo')  
     else:
         form = EmployeeForm()
 
@@ -74,6 +87,33 @@ def employeesInfoPage(request):
         'form': form,
         'employees': employees
     })
+
+def customerInfoPage(request):
+    if request.method == 'POST':
+        edit_id = request.POST.get('edit_id')
+
+        if edit_id:  # existing customer edit
+            customer = get_object_or_404(Customer, pk=edit_id)
+            # mga pdeng iedit
+            customer.name = request.POST.get('name', customer.name)
+            customer.phone = request.POST.get('phone', customer.phone)
+            customer.address = request.POST.get('address', customer.address)
+            customer.save()
+            return redirect('customer')
+
+        else:  # create
+            form = CustomerForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('customer')
+
+    customers = Customer.objects.all()
+    form = CustomerForm()
+    return render(request, 'customer.html', {
+        'form': form,
+        'customers': customers
+    })
+
 
 def delete_employee(request, employee_id):
     employee = get_object_or_404(Employee, pk=employee_id)
