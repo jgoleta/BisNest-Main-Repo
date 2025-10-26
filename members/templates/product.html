@@ -91,7 +91,27 @@
       <button id="add-product-btn" class="toggle-form-button">+ New</button>
     </div>
     <div id="product-list"
-      style="display: flex; flex-direction: column; align-items: center; gap: 2rem; margin-top: 30px;"></div>
+      style="display: flex; flex-direction: column; align-items: center; gap: 2rem; margin-top: 30px;">
+      {% if products %}
+        {% for product in products %}
+          {% if forloop.counter0|divisibleby:6 %}
+            <div style="display:flex; gap:2rem; margin-bottom:2rem;">
+          {% endif %}
+
+          <button class="product-button-style" data-id="{{ product.product_id }}" data-name="{{ product.name }}" data-price="{{ product.price }}" data-image="{% if product.image %}{{ product.image.url }}{% endif %}">
+            <img src="{% if product.image %}{{ product.image.url }}{% else %}{{ '' }}{% endif %}" class="parts-logo" alt="{{ product.name }}">
+            <p class="product-price-label">₱{{ product.price|floatformat:2 }}</p>
+            <p class="product-price-name">{{ product.name }}</p>
+          </button>
+
+          {% if forloop.counter0|add:1|divisibleby:6 or forloop.last %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <p>No products available.</p>
+      {% endif %}
+    </div>
 
     <!-- Add Product Modal -->
     <div id="add-product-modal" class="modal" role="dialog" aria-modal="true">
@@ -99,21 +119,23 @@
         <span class="close-add-modal close-button">&times;</span>
         <h2>Add Product</h2>
         <div class="modal-divider"></div>
-        <form id="add-product-form">
+        <form id="add-product-form" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
           <div style="margin-bottom: 18px; text-align: left;">
             <label for="add-product-name">Product Name:</label>
-            <input type="text" id="add-product-name" required
-              style="width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;">
+            {{ form.name }}
           </div>
           <div style="margin-bottom: 18px; text-align: left;">
-            <label for="add-product-image">Image URL:</label>
-            <input type="text" id="add-product-image" required
-              style="width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;">
+            <label for="add-product-stock">Stock:</label>
+            {{ form.stock }}
           </div>
           <div style="margin-bottom: 18px; text-align: left;">
             <label for="add-product-price">Price (₱):</label>
-            <input type="number" id="add-product-price" required min="0" step="0.01"
-              style="width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;">
+            {{ form.price }}
+          </div>
+          <div style="margin-bottom: 18px; text-align: left;">
+            <label for="add-product-image">Image:</label>
+            {{ form.image }}
           </div>
           <button type="submit" class="submit-button"
             style="margin-top: 18px; min-width: 120px; font-size: 1.1rem; float: right;">Add</button>
@@ -121,86 +143,51 @@
       </div>
     </div>
 
-    <div id="product-modal" class="modal" role="dialog" aria-modal="true">
+    <div id="edit-product-modal" class="modal" role="dialog" aria-modal="true">
       <div class="modal-content">
         <span class="close-button" id="close-edit-modal">&times;</span>
-        <h2 id="modal-product-name">Product Name</h2>
+        <h2>Edit Product</h2>
         <div class="modal-divider"></div>
-        <p><strong>ID:</strong> <span id="modal-product-id"></span></p>
-        <p><strong>Price:</strong>
-          <input type="text" id="modal-product-price">
-        </p>
-        <div class="modal-actions">
-          <button id="save-price-btn" class="submit-button">Save</button>
-          <button id="delete-modal-btn" class="delete-modal-btn">Delete</button>
-        </div>
+        <form id="edit-product-form" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" id="edit-product-id" name="product_id">
+
+          <div style="margin-bottom: 18px; text-align: left;">
+            <label for="edit-product-name">Product Name:</label>
+            <input type="text" id="edit-product-name" name="name" class="form-control" required>
+          </div>
+
+          <div style="margin-bottom: 18px; text-align: left;">
+            <label for="edit-product-stock">Stock:</label>
+            <input type="number" id="edit-product-stock" name="stock" class="form-control" min="0" required>
+          </div>
+
+          <div style="margin-bottom: 18px; text-align: left;">
+            <label for="edit-product-price">Price (₱):</label>
+            <input type="number" id="edit-product-price" name="price" class="form-control" step="0.01" required>
+          </div>
+
+          <div style="margin-bottom: 18px; text-align: left;">
+            <label for="edit-product-image">Image:</label>
+            <input type="file" id="edit-product-image" name="image" class="form-control-file" accept="image/*" onchange="previewEditImage(event)">
+            <img id="edit-image-preview" src="#" alt="Image Preview"
+                class="img-thumbnail mt-2"
+                style="max-width: 200px; display: none;">
+          </div>
+
+          <div class="modal-actions" style="margin-top: 20px; display: flex; justify-content: space-between;">
+            <button type="submit" class="submit-button">Save</button>
+            <button type="button" id="delete-modal-btn" class="delete-modal-btn">Delete</button>
+          </div>
+        </form>
       </div>
     </div>
   </main>
 
   <div class="notification" id="notification"></div>
 
-  <script>
-    function getProducts() {
-      const data = localStorage.getItem('products');
-      if (data) return JSON.parse(data);
-      return [
-        { id: 'P01', name: 'Whole Chicken', image: 'https://i.ibb.co/n8tdsd0b/482687900-685762357467693-1724972982676235731-n.png', price: 0 },
-        { id: 'P02', name: 'Chicken Feet', image: 'https://i.ibb.co/spH4P3W2/Chicken-feet-logo.png', price: 0 },
-        { id: 'P03', name: 'Chicken Head', image: 'https://i.ibb.co/0pM0N6Bt/483127067-2029240714239309-238261137041540632-n.png', price: 0 },
-        { id: 'P04', name: 'Chicken Liver', image: 'https://i.ibb.co/Nd2g4Gcb/486236131-685628880584168-6900652020434416173-n.png', price: 0 },
-        { id: 'P05', name: 'Chicken Intestine', image: 'https://i.ibb.co/CKmDq7PC/Chicken-intestine-logo.png', price: 0 },
-        { id: 'P06', name: 'Chicken Blood', image: 'https://i.ibb.co/DHHLvDRp/486573747-662143466768923-8113425702960829436-n.png', price: 0 },
-        { id: 'P07', name: 'Chicken Gizzard', image: 'https://i.ibb.co/KnGm8sX/Chicken-gizzard-logo.png', price: 0 }
-      ];
-    }
-    function saveProducts(products) {
-      localStorage.setItem('products', JSON.stringify(products));
-    }
-
-    function renderProducts() {
-      const products = getProducts();
-      const list = document.getElementById('product-list');
-      list.innerHTML = '';
-      let row = null;
-      products.forEach((product, idx) => {
-        if (idx % 6 === 0) {
-          row = document.createElement('div');
-          row.style.display = 'flex';
-          row.style.gap = '2rem';
-          row.style.marginBottom = '2rem';
-          list.appendChild(row);
-        }
-        const btn = document.createElement('button');
-        btn.className = 'product-button-style';
-        btn.setAttribute('data-id', product.id);
-        btn.setAttribute('data-name', product.name);
-        btn.setAttribute('data-price', product.price);
-        btn.setAttribute('data-image', product.image);
-        btn.innerHTML = `
-          <img src="${product.image}" class="parts-logo" alt="${product.name}">
-          <p class="product-price-label">₱${parseFloat(product.price).toFixed(2)}</p>
-          <p class="product-price-name">${product.name}</p>
-        `;
-        btn.addEventListener('click', function (e) {
-          document.querySelectorAll('.product-button-style.selected').forEach(el => el.classList.remove('selected'));
-          btn.classList.add('selected');
-          if (!e.target.classList.contains('delete-product-btn')) {
-            openEditModal(product, btn);
-          }
-        });
-        row.appendChild(btn);
-      });
-    }
-
-    let selectedProductId = null;
-    document.addEventListener('click', function (e) {
-      if (e.target.classList.contains('product-button-style')) {
-        selectedProductId = e.target.getAttribute('data-id');
-      } else if (e.target.closest('.product-button-style')) {
-        selectedProductId = e.target.closest('.product-button-style').getAttribute('data-id');
-      }
-    });
+    <script>
+    // Product grid is server-rendered. Attach click handlers to the rendered buttons.
 
     const addProductBtn = document.getElementById('add-product-btn');
     const addProductModal = document.getElementById('add-product-modal');
@@ -220,46 +207,69 @@
         addProductForm.reset();
       }
     });
-    addProductForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      const name = document.getElementById('add-product-name').value.trim();
-      const image = document.getElementById('add-product-image').value.trim();
-      const price = parseFloat(document.getElementById('add-product-price').value.trim()).toFixed(2);
-      if (!name || !image || isNaN(price)) return;
-      let products = getProducts();
-      let maxId = 0;
-      products.forEach(p => {
-        const num = parseInt(p.id.replace('P', ''));
-        if (num > maxId) maxId = num;
+    // Attach click handlers to server-rendered product buttons
+    document.querySelectorAll('.product-button-style').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        document.querySelectorAll('.product-button-style.selected').forEach(el => el.classList.remove('selected'));
+        btn.classList.add('selected');
+        if (!e.target.classList.contains('delete-product-btn')) {
+          const product = {
+            id: btn.dataset.id,
+            name: btn.dataset.name,
+            price: btn.dataset.price,
+            image: btn.dataset.image,
+            stock: btn.dataset.stock
+          };
+          openEditModal(product, btn);
+        }
       });
-      const newId = 'P' + String(maxId + 1).padStart(2, '0');
-      products.push({ id: newId, name, image, price });
-      saveProducts(products);
-      renderProducts();
-      addProductModal.style.display = 'none';
-      addProductForm.reset();
-      showNotification('Product added successfully!');
     });
 
-    const modal = document.getElementById("product-modal");
-    const productNameEl = document.getElementById("modal-product-name");
-    const productIdEl = document.getElementById("modal-product-id");
-    const productPriceEl = document.getElementById("modal-product-price");
+    const editModal = document.getElementById("edit-product-modal");
     const closeEditModalBtn = document.getElementById("close-edit-modal");
-    let currentButton = null;
-    function openEditModal(product, btn) {
-      productNameEl.textContent = product.name;
-      productIdEl.textContent = product.id;
-      productPriceEl.value = product.price;
-      modal.style.display = "block";
-      currentButton = btn;
-    }
-    closeEditModalBtn.addEventListener('click', () => {
-      modal.style.display = "none";
+    const editForm = document.getElementById("edit-product-form");
+
+    const editNameInput = document.getElementById("edit-product-name");
+    const editStockInput = document.getElementById("edit-product-stock");
+    const editPriceInput = document.getElementById("edit-product-price");
+    const editImageInput = document.getElementById("edit-product-image");
+    const editImagePreview = document.getElementById("edit-image-preview");
+    const editProductIdInput = document.getElementById("edit-product-id");
+
+    // 🧩 Open Edit Modal with Data from Clicked Product
+    document.querySelectorAll('.product-button-style').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        // Mark as selected
+        document.querySelectorAll('.product-button-style.selected').forEach(el => el.classList.remove('selected'));
+        btn.classList.add('selected');
+
+        // Populate form fields
+        editProductIdInput.value = btn.dataset.id;
+        editNameInput.value = btn.dataset.name;
+        editPriceInput.value = btn.dataset.price;
+        editStockInput.value = btn.dataset.stock || 0;
+
+        // Show image preview (if available)
+        if (btn.dataset.image) {
+          editImagePreview.src = btn.dataset.image;
+          editImagePreview.style.display = "block";
+        } else {
+          editImagePreview.style.display = "none";
+        }
+
+        // Open the modal
+        editModal.style.display = "block";
+      });
     });
+
+    // 🧩 Close Modal Logic
+    closeEditModalBtn.addEventListener('click', () => {
+      editModal.style.display = "none";
+    });
+
     window.addEventListener('click', (event) => {
-      if (event.target === modal) {
-        modal.style.display = "none";
+      if (event.target === editModal) {
+        editModal.style.display = "none";
       }
     });
     productPriceEl.addEventListener("keydown", (e) => {
@@ -269,40 +279,89 @@
       }
     });
     const saveBtn = document.getElementById("save-price-btn");
+
+    // Read CSRF token from cookie
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    // Save/update via AJAX to server endpoint
     saveBtn.addEventListener('click', () => {
       const newPrice = productPriceEl.value.trim();
-      if (newPrice && !isNaN(newPrice)) {
-        const formatted = parseFloat(newPrice).toFixed(2);
-        const id = productIdEl.textContent;
-        let products = getProducts();
-        const idx = products.findIndex(p => p.id === id);
-        if (idx !== -1) {
-          products[idx].price = formatted;
-          saveProducts(products);
-          renderProducts();
-          modal.style.display = "none";
-        }
-      } else {
-        alert("Please enter a valid numeric price.");
+      if (!newPrice || isNaN(newPrice)) {
+        alert('Please enter a valid numeric price.');
+        return;
       }
+      const payload = {
+        product_id: productIdEl.textContent,
+        price: parseFloat(newPrice).toFixed(2)
+      };
+      fetch('/product/update/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify(payload)
+      }).then(res => res.json()).then(data => {
+        if (data.success) {
+          // update DOM: price label inside the selected button
+          if (currentButton) {
+            const priceLabel = currentButton.querySelector('.product-price-label');
+            if (priceLabel) priceLabel.textContent = '₱' + parseFloat(data.price).toFixed(2);
+            // Also update its data-price attribute
+            currentButton.dataset.price = data.price;
+          }
+          showNotification('Product updated successfully!');
+        } else {
+          showNotification('Update failed: ' + (data.error || 'Unknown'), true);
+        }
+        modal.style.display = 'none';
+      }).catch(err => {
+        showNotification('Update failed: ' + err.message, true);
+        modal.style.display = 'none';
+      });
     });
 
     const deleteModalBtn = document.getElementById('delete-modal-btn');
     deleteModalBtn.addEventListener('click', () => {
-      const id = productIdEl.textContent;
-      deleteProduct(id);
-      modal.style.display = "none";
+      const payload = { product_id: productIdEl.textContent };
+      fetch('/product/delete/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify(payload)
+      }).then(res => res.json()).then(data => {
+        if (data.success) {
+          // remove from DOM
+          if (currentButton && currentButton.parentElement) {
+            currentButton.parentElement.removeChild(currentButton);
+          }
+          showNotification('Product deleted successfully!');
+        } else {
+          showNotification('Delete failed: ' + (data.error || 'Unknown'), true);
+        }
+        modal.style.display = 'none';
+      }).catch(err => {
+        showNotification('Delete failed: ' + err.message, true);
+        modal.style.display = 'none';
+      });
     });
-
-    function deleteProduct(id) {
-      let products = getProducts();
-      products = products.filter(p => p.id !== id);
-      saveProducts(products);
-      renderProducts();
-      showNotification('Product deleted successfully!');
-    }
-
-    renderProducts();
 
     function showNotification(message, error = false) {
       const notification = document.getElementById('notification');
@@ -316,6 +375,51 @@
         notification.classList.remove('error');
       }, 3000);
     }
+    
+function previewAddImage(event) {
+  const input = event.target;
+  const preview = document.getElementById('add-image-preview');
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image file.');
+      input.value = "";
+      preview.style.display = 'none';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  } else {
+    preview.style.display = 'none';
+  }
+}
+
+function previewEditImage(event) {
+  const input = event.target;
+  const preview = document.getElementById('edit-image-preview');
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image file.');
+      input.value = "";
+      preview.style.display = 'none';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  } else {
+    preview.style.display = 'none';
+  }
+}
+
   </script>
 
 </body>

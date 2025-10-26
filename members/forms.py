@@ -6,6 +6,7 @@ from .models import Payment
 from .models import Order
 from .models import Supply
 from .models import SalesReport
+from .models import Product
 
 class EmployeeForm(forms.ModelForm):
     class Meta:
@@ -17,6 +18,36 @@ class CustomerForm(forms.ModelForm):
         model = Customer
         fields = ['name', 'phone', 'address']
 
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'stock', 'price', 'image']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'id': 'add-product-name',
+                'style': 'width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;'
+            }),
+            'stock': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'id': 'add-product-stock',
+                'min': 0,
+                'style': 'width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;'
+            }),
+            'price': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'id': 'add-product-price',
+                'step': 0.01,
+                'style': 'width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;'
+            }),
+            'image': forms.ClearableFileInput(attrs={
+                'class': 'form-control-file',
+                'id': 'add-product-image',
+                'accept': 'image/*',
+                'onchange': 'previewAddImage(event)',
+                'style': 'width: 100%; margin-top: 6px;'
+            }),
+        }
 
 class DeliveryForm(forms.ModelForm):
     class Meta:

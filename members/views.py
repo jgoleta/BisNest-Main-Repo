@@ -4,6 +4,8 @@ from django.template import loader
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .forms import ProductForm
+from .models import Product
 
 
 # Public
@@ -68,7 +70,30 @@ def customer_view(request):
 
 @login_required(login_url='/login/')
 def product_view(request):
-    return render(request, "product.html", {"user": request.user})
+    # Handle add-product form submission
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            # assign a new unique product_id like P01, P02 ...
+            max_num = 0
+            products = Product.objects.all()
+            for p in products:
+                try:
+                    num = int(p.product_id.replace('P', ''))
+                    if num > max_num:
+                        max_num = num
+                except Exception:
+                    continue
+            new_product = form.save(commit=False)
+            new_product.product_id = 'P' + str(max_num + 1).zfill(2)
+            new_product.save()
+            messages.success(request, 'Product added successfully.')
+            return redirect('product')
+    else:
+        form = ProductForm()
+
+    products = Product.objects.all()
+    return render(request, "product.html", {"user": request.user, "form": form, "products": products})
 
 
 @login_required(login_url='/login/')
