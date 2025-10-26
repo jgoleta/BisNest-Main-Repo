@@ -99,6 +99,7 @@
         <h2 class="form-title" id="formTitle">Employee Information</h2>
         <form class="employee-form" method="POST">
           {% csrf_token %}
+          <input type="hidden" name="edit_id" id="edit_id">
           {{ form.as_p }}
           <div class="submit-wrapper">
             <button type="submit" class="submit-button">Submit</button>
@@ -128,9 +129,10 @@
               <td>{{ emp.schedule }}</td>
               <td>{{ emp.salary }}</td>
               <td>
-                <button type="button" class="edit-button" data-id="{{ cust.id }}" data-name="{{ cust.name }}"
-                  data-phone="{{ cust.phone }}" data-address="{{ cust.address }}" title="Edit customer"
-                  aria-label="Edit customer" style="margin-right:8px;">
+                <button type="button" class="edit-button" data-id="{{ emp.id }}" data-name="{{ emp.name }}"
+                  data-position="{{ emp.position }}" data-schedule="{{ emp.schedule }}" data-salary="{{ emp.salary }}"
+                  title="Edit employee" aria-label="Edit employee" style="margin-right:8px;">
+
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true" focusable="false">
                     <path d="M3 21v-3.75L14.81 5.44a2 2 0 0 1 2.83 0l0.92 0.92a2 2 0 0 1 0 2.83L6.75 21H3z"
@@ -198,6 +200,39 @@
       }
     }
   </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const editButtons = document.querySelectorAll(".edit-button");
+      const form = document.querySelector(".employee-form");
+      const editIdInput = document.getElementById("edit_id");
+      const formTitle = document.getElementById("formTitle");
+      const toggleForm = () => {
+        document.getElementById('formContainer').style.display = 'block';
+        document.getElementById('modalOverlay').style.display = 'block';
+      };
+
+      editButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          const id = button.getAttribute("data-id");
+          const name = button.getAttribute("data-name");
+          const position = button.getAttribute("data-position");
+          const schedule = button.getAttribute("data-schedule");
+          const salary = button.getAttribute("data-salary");
+
+          
+          form.querySelector("[name='name']").value = name;
+          form.querySelector("[name='position']").value = position;
+          form.querySelector("[name='schedule']").value = schedule;
+          form.querySelector("[name='salary']").value = salary;
+          editIdInput.value = id;
+
+          formTitle.textContent = "Edit Employee";
+          toggleForm();
+        });
+      });
+    });
+  </script>
+
 
 </body>
 
