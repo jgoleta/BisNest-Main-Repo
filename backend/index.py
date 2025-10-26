@@ -63,10 +63,23 @@ def loginPage(request):
 
 def employeesInfoPage(request):
     if request.method == 'POST':
-        form = EmployeeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('employeesInfoPage')  
+        edit_id = request.POST.get('edit_id')
+
+        if edit_id:  # existing employee edit
+            employee = get_object_or_404(Employee, pk=edit_id)
+            # mga pdeng iedit
+            employee.name = request.POST.get('name', employee.name)
+            employee.position = request.POST.get('position', employee.position)
+            employee.schedule = request.POST.get('schedule', employee.schedule)
+            employee.salary = request.POST.get('salary', employee.salary)
+            employee.save()
+            return redirect('employeesinfo')
+
+        else:  # create
+            form = EmployeeForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('employeesinfo')  
     else:
         form = EmployeeForm()
 
@@ -76,10 +89,37 @@ def employeesInfoPage(request):
         'employees': employees
     })
 
+def customerInfoPage(request):
+    if request.method == 'POST':
+        edit_id = request.POST.get('edit_id')
+
+        if edit_id:  # existing customer edit
+            customer = get_object_or_404(Customer, pk=edit_id)
+            # mga pdeng iedit
+            customer.name = request.POST.get('name', customer.name)
+            customer.phone = request.POST.get('phone', customer.phone)
+            customer.address = request.POST.get('address', customer.address)
+            customer.save()
+            return redirect('customer')
+
+        else:  # create
+            form = CustomerForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('customer')
+
+    customers = Customer.objects.all()
+    form = CustomerForm()
+    return render(request, 'customer.html', {
+        'form': form,
+        'customers': customers
+    })
+
+
 def delete_employee(request, employee_id):
     employee = get_object_or_404(Employee, pk=employee_id)
     employee.delete()
-    return redirect('employeesInfoPage')
+    return redirect('employeesinfo')
 
 def menuPage(request):
     return render(request, 'menu.html')
@@ -145,7 +185,7 @@ def orderHistoryPage(request):
 def delete_order(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
     order.delete()
-    return redirect('orderHistoryPage')
+    return redirect('history')
 
 
 def signupPage(request):
@@ -153,14 +193,25 @@ def signupPage(request):
 
 def customerInfoPage(request):
     if request.method == 'POST':
-        form = CustomerForm(request.POST)
-        if form.is_valid():
-            form.save()
+        edit_id = request.POST.get('edit_id')
+
+        if edit_id:  # existing customer edit
+            customer = get_object_or_404(Customer, pk=edit_id)
+            # mga pdeng iedit
+            customer.name = request.POST.get('name', customer.name)
+            customer.phone = request.POST.get('phone', customer.phone)
+            customer.address = request.POST.get('address', customer.address)
+            customer.save()
             return redirect('customer')
-    else:
-        form = CustomerForm()
+
+        else:  # create
+            form = CustomerForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('customer')
 
     customers = Customer.objects.all()
+    form = CustomerForm()
     return render(request, 'customer.html', {
         'form': form,
         'customers': customers
@@ -275,7 +326,7 @@ def deliveryPage(request):
         form = DeliveryForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('deliveryPage')
+            return redirect('delivery')
     else:
         form = DeliveryForm()
 
@@ -288,14 +339,14 @@ def deliveryPage(request):
 def delete_delivery(request, delivery_id):
     delivery = get_object_or_404(Delivery, pk=delivery_id)
     delivery.delete()
-    return redirect('deliveryPage')
+    return redirect('delivery')
 
 def salesPage(request):
     if request.method == 'POST':
         form = SalesReportForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('salesPage')
+            return redirect('sales')
     else:
         form = SalesReportForm()
 
@@ -308,14 +359,14 @@ def salesPage(request):
 def delete_sale(request, sale_id):
     sale = get_object_or_404(SalesReport, pk=sale_id)
     sale.delete()
-    return redirect('salesPage')
+    return redirect('sales')
 
 def supplyPage(request):
     if request.method == 'POST':
         form = SupplyForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('supplyPage')
+            return redirect('supply')
     else:
         form = SupplyForm(initial={
             'supply_id': f"SUP{Supply.objects.count() + 1:04d}"
@@ -333,7 +384,7 @@ def aboutPage(request):
 def delete_supply(request, supply_id):
     supply = get_object_or_404(Supply, pk=supply_id)
     supply.delete()
-    return redirect('supplyPage')
+    return redirect('supply')
 
 def register_view(request):
     if request.method == 'POST':

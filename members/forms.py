@@ -56,13 +56,13 @@ class DeliveryForm(forms.ModelForm):
         widgets = {
             'delivery_id': forms.TextInput(attrs={'class': 'form-control'}),
             'order_id': forms.TextInput(attrs={'class': 'form-control'}),
-            'customer_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'customer_name': forms.Select(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
             'scheduled_date': forms.DateInput(attrs={
                 'class': 'form-control',
                 'type': 'date'
             }),
-            'status': forms.TextInput(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
         }
 
 class PaymentForm(forms.ModelForm):

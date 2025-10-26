@@ -34,6 +34,7 @@
   <nav class="sidebar">
     <ul>
       <ul>
+        <h1 class="web-name">BisNest</h1>
         <li><a href="{% url 'menu' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
               width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
               <path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z" />
@@ -119,9 +120,9 @@
           <td>{{ d.scheduled_date }}</td>
           <td>
             <select class="status-select status-{{ d.status|lower }}" onchange="updateStatus(this, '{{ d.id }}')">
-              <option value="Pending" {% if d.status=='Pending' %}selected{% endif %}>Pending</option>
-              <option value="Delivered" {% if d.status=='Delivered' %}selected{% endif %}>Delivered</option>
-              <option value="Cancelled" {% if d.status=='Cancelled' %}selected{% endif %}>Cancelled</option>
+              <option value="Pending" {% if d.status == 'Pending' %}selected{% endif %}>Pending</option>
+              <option value="Delivered" {% if d.status == 'Delivered' %}selected{% endif %}>Delivered</option>
+              <option value="Cancelled" {% if d.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
             </select>
           </td>
           <td>
@@ -155,17 +156,9 @@
 
     <div class="modal-form-container" id="deliveryForm">
       <h2 class="form-title" id="formTitle">Add New Delivery</h2>
-      <form method="POST">
+      <form class="delivery-form" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
-        <div class="form-group">
-          <label for="id_status">Status:</label>
-          <select name="status" id="id_status" class="status-select-form">
-            <option value="Pending">Pending</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
-        </div>
         <div class="form-actions">
           <button class="cancel-button" type="button" id="cancelBtn">Cancel</button>
           <button type="submit" class="submit-button">Save</button>
