@@ -10,8 +10,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from decimal import Decimal
 from django.views.decorators.http import require_POST
-from supabase import create_client
-import os
 
 @csrf_exempt
 def update_delivery_status(request, delivery_id):
@@ -114,21 +112,22 @@ def orderHistoryPage(request):
         print("🔸 POST received:", request.POST)
         form = OrderForm(request.POST)
         if form.is_valid():
-            print("✅ VALID form")
-            order = form.save(commit=False)
-            product_map = {
-                'Whole Chicken': 'P1',
-                'Chicken Feet': 'P2',
-                'Chicken Head': 'P3',
-                'Chicken Liver': 'P4',
-                'Chicken Intestine': 'P5',
-                'Chicken Blood': 'P6',
-                'Chicken Gizzard': 'P7',
-            }
-            product_name = form.cleaned_data.get('product_name')
-            order.product_id = product_map.get(product_name, 'P0')
-            order.save()
-            return redirect('orderHistoryPage')
+            # Di na natin to kailangan padi
+            # print("✅ VALID form")
+            # order = form.save(commit=False)
+            # product_map = {
+            #     'Whole Chicken': 'P1',
+            #     'Chicken Feet': 'P2',
+            #     'Chicken Head': 'P3',
+            #     'Chicken Liver': 'P4',
+            #     'Chicken Intestine': 'P5',
+            #     'Chicken Blood': 'P6',
+            #     'Chicken Gizzard': 'P7',
+            # }
+            # product_name = form.cleaned_data.get('product_name')
+            # order.product_id = product_map.get(product_name, 'P0')
+            form.save()
+            return redirect('history')
         else:
             print("❌ INVALID form")
             print(form.errors)

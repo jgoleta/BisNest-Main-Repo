@@ -86,7 +86,7 @@ class OrderForm(forms.ModelForm):
             'customer_name': forms.TextInput(attrs={'class': 'form-control'}),
             'employee_name': forms.TextInput(attrs={'class': 'form-control'}),
             'product_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'amount': forms.NumberInput(attrs={'step': 0.01, 'class': 'form-control'}),
+            'amount': forms.NumberInput(attrs={'readonly': True,'placeholder': 'Automatically Computed', 'class': 'form-control'}),
             'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
 

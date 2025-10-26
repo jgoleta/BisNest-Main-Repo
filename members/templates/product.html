@@ -98,7 +98,7 @@
             <div style="display:flex; gap:2rem; margin-bottom:2rem;">
           {% endif %}
 
-          <button class="product-button-style" data-id="{{ product.product_id }}" data-name="{{ product.name }}" data-price="{{ product.price }}" data-image="{% if product.image %}{{ product.image.url }}{% endif %}">
+          <button class="product-button-style" data-id="{{ product.product_id }}" data-name="{{ product.name }}" data-price="{{ product.price }}" data-stock="{{ product.stock }}" data-image="{% if product.image %}{{ product.image.url }}{% endif %}">
             <img src="{% if product.image %}{{ product.image.url }}{% else %}{{ '' }}{% endif %}" class="parts-logo" alt="{{ product.name }}">
             <p class="product-price-label">₱{{ product.price|floatformat:2 }}</p>
             <p class="product-price-name">{{ product.name }}</p>
@@ -143,43 +143,28 @@
       </div>
     </div>
 
-    <div id="edit-product-modal" class="modal" role="dialog" aria-modal="true">
+    <div id="product-modal" class="modal" role="dialog" aria-modal="true">
       <div class="modal-content">
         <span class="close-button" id="close-edit-modal">&times;</span>
-        <h2>Edit Product</h2>
+        <h2 id="modal-product-name">Product Name</h2>
         <div class="modal-divider"></div>
-        <form id="edit-product-form" method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <input type="hidden" id="edit-product-id" name="product_id">
-
-          <div style="margin-bottom: 18px; text-align: left;">
-            <label for="edit-product-name">Product Name:</label>
-            <input type="text" id="edit-product-name" name="name" class="form-control" required>
-          </div>
-
-          <div style="margin-bottom: 18px; text-align: left;">
-            <label for="edit-product-stock">Stock:</label>
-            <input type="number" id="edit-product-stock" name="stock" class="form-control" min="0" required>
-          </div>
-
-          <div style="margin-bottom: 18px; text-align: left;">
-            <label for="edit-product-price">Price (₱):</label>
-            <input type="number" id="edit-product-price" name="price" class="form-control" step="0.01" required>
-          </div>
-
-          <div style="margin-bottom: 18px; text-align: left;">
-            <label for="edit-product-image">Image:</label>
-            <input type="file" id="edit-product-image" name="image" class="form-control-file" accept="image/*" onchange="previewEditImage(event)">
-            <img id="edit-image-preview" src="#" alt="Image Preview"
-                class="img-thumbnail mt-2"
-                style="max-width: 200px; display: none;">
-          </div>
-
-          <div class="modal-actions" style="margin-top: 20px; display: flex; justify-content: space-between;">
-            <button type="submit" class="submit-button">Save</button>
-            <button type="button" id="delete-modal-btn" class="delete-modal-btn">Delete</button>
-          </div>
-        </form>
+        <p><strong>ID:</strong> <span id="modal-product-id"></span></p>
+        <div style="margin-bottom: 18px;">
+          <label for="modal-product-name-input"><strong>Name:</strong></label>
+          <input type="text" id="modal-product-name-input" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #bbb;">
+        </div>
+        <div style="margin-bottom: 18px;">
+          <label for="modal-product-stock"><strong>Stock:</strong></label>
+          <input type="number" id="modal-product-stock" min="0" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #bbb;">
+        </div>
+        <div style="margin-bottom: 18px;">
+          <label for="modal-product-price"><strong>Price (₱):</strong></label>
+          <input type="number" id="modal-product-price" min="0" step="0.01" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #bbb;">
+        </div>
+        <div class="modal-actions">
+          <button id="save-price-btn" class="submit-button">Save Changes</button>
+          <button id="delete-modal-btn" class="delete-modal-btn">Delete</button>
+        </div>
       </div>
     </div>
   </main>
@@ -225,51 +210,27 @@
       });
     });
 
-    const editModal = document.getElementById("edit-product-modal");
+    const modal = document.getElementById("product-modal");
+    const productNameEl = document.getElementById("modal-product-name");
+    const productIdEl = document.getElementById("modal-product-id");
+    const productPriceEl = document.getElementById("modal-product-price");
     const closeEditModalBtn = document.getElementById("close-edit-modal");
-    const editForm = document.getElementById("edit-product-form");
-
-    const editNameInput = document.getElementById("edit-product-name");
-    const editStockInput = document.getElementById("edit-product-stock");
-    const editPriceInput = document.getElementById("edit-product-price");
-    const editImageInput = document.getElementById("edit-product-image");
-    const editImagePreview = document.getElementById("edit-image-preview");
-    const editProductIdInput = document.getElementById("edit-product-id");
-
-    // 🧩 Open Edit Modal with Data from Clicked Product
-    document.querySelectorAll('.product-button-style').forEach(btn => {
-      btn.addEventListener('click', function (e) {
-        // Mark as selected
-        document.querySelectorAll('.product-button-style.selected').forEach(el => el.classList.remove('selected'));
-        btn.classList.add('selected');
-
-        // Populate form fields
-        editProductIdInput.value = btn.dataset.id;
-        editNameInput.value = btn.dataset.name;
-        editPriceInput.value = btn.dataset.price;
-        editStockInput.value = btn.dataset.stock || 0;
-
-        // Show image preview (if available)
-        if (btn.dataset.image) {
-          editImagePreview.src = btn.dataset.image;
-          editImagePreview.style.display = "block";
-        } else {
-          editImagePreview.style.display = "none";
-        }
-
-        // Open the modal
-        editModal.style.display = "block";
-      });
-    });
-
-    // 🧩 Close Modal Logic
+    let currentButton = null;
+    function openEditModal(product, btn) {
+      productNameEl.textContent = product.name;
+      modalNameInput.value = product.name;
+      productIdEl.textContent = product.id;
+      modalStockInput.value = btn.dataset.stock || '0';
+      productPriceEl.value = product.price;
+      modal.style.display = "block";
+      currentButton = btn;
+    }
     closeEditModalBtn.addEventListener('click', () => {
-      editModal.style.display = "none";
+      modal.style.display = "none";
     });
-
     window.addEventListener('click', (event) => {
-      if (event.target === editModal) {
-        editModal.style.display = "none";
+      if (event.target === modal) {
+        modal.style.display = "none";
       }
     });
     productPriceEl.addEventListener("keydown", (e) => {
@@ -279,6 +240,8 @@
       }
     });
     const saveBtn = document.getElementById("save-price-btn");
+    const modalNameInput = document.getElementById("modal-product-name-input");
+    const modalStockInput = document.getElementById("modal-product-stock");
 
     // Read CSRF token from cookie
     function getCookie(name) {
@@ -300,15 +263,30 @@
 
     // Save/update via AJAX to server endpoint
     saveBtn.addEventListener('click', () => {
+      const newName = modalNameInput.value.trim();
+      const newStock = modalStockInput.value.trim();
       const newPrice = productPriceEl.value.trim();
-      if (!newPrice || isNaN(newPrice)) {
-        alert('Please enter a valid numeric price.');
+
+      if (!newName) {
+        alert('Product name is required.');
         return;
       }
+      if (!newStock || isNaN(newStock) || parseInt(newStock) < 0) {
+        alert('Please enter a valid stock number (0 or greater).');
+        return;
+      }
+      if (!newPrice || isNaN(newPrice) || parseFloat(newPrice) < 0) {
+        alert('Please enter a valid price (0 or greater).');
+        return;
+      }
+
       const payload = {
         product_id: productIdEl.textContent,
+        name: newName,
+        stock: parseInt(newStock),
         price: parseFloat(newPrice).toFixed(2)
       };
+
       fetch('/product/update/', {
         method: 'POST',
         headers: {
@@ -318,12 +296,16 @@
         body: JSON.stringify(payload)
       }).then(res => res.json()).then(data => {
         if (data.success) {
-          // update DOM: price label inside the selected button
+          // update DOM: price label and name inside the selected button
           if (currentButton) {
             const priceLabel = currentButton.querySelector('.product-price-label');
+            const nameLabel = currentButton.querySelector('.product-price-name');
             if (priceLabel) priceLabel.textContent = '₱' + parseFloat(data.price).toFixed(2);
-            // Also update its data-price attribute
+            if (nameLabel) nameLabel.textContent = data.name;
+            // Update button's data attributes
             currentButton.dataset.price = data.price;
+            currentButton.dataset.name = data.name;
+            currentButton.dataset.stock = data.stock;
           }
           showNotification('Product updated successfully!');
         } else {
@@ -338,6 +320,11 @@
 
     const deleteModalBtn = document.getElementById('delete-modal-btn');
     deleteModalBtn.addEventListener('click', () => {
+      const productName = modalNameInput.value;
+      if (!confirm(`Are you sure you want to delete "${productName}"? This cannot be undone.`)) {
+        return;
+      }
+
       const payload = { product_id: productIdEl.textContent };
       fetch('/product/delete/', {
         method: 'POST',
@@ -348,9 +335,19 @@
         body: JSON.stringify(payload)
       }).then(res => res.json()).then(data => {
         if (data.success) {
-          // remove from DOM
-          if (currentButton && currentButton.parentElement) {
-            currentButton.parentElement.removeChild(currentButton);
+          // remove from DOM - handle both button and its row wrapper if empty
+          if (currentButton) {
+            const row = currentButton.parentElement;
+            currentButton.remove();
+            // If this was the last product in the row, remove the row too
+            if (row && row.children.length === 0) {
+              row.remove();
+            }
+            // If no more products, show the "No products" message
+            const productList = document.getElementById('product-list');
+            if (productList && productList.querySelectorAll('.product-button-style').length === 0) {
+              productList.innerHTML = '<p>No products available.</p>';
+            }
           }
           showNotification('Product deleted successfully!');
         } else {
@@ -375,51 +372,6 @@
         notification.classList.remove('error');
       }, 3000);
     }
-    
-function previewAddImage(event) {
-  const input = event.target;
-  const preview = document.getElementById('add-image-preview');
-  if (input.files && input.files[0]) {
-    const file = input.files[0];
-    if (!file.type.startsWith('image/')) {
-      alert('Please select a valid image file.');
-      input.value = "";
-      preview.style.display = 'none';
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      preview.src = e.target.result;
-      preview.style.display = 'block';
-    };
-    reader.readAsDataURL(file);
-  } else {
-    preview.style.display = 'none';
-  }
-}
-
-function previewEditImage(event) {
-  const input = event.target;
-  const preview = document.getElementById('edit-image-preview');
-  if (input.files && input.files[0]) {
-    const file = input.files[0];
-    if (!file.type.startsWith('image/')) {
-      alert('Please select a valid image file.');
-      input.value = "";
-      preview.style.display = 'none';
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      preview.src = e.target.result;
-      preview.style.display = 'block';
-    };
-    reader.readAsDataURL(file);
-  } else {
-    preview.style.display = 'none';
-  }
-}
-
   </script>
 
 </body>
