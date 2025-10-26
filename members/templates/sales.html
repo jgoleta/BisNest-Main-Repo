@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,8 +7,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sales | BisNest</title>
-        <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
-        <link rel="stylesheet" href="{% static 'css/salesStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/saleslStyle.css' %}">
+    <style>
+        
+
+        
+    </style>
 </head>
 
 <body>
@@ -22,7 +28,7 @@
 
     <nav class="navigation-top">
         <div class="navigation-div">
-            <h1 class="page-name">Supply Management</h1>
+            <h1 class="page-name">Sales Report</h1>
             <ul style="margin-left: 45%;">
                 <li><a style="color: #1e293b;" href="{% url 'about' %}">About</a></li>
                 <li><a style="color: #1e293b;" href="#contact">Contact</a></li>
@@ -84,7 +90,7 @@
                         </svg>Sales Report</a></li>
             </ul>
             <ul>
-                <hr>
+                <div class="line">_______________________</div>
                 <li><a href="{% url 'logout_view' %}" class="btn-signout"><svg class="signout-icon"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3h-8v2h8v14h-8v2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
@@ -124,6 +130,8 @@
         <div class="tabs">
             <button class="tab active" onclick="switchTab('detailed')">Detailed Sales</button>
             <button class="tab" onclick="switchTab('monthly')">Monthly Sales</button>
+            <button class="tab" onclick="switchTab('daily')">Daily Sales</button>
+            <button class="tab" onclick="switchTab('weekly')">Weekly Sales</button>
         </div>
 
         <div id="detailed-tab" class="tab-content active">
@@ -150,9 +158,9 @@
                         {% for sale in sales %}
                         <tr>
                             <td>{{ sale.date }}</td>
-                            <td>{{ sale.product.name }}</td>
-                            <td>{{ sale.quantity_sold }}</td>
-                            <td>₱{{ sale.price }}</td>
+                            <td>{{ sale.product_name }}</td>
+                            <td>{{ sale.kilos_sold }}</td>
+                            <td>₱{{ sale.price_per_kilo }}</td>
                             <td class="row-total">₱{{ sale.total }}</td>
                             <td>
                                 <div class="action-buttons">
@@ -202,7 +210,7 @@
 
         <div id="monthly-tab" class="tab-content">
             <div class="monthly-breakdown">
-                <h3>Monthly Sales</h3>
+                <h3>Monthly Sales Breakdown</h3>
                 <table class="monthly-table">
                     <thead>
                         <tr>
@@ -213,6 +221,83 @@
                         </tr>
                     </thead>
                     <tbody id="monthlyTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="daily-tab" class="tab-content">
+            <div class="date-selector">
+                <label for="dateSelect">Select Date:</label>
+                <input type="date" id="dateSelect" onchange="filterByDate()">
+            </div>
+            
+            <div class="daily-summary">
+                <div class="summary-card">
+                    <h3>Daily Total</h3>
+                    <div class="value" id="dailyTotal">₱0.00</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Transactions</h3>
+                    <div class="value" id="dailyTransactions">0</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Average per Sale</h3>
+                    <div class="value" id="dailyAverage">₱0.00</div>
+                </div>
+            </div>
+
+            <div class="daily-breakdown">
+                <h3>Daily Sales Breakdown</h3>
+                <table class="monthly-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity Sold</th>
+                            <th>Price per Unit</th>
+                            <th>Total (₱)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dailyTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="weekly-tab" class="tab-content">
+            <div class="week-selector">
+                <label for="weekSelect">Choose which week to view:</label>
+                <input type="week" id="weekSelect" onchange="filterByWeek()">
+                <div class="week-display" id="weekDisplay">Week of Oct 20–26, 2025</div>
+            </div>
+            
+            <div class="weekly-summary">
+                <div class="summary-card">
+                    <h3>Weekly Total</h3>
+                    <div class="value" id="weeklyTotal">₱0.00</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Total Transactions</h3>
+                    <div class="value" id="weeklyTransactions">0</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Daily Average</h3>
+                    <div class="value" id="weeklyDailyAverage">₱0.00</div>
+                </div>
+            </div>
+
+            <div class="weekly-breakdown">
+                <h3>Weekly Sales Breakdown</h3>
+                <table class="monthly-table">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Total Sales (₱)</th>
+                            <th>Transactions</th>
+                            <th>Average per Transaction</th>
+                        </tr>
+                    </thead>
+                    <tbody id="weeklyTableBody">
                     </tbody>
                 </table>
             </div>
@@ -228,6 +313,7 @@
             filterByYear();
             updateYearlySummary();
             updateMonthlyBreakdown();
+            initializeDateSelectors();
         });
 
         function loadSalesData() {
@@ -236,15 +322,15 @@
                 const cells = row.querySelectorAll('td');
                 if (cells.length >= 5) {
                     const date = cells[0].textContent.trim();
-                    const productName = cells[1].textContent.trim();
-                    const quantity_sold = parseFloat(cells[2].textContent.replace(/[₱,]/g, '')) || 0;
+                    const product = cells[1].textContent.trim();
+                    const quantity = parseFloat(cells[2].textContent.replace(/[₱,]/g, '')) || 0;
                     const price = parseFloat(cells[3].textContent.replace(/[₱,]/g, '')) || 0;
                     const total = parseFloat(cells[4].textContent.replace(/[₱,]/g, '')) || 0;
 
                     salesData.push({
                         date: date,
-                        productName: productName,
-                        quantity_sold: quantity_sold,
+                        product: product,
+                        quantity: quantity,
                         price: price,
                         total: total
                     });
@@ -354,6 +440,198 @@
                     monthlyTotals[month].total / monthlyTotals[month].transactions : 0
             }));
         }
+        function initializeDateSelectors() {
+
+            const today = new Date();
+            const dateInput = document.getElementById('dateSelect');
+            if (dateInput) {
+                dateInput.value = today.toISOString().split('T')[0];
+            }
+
+
+            const weekInput = document.getElementById('weekSelect');
+            if (weekInput) {
+
+                const year = today.getFullYear();
+                const firstDayOfYear = new Date(year, 0, 1);
+                const pastDaysOfYear = Math.floor((today - firstDayOfYear) / 86400000);
+                const weekNumber = Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+                const currentWeek = `${year}-W${weekNumber.toString().padStart(2, '0')}`;
+                
+                weekInput.value = currentWeek;
+                updateWeekDisplay(currentWeek);
+            }
+
+            filterByDate();
+            filterByWeek();
+        }
+
+        function filterByDate() {
+            const selectedDate = document.getElementById('dateSelect').value;
+            if (!selectedDate) return;
+
+            const filteredData = salesData.filter(sale => {
+                const saleDate = new Date(sale.date).toISOString().split('T')[0];
+                return saleDate === selectedDate;
+            });
+
+            updateDailySummary(filteredData);
+            updateDailyBreakdown(filteredData);
+        }
+
+        function filterByWeek() {
+            const selectedWeek = document.getElementById('weekSelect').value;
+            if (!selectedWeek) return;
+
+            updateWeekDisplay(selectedWeek);
+            
+            const [year, week] = selectedWeek.split('-W');
+            if (!year || !week) return;
+
+
+            const firstDayOfYear = new Date(year, 0, 1);
+            const daysToAdd = (parseInt(week) - 1) * 7;
+            const weekStart = new Date(firstDayOfYear);
+            weekStart.setDate(firstDayOfYear.getDate() + daysToAdd - firstDayOfYear.getDay());
+            
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekStart.getDate() + 6);
+
+            if (isNaN(weekStart.getTime()) || isNaN(weekEnd.getTime())) return;
+
+            const filteredData = salesData.filter(sale => {
+                const saleDate = new Date(sale.date);
+                return saleDate >= weekStart && saleDate <= weekEnd;
+            });
+
+            updateWeeklySummary(filteredData, weekStart);
+            updateWeeklyBreakdown(filteredData, weekStart);
+        }
+
+        function updateWeekDisplay(weekString) {
+            if (!weekString || weekString === '') {
+                document.getElementById('weekDisplay').textContent = 'Select a week';
+                return;
+            }
+
+            const [year, week] = weekString.split('-W');
+            if (!year || !week) {
+                document.getElementById('weekDisplay').textContent = 'Invalid week format';
+                return;
+            }
+
+            const firstDayOfYear = new Date(year, 0, 1);
+            const daysToAdd = (parseInt(week) - 1) * 7;
+            const weekStart = new Date(firstDayOfYear);
+            weekStart.setDate(firstDayOfYear.getDate() + daysToAdd - firstDayOfYear.getDay());
+            
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekStart.getDate() + 6);
+
+            if (isNaN(weekStart.getTime()) || isNaN(weekEnd.getTime())) {
+                document.getElementById('weekDisplay').textContent = 'Invalid week';
+                return;
+            }
+
+            const startMonth = weekStart.toLocaleDateString('en-US', { month: 'short' });
+            const startDay = weekStart.getDate();
+            const endMonth = weekEnd.toLocaleDateString('en-US', { month: 'short' });
+            const endDay = weekEnd.getDate();
+            const yearDisplay = weekStart.getFullYear();
+
+            const displayText = `Week of ${startMonth} ${startDay}–${endMonth} ${endDay}, ${yearDisplay}`;
+            document.getElementById('weekDisplay').textContent = displayText;
+        }
+
+        function getWeekString(date) {
+            const year = date.getFullYear();
+            const firstDayOfYear = new Date(year, 0, 1);
+            const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+            const weekNumber = Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+            return `${year}-W${weekNumber.toString().padStart(2, '0')}`;
+        }
+
+        function updateDailySummary(data) {
+            const totalSales = data.reduce((sum, sale) => sum + sale.total, 0);
+            const totalTransactions = data.length;
+            const averagePerSale = totalTransactions > 0 ? totalSales / totalTransactions : 0;
+
+            document.getElementById('dailyTotal').textContent = `₱${totalSales.toFixed(2)}`;
+            document.getElementById('dailyTransactions').textContent = totalTransactions;
+            document.getElementById('dailyAverage').textContent = `₱${averagePerSale.toFixed(2)}`;
+        }
+
+        function updateDailyBreakdown(data) {
+            const dailyTableBody = document.getElementById('dailyTableBody');
+            dailyTableBody.innerHTML = '';
+
+            const productGroups = {};
+            data.forEach(sale => {
+                if (!productGroups[sale.product]) {
+                    productGroups[sale.product] = {
+                        quantity: 0,
+                        price: sale.price,
+                        total: 0
+                    };
+                }
+                productGroups[sale.product].quantity += sale.quantity;
+                productGroups[sale.product].total += sale.total;
+            });
+
+            Object.entries(productGroups).forEach(([product, data]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product}</td>
+                    <td>${data.quantity}</td>
+                    <td>₱${data.price.toFixed(2)}</td>
+                    <td>₱${data.total.toFixed(2)}</td>
+                `;
+                dailyTableBody.appendChild(row);
+            });
+        }
+
+        function updateWeeklySummary(data, weekStart) {
+            const totalSales = data.reduce((sum, sale) => sum + sale.total, 0);
+            const totalTransactions = data.length;
+            const dailyAverage = totalSales / 7; 
+
+            document.getElementById('weeklyTotal').textContent = `₱${totalSales.toFixed(2)}`;
+            document.getElementById('weeklyTransactions').textContent = totalTransactions;
+            document.getElementById('weeklyDailyAverage').textContent = `₱${dailyAverage.toFixed(2)}`;
+        }
+
+        function updateWeeklyBreakdown(data, weekStart) {
+            const weeklyTableBody = document.getElementById('weeklyTableBody');
+            weeklyTableBody.innerHTML = '';
+
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dailyData = {};
+
+            days.forEach(day => {
+                dailyData[day] = { total: 0, transactions: 0 };
+            });
+
+            data.forEach(sale => {
+                const day = new Date(sale.date).toLocaleDateString('en-US', { weekday: 'long' });
+                dailyData[day].total += sale.total;
+                dailyData[day].transactions += 1;
+            });
+
+            days.forEach(day => {
+                const dayData = dailyData[day];
+                const avgPerTransaction = dayData.transactions > 0 ? dayData.total / dayData.transactions : 0;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${day}</td>
+                    <td>₱${dayData.total.toFixed(2)}</td>
+                    <td>${dayData.transactions}</td>
+                    <td>₱${avgPerTransaction.toFixed(2)}</td>
+                `;
+                weeklyTableBody.appendChild(row);
+            });
+        }
+
         window.addEventListener('load', () => {
             let total = 0;
             document.querySelectorAll(".row-total").forEach(cell => {
