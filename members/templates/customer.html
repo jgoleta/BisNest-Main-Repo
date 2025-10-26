@@ -108,16 +108,18 @@
             <h2 class="form-title" id="formTitle">Customer Information</h2>
             <form class="customer-form" method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="edit_id" id="edit_id">
                 {{ form.as_p }}
                 <div class="submit-wrapper">
                     <button type="submit" class="submit-button">Submit</button>
-                </div>
+            </div>
             </form>
+
         </div>
 
         <div class="customer-table-container">
             <div class="table-wrapper">
-                <table class="table">
+                <table class="table" id="customer-table">
                     <thead>
                         <tr>
                             <th>Customer ID</th>
@@ -313,7 +315,7 @@
             // if the form fields have ids match the form, set them
             const nameInput = document.querySelector('.customer-form input[name="name"]');
             const phoneInput = document.querySelector('.customer-form input[name="phone"]');
-            const addressInput = document.querySelector('.customer-form textarea[name="address"]');
+            const addressInput = document.querySelector('.customer-form input[name="address"]');
             if (nameInput) nameInput.value = name || '';
             if (phoneInput) phoneInput.value = phone || '';
             if (addressInput) addressInput.value = address || '';
