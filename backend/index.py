@@ -342,17 +342,8 @@ def delete_delivery(request, delivery_id):
     return redirect('delivery')
 
 def salesPage(request):
-    if request.method == 'POST':
-        form = SalesReportForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('sales')
-    else:
-        form = SalesReportForm()
-
-    sales = SalesReport.objects.all().order_by('-date')
+    sales = Payment.objects.all().order_by('-date')
     return render(request, 'sales.html', {
-        'form': form,
         'sales': sales,
     })
 

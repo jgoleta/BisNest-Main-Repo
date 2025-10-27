@@ -30,43 +30,68 @@ class Customer(models.Model):
         return self.name
 
 class Product(models.Model):
-    product_id = models.CharField(max_length=10, unique=True, default='P0')
+    product_id = models.CharField(max_length=10, unique=True, blank=True, null=True)
     name = models.CharField(max_length=255)
     stock = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='products/', null=True, blank=True)
 
-    def __str__(self):
-        return f"{self.name} - {self.stock} - {self.price}"
+    def save(self, *args, **kwargs):
+        if not self.product_id:
+            last = Product.objects.order_by('-id').first()
+            new_id = f'PR{(int(last.product_id[1:]) + 1) if last and last.product_id else 1:02d}'
+            self.product_id = new_id
+        super().save(*args, **kwargs)
 
-    class Meta:
-        ordering = ['name']
 
 class Order(models.Model):
-    order_id = models.CharField(max_length=10, unique=True)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    order_id = models.CharField(max_length=10, unique=True, blank=True, null=True)
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE, null=True, blank=True)
+    employee = models.ForeignKey('Employee', on_delete=models.CASCADE, null=True, blank=True)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.DecimalField(max_digits=10, decimal_places=2, default=1)
     amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     date = models.DateField(auto_now_add=True)
 
-    # Function to automatically compute amount due based on product price and quantity ordered
     def save(self, *args, **kwargs):
+        if not self.order_id:
+            last_order = Order.objects.order_by('-id').first()
+            if last_order and last_order.order_id:
+                try:
+                    last_number = int(last_order.order_id[1:])  
+                except ValueError:
+                    last_number = 0
+                new_number = last_number + 1
+            else:
+                new_number = 1
+            self.order_id = f'O{new_number:02d}'
+
+        # Auto-compute Function
         if self.product and self.quantity:
             self.amount = self.product.price * self.quantity
+
         super().save(*args, **kwargs)
-    
+
     def __str__(self):
         return f"{self.order_id}"
 
+    class Meta:
+        ordering = ['-date']
+
 class Payment(models.Model):
-    payment_id = models.CharField(max_length=10, unique=True)
+    payment_id = models.CharField(max_length=10, unique=True, null=True, blank=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(auto_now_add=True)
     method = models.CharField(max_length=50)
 
+    def save(self, *args, **kwargs):
+        if not self.payment_id:
+            last = Payment.objects.order_by('-id').first()
+            new_id = f'P{(int(last.payment_id[1:]) + 1) if last and last.payment_id else 1:02d}'
+            self.payment_id = new_id
+        super().save(*args, **kwargs)
+    
     def outstandingBalance(self):
         return f"Outstanding Balance: {self.amount - self.order.amount}"
     
@@ -98,16 +123,15 @@ class Supply(models.Model):
 
 class SalesReport(models.Model):
     date = models.DateField()
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, null=True, blank=True)    
     
     @property
     def total(self):
-        return self.order.quantity
+        return self.payment.order.quantity
     
     @property
     def profit(self):
-        return self.order.amount
+        return self.payment.amount
 
     def __str__(self):
         pname = self.product.name if self.product else "Unknown"

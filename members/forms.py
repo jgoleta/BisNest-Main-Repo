@@ -71,7 +71,7 @@ class PaymentForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'payment_id': forms.TextInput(attrs={'readonly': True}),
-            'customer_name': forms.TextInput(attrs={'placeholder': 'Customer Name'}),
+            'order': forms.Select(attrs={'placeholder': 'Order ID'}),
             'amount': forms.NumberInput(attrs={'placeholder': 'Amount'}),
             'date': forms.DateInput(attrs={'type': 'date'}),
             'method': forms.Select(choices=[('', 'Select Method'), ('Bank Transfer', 'Bank Transfer'), ('Cash', 'Cash')]),
@@ -107,8 +107,8 @@ class SupplyForm(forms.ModelForm):
 class SalesReportForm(forms.ModelForm):
     class Meta:
         model = SalesReport
-        fields = ['date', 'order', 'product',]
+        fields = ['date', 'payment']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
-            'product': forms.TextInput(attrs={'class':'form-control'}),
+            'payment': forms.TextInput(attrs={'class':'form-control'}),
         }
