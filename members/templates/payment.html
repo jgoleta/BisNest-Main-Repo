@@ -94,7 +94,7 @@
             {% csrf_token %}
             <div class="table-input-row table-row">
               <div>{{ form.payment_id }}</div>
-              <div>{{ form.customer.name }}</div>
+              <div>{{ form.order }}</div>
               <div>{{ form.amount }}</div>
               <div>{{ form.date }}</div>
               <div>{{ form.method }}</div>
@@ -110,7 +110,7 @@
       <div class="submitted-payments">
         <div class="table-header">
           <div>Payment ID</div>
-          <div>Customer Name</div>
+          <div>Order ID</div>
           <div>Amount</div>
           <div>Date</div>
           <div>Payment Method</div>
@@ -120,7 +120,7 @@
           {% for p in payments %}
           <div class="table-row">
             <div>{{ p.payment_id }}</div>
-            <div>{{ p.customer.name }}</div>
+            <div>{{ p.order.id }}</div>
             <div>₱{{ p.amount }}</div>
             <div>{{ p.date }}</div>
             <div>{{ p.method }}</div>
@@ -174,7 +174,7 @@
         reusableIDs.sort();
         paymentID = reusableIDs.shift();
       } else {
-        paymentID = `P${String(paymentIDCounter).padStart(4, '0')}`;
+        paymentID = `PT${String(paymentIDCounter).padStart(4, '0')}`;
         paymentIDCounter++;
       }
 
@@ -214,7 +214,7 @@
         reusableIDs.sort();
         nextID = reusableIDs[0];
       } else {
-        nextID = `P${String(paymentIDCounter).padStart(4, '0')}`;
+        nextID = `PT${String(paymentIDCounter).padStart(4, '0')}`;
       }
       document.getElementById('paymentID').value = nextID;
     }
