@@ -15,7 +15,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # --- public---
-    path('', index.loginPage, name='loginPage'),
+    path('', index.landingPage, name='landingPage'),
     path('login/', index.login_view, name='login_view'),
     path('logout/', index.logout_view, name='logout_view'),
     path('register/', index.register_view, name='register_view'),
