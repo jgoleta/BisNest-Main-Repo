@@ -185,32 +185,3 @@
     text-align: center;
   }
 }
-
-/* ===============================
-   CUSTOM SCROLLBARS
-================================*/
-
-/* WebKit Browsers */
-.table-wrapper::-webkit-scrollbar,
-.employee-form-container::-webkit-scrollbar {
-  width: 10px; /* Width of vertical scrollbar */
-  height: 10px; /* Height of horizontal scrollbar */
-}
-
-.table-wrapper::-webkit-scrollbar-track,
-.employee-form-container::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Track color */
-  border-radius: 10px;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb,
-.employee-form-container::-webkit-scrollbar-thumb {
-  background: var(--primary-color); /* Thumb color */
-  border-radius: 10px;
-  border: 2px solid #f1f1f1; /* Optional padding around thumb */
-}
-
-.table-wrapper::-webkit-scrollbar-thumb:hover,
-.employee-form-container::-webkit-scrollbar-thumb:hover {
-  background: #4f46e5; /* Darker on hover */
-}
