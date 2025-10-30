@@ -56,6 +56,8 @@ def loginPage(request):
     #if request.method == "GET":
     #    return render(request, 'login.html')
 
+def landingPage(request):
+    return render(request, 'landing.html')
    
     #if request.method == "POST":
     #    logout(request)  

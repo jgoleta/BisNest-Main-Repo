@@ -1,0 +1,226 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BisNEST | Smart Business Management Platform</title>
+    <link rel="stylesheet" href="{% static 'css/landingStyle.css' %}">
+</head>
+
+<body>
+
+    <nav class="navigation-top">
+        <div class="navigation-div container">
+            <div class="logo">Bis<span>NEST</span></div>
+            <ul class="nav-links">
+
+                <li>
+                    <a class="icon-button" href="#hero">
+                        <span class="icon">
+                            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20"
+                                height="20" fill="#ffffff">
+                                <path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z" />
+                            </svg>
+                        </span>
+                        <span class="title">Home</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="icon-button" href="#features">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff"
+                                class="bi bi-card-checklist" viewBox="0 0 16 16">
+                                <path
+                                    d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
+                                <path
+                                    d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0M7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0" />
+                            </svg>
+                        </span>
+                        <span class="title">Features</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="icon-button" href="#about">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff"
+                                class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 
+                    11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 
+                    5.468 2.37A7 7 0 0 0 8 1" />
+                            </svg>
+                        </span>
+                        <span class="title">About</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="icon-button" href="#contact">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff"
+                                class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 
+                    2.61.163L6.29 2.98c.329.423.445.974.315 
+                    1.494l-.547 2.19a.68.68 0 0 0 
+                    .178.643l2.457 2.457a.68.68 0 0 0 
+                    .644.178l2.189-.547a1.75 1.75 0 0 1 
+                    1.494.315l2.306 
+                    1.794c.829.645.905 1.87.163 
+                    2.611l-1.034 
+                    1.034c-.74.74-1.846 1.065-2.877.702a18.6 
+                    18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 
+                    1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
+                            </svg>
+                        </span>
+                        <span class="title">Contact</span>
+                    </a>
+                </li>
+
+            </ul>
+            <a href="{% url 'login_view' %}" class="btn-primary">Get Started</a>
+        </div>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Grow Your Business with <span>BisNEST</span></h1>
+                <p>Manage sales, track customers, and store business data securely — all in one easy-to-use platform
+                    built for modern entrepreneurs.</p>
+                <div class="hero-buttons">
+                    <a href="{% url 'login_view' %}" class="btn-accent">Get Started</a>
+                    <a href="#features" class="btn-outline">Learn More</a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="https://imageio.forbes.com/specials-images/imageserve/5fca87f3ce4ca55e8985a10a/People-meeting-and-discussing-growth-statistics-on-tablet-/960x0.jpg?format=jpg&width=960"
+                    alt="Business dashboard illustration">
+            </div>
+        </div>
+    </section>
+
+
+    <section class="join-now fade-in">
+        <div class="container join-content">
+            <h2>Join BisNEST Today</h2>
+            <p>Sign up to get early access, updates, and tips to make your business thrive.</p>
+            <form class="join-form">
+                <input type="email" placeholder="Enter your email" required />
+                <button type="submit">Join Now</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="fade-in">Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card slide-up">
+                    <h3>💼 Transaction Management</h3>
+                    <p>Track every sale, purchase, and payment with clarity — ensuring your records stay accurate and
+                        transparent.</p>
+                </div>
+                <div class="feature-card slide-up">
+                    <h3>📊 Performance Insights</h3>
+                    <p>Visualize growth through analytics and reports that guide better decision-making and strategic
+                        planning.</p>
+                </div>
+                <div class="feature-card slide-up">
+                    <h3>👥 Customer Relationship</h3>
+                    <p>Monitor customer interactions and histories to build long-lasting connections and loyalty.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container about-content">
+            <div class="about-image slide-up">
+                <img src="https://idb.gov.lk/wp-content/uploads/2024/06/8379-870x440.jpg">
+            </div>
+            <div class="about-text fade-in">
+                <h2>About BisNEST</h2>
+                <p>
+                    BisNEST is a comprehensive web-based platform crafted for small businesses. It simplifies the way
+                    you store and manage essential data — helping you focus on growth, not paperwork.
+                </p>
+                <p>
+                    Our mission is to empower local entrepreneurs by giving them tools to operate efficiently,
+                    understand their customers, and make data-driven decisions.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="footer">
+        <div class="container footer-content">
+            <div class="footer-section contact">
+                <h4>Contact Us</h4>
+                <p><a href="mailto:bisnestweb@gmail.com">bisnestweb@gmail.com</a></p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="bi bi-facebook" viewBox="0 0 16 16">
+                            <path
+                                d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951" />
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Twitter">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-twitter-x" viewBox="0 0 16 16">
+                            <path
+                                d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="bi bi-instagram" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C5.787 0 5.555.01 4.703.048 3.852.086 3.27.24 2.8.428a3.92 3.92 0 0 0-1.372.89A3.92 3.92 0 0 0 .537 2.69c-.188.47-.342 1.052-.38 1.903C.12 5.445.11 5.678.11 7.89c0 2.213.01 2.445.048 3.297.038.851.192 1.433.38 1.903.247.615.64 1.168 1.09 1.618.45.45 1.003.843 1.618 1.09.47.188 1.052.342 1.903.38.852.038 1.085.048 3.297.048s2.445-.01 3.297-.048c.851-.038 1.433-.192 1.903-.38a3.92 3.92 0 0 0 1.372-.89 3.92 3.92 0 0 0 .89-1.372c.188-.47.342-1.052.38-1.903.038-.852.048-1.085.048-3.297s-.01-2.445-.048-3.297c-.038-.851-.192-1.433-.38-1.903a3.92 3.92 0 0 0-.89-1.372 3.92 3.92 0 0 0-1.372-.89c-.47-.188-1.052-.342-1.903-.38C10.445.01 10.213 0 8 0zm0 1.44c2.175 0 2.433.008 3.29.047.796.037 1.23.166 1.518.276.382.149.655.327.942.614.287.287.465.56.614.942.11.288.239.722.276 1.518.039.857.047 1.115.047 3.29s-.008 2.433-.047 3.29c-.037.796-.166 1.23-.276 1.518a2.48 2.48 0 0 1-.614.942 2.48 2.48 0 0 1-.942.614c-.288.11-.722.239-1.518.276-.857.039-1.115.047-3.29.047s-2.433-.008-3.29-.047c-.796-.037-1.23-.166-1.518-.276a2.48 2.48 0 0 1-.942-.614 2.48 2.48 0 0 1-.614-.942c-.11-.288-.239-.722-.276-1.518-.039-.857-.047-1.115-.047-3.29s.008-2.433.047-3.29c.037-.796.166-1.23.276-1.518a2.48 2.48 0 0 1 .614-.942 2.48 2.48 0 0 1 .942-.614c.288-.11.722-.239 1.518-.276.857-.039 1.115-.047 3.29-.047zM8 3.89a4.11 4.11 0 1 0 0 8.22 4.11 4.11 0 0 0 0-8.22zm0 6.78a2.67 2.67 0 1 1 0-5.34 2.67 2.67 0 0 1 0 5.34zm4.406-7.507a.96.96 0 1 0 0-1.92.96.96 0 0 0 0 1.92z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 BisNEST. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const elements = document.querySelectorAll('.fade-in, .slide-up');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        elements.forEach(el => observer.observe(el));
+
+        const sections = document.querySelectorAll("section");
+
+        const revealSection = () => {
+            const triggerBottom = window.innerHeight * 0.85;
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                if (sectionTop < triggerBottom) {
+                    section.classList.add("visible");
+                }
+            });
+        };
+
+        window.addEventListener("scroll", revealSection);
+        window.addEventListener("load", revealSection);
+    </script>
+</body>
+
+</html>
