@@ -9,125 +9,145 @@
   <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
   <link rel="stylesheet" href="{% static 'css/employeeStyle.css' %}">
   <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
-  <script src="{% static 'js/darkMode.js' %}"></script>
+  <script src="{% static 'js/darkMode.js' %}" defer></script>
+  <script src="{% static 'js/sidebar.js' %}" defer></script>
+  <script src="{% static 'js/employee.js' %}" defer></script>
 </head>
 
 <body>
-  <div class="bg-shape"></div>
-  <input type="checkbox" id="sidebarToggle" style="display: none;">
-  <label for="sidebarToggle" class="burger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </label>
-  <label for="sidebarToggle" class="overlay"></label>
 
-  <nav class="navigation-top">
-    <div class="navigation-div">
-      <h1 class="page-name">Employee Management</h1>
-
-      <ul style="margin-left: 45%;">
-        <li style="--i:#1e293b; --j:#414957;">
-          <span class="icon">
-            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"
-              fill="#1e293b">
-              <path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z" />
-            </svg>
-          </span>
-          <span class="title">Home</span>
-        </li>
-
-        <li onclick="window.location.href='{% url 'about' %}'" style="--i:#1e293b; --j:#414957;">
-          <span class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1e293b" class="bi bi-person-circle"
-              viewBox="0 0 16 16">
-              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-              <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 
-              4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-            </svg>
-          </span>
-          <span class="title">About</span>
-        </li>
-
-        <li style="--i:#1e293b; --j:#414957;">
-          <span class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1e293b" class="bi bi-telephone-fill"
-              viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 
-              1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 
-              .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 
-              1.794c.829.645.905 1.87.163 2.611l-1.034 
-              1.034c-.74.74-1.846 1.065-2.877.702a18.6 
-              18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 
-              1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
-            </svg>
-          </span>
-          <span class="title">Contact</span>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-  <nav class="sidebar">
+  <nav id="sidebar">
     <ul>
-      <ul>
-        <h1 class="web-name">BisNest</h1>
-        <li><a href="{% url 'menu' %}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-              fill="currentColor" style="vertical-align:middle;margin-right:8px" class="bi bi-graph-up-arrow"
-              viewBox="0 0 16 16">
-              <path fill-rule="evenodd"
-                d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5" />
-            </svg>Dashboard</a></li>
-        <li><a href="{% url 'employeesinfo' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24" width="20" height="20" fill="currentColor"
-              style="vertical-align:middle;margin-right:8px">
-              <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-5 0-9 2.5-9 6v1h18v-1c0-3.5-4-6-9-6z" />
-            </svg>Employee</a></li>
-        <li><a href="{% url 'customer' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
-              <path
-                d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zM8 13c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5C23 14.17 18.33 13 16 13z" />
-            </svg>Customer</a></li>
-        <li><a href="{% url 'product' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
-              <path d="M21 8l-9-5-9 5v8l9 5 9-5V8zM12 3v18" />
-            </svg>Product</a></li>
-        <li><a href="{% url 'history' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
-              <path d="M7 3h10v4H7zM7 9h10v12H7zM9 11h6v2H9zM9 15h6v2H9z" />
-            </svg>Order</a></li>
-        <li><a href="{% url 'payment' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
-              <rect x="2" y="5" width="20" height="14" rx="2" />
-              <path d="M2 10h20" fill="#fff" />
-            </svg>Payment</a></li>
-        <li><a href="{% url 'delivery' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
-              <path d="M3 7h13l4 4v6h-2a3 3 0 0 1-6 0H8a3 3 0 0 1-6 0V7zM16 8v4h3" />
-            </svg>Delivery</a></li>
-        <li><a href="{% url 'supply' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
-              <path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" />
-            </svg>Supply</a></li>
-        <li><a href="{% url 'sales' %}"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-              width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:8px">
-              <rect x="3" y="11" width="4" height="10" />
-              <rect x="10" y="7" width="4" height="14" />
-              <rect x="17" y="3" width="4" height="18" />
-            </svg>Sales Report</a></li>
-      </ul>
-      <ul>
-        <hr>
-        <li><a href="{% url 'logout_view' %}" class="btn-signout"><svg class="signout-icon"
-              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3h-8v2h8v14h-8v2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
-            </svg>Sign Out</a></li>
-      </ul>
+      <li>
+        <span class="logo">
+          <h1>BisNEST</h1>
+        </span>
+        <button onclick="toggleSidebar()" id="toggle-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path
+              d="M660-320v-320L500-480l160 160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z" />
+          </svg>
+        </button>
+      </li>
+      <li class="active">
+        <a href="{% url 'menu' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path
+              d="M520-600v-240h320v240H520ZM120-440v-400h320v400H120Zm400 320v-400h320v400H520Zm-400 0v-240h320v240H120Zm80-400h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z" />
+          </svg>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'customer' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path
+              d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z" />
+          </svg>
+          <span>Customer</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'employeesinfo' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path
+              d="M160-80q-33 0-56.5-23.5T80-160v-440q0-33 23.5-56.5T160-680h200v-120q0-33 23.5-56.5T440-880h80q33 0 56.5 23.5T600-800v120h200q33 0 56.5 23.5T880-600v440q0 33-23.5 56.5T800-80H160Zm0-80h640v-440H600q0 33-23.5 56.5T520-520h-80q-33 0-56.5-23.5T360-600H160v440Zm80-80h240v-18q0-17-9.5-31.5T444-312q-20-9-40.5-13.5T360-330q-23 0-43.5 4.5T276-312q-17 8-26.5 22.5T240-258v18Zm320-60h160v-60H560v60Zm-200-60q25 0 42.5-17.5T420-420q0-25-17.5-42.5T360-480q-25 0-42.5 17.5T300-420q0 25 17.5 42.5T360-360Zm200-60h160v-60H560v60ZM440-600h80v-200h-80v200Zm40 220Z" />
+          </svg>
+          <span>Employee</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'product' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path
+              d="M620-163 450-333l56-56 114 114 226-226 56 56-282 282Zm220-397h-80v-200h-80v120H280v-120h-80v560h240v80H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v200ZM480-760q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z" />
+          </svg>
+          <span>Product</span>
+        </a>
+      </li>
+      <li>
+        <button onclick="toggleSubMenu(this)" class="dropdown-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path
+              d="M160-160v-516L82-846l72-34 94 202h464l94-202 72 34-78 170v516H160Zm240-280h160q17 0 28.5-11.5T600-480q0-17-11.5-28.5T560-520H400q-17 0-28.5 11.5T360-480q0 17 11.5 28.5T400-440ZM240-240h480v-358H240v358Zm0 0v-358 358Z" />
+          </svg>
+          <span>Manage Order</span>
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path d="M480-345 240-585l56-56 184 183 184-183 56 56-240 240Z" />
+          </svg>
+        </button>
+        <ul class="sub-menu">
+          <div>
+            <li><a href="{% url 'history' %}"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                  viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+                  <path
+                    d="m691-150 139-138-42-42-97 95-39-39-42 43 81 81ZM240-600h480v-80H240v80ZM720-40q-83 0-141.5-58.5T520-240q0-83 58.5-141.5T720-440q83 0 141.5 58.5T920-240q0 83-58.5 141.5T720-40ZM120-80v-680q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v267q-19-9-39-15t-41-9v-243H200v562h243q5 31 15.5 59T486-86l-6 6-60-60-60 60-60-60-60 60-60-60-60 60Zm120-200h203q3-21 9-41t15-39H240v80Zm0-160h284q38-37 88.5-58.5T720-520H240v80Zm-40 242v-562 562Z" />
+                </svg>Order</a></li>
+            <li><a href="{% url 'payment' %}"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                  viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+                  <path
+                    d="M560-440q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM280-320q-33 0-56.5-23.5T200-400v-320q0-33 23.5-56.5T280-800h560q33 0 56.5 23.5T920-720v320q0 33-23.5 56.5T840-320H280Zm80-80h400q0-33 23.5-56.5T840-480v-160q-33 0-56.5-23.5T760-720H360q0 33-23.5 56.5T280-640v160q33 0 56.5 23.5T360-400Zm440 240H120q-33 0-56.5-23.5T40-240v-440h80v440h680v80ZM280-400v-320 320Z" />
+                </svg>Payment</a></li>
+            <li><a href="{% url 'delivery' %}"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                  viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+                  <path
+                    d="M280-160q-50 0-85-35t-35-85H60l18-80h113q17-19 40-29.5t49-10.5q26 0 49 10.5t40 29.5h167l84-360H182l4-17q6-28 27.5-45.5T264-800h456l-37 160h117l120 160-40 200h-80q0 50-35 85t-85 35q-50 0-85-35t-35-85H400q0 50-35 85t-85 35Zm357-280h193l4-21-74-99h-95l-28 120Zm-19-273 2-7-84 360 2-7 34-146 46-200ZM20-427l20-80h220l-20 80H20Zm80-146 20-80h260l-20 80H100Zm180 333q17 0 28.5-11.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 17 11.5 28.5T280-240Zm400 0q17 0 28.5-11.5T720-280q0-17-11.5-28.5T680-320q-17 0-28.5 11.5T640-280q0 17 11.5 28.5T680-240Z" />
+                </svg>Delivery</a></li>
+          </div>
+        </ul>
+      </li>
+      <li>
+        <a href="{% url 'supply' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path
+              d="M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z" />
+          </svg>
+          <span>Supply</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'sales' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path
+              d="M200-120q-33 0-56.5-23.5T120-200v-640h80v640h640v80H200Zm40-120v-360h160v360H240Zm200 0v-560h160v560H440Zm200 0v-200h160v200H640Z" />
+          </svg>
+          <span>Sales</span>
+        </a>
+      </li>
+
+      <li>
+        <button onclick="toggleSubMenu(this)" class="dropdown-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path
+              d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z" />
+          </svg>
+          <span>Profile</span>
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path d="M480-345 240-585l56-56 184 183 184-183 56 56-240 240Z" />
+          </svg>
+        </button>
+        <ul class="sub-menu">
+          <div>
+            <li>
+              <a href="{% url 'logout_view' %}">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                  fill="#e3e3e3">
+                  <path
+                    d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
+                </svg>
+                <span>Logout</span>
+              </a>
+            </li>
+          </div>
+        </ul>
+      </li>
     </ul>
   </nav>
 
   <main class="main-content">
-    <div class="main-container">
+
+    <div class="container">
+      <h1 class="web-page">Employee Management</h1>
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search Employee Name:" onkeyup="searchEmployee()">
         <div class="button-container">
@@ -199,80 +219,6 @@
       </div>
     </div>
   </main>
-  <div class="notification" id="notification"></div>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const formContainer = document.getElementById('formContainer');
-      const toggleBtn = document.querySelector('.toggle-form-button');
-      const modalOverlay = document.getElementById('modalOverlay');
-
-      function toggleForm() {
-        const isHidden = formContainer.style.display === 'none' || formContainer.style.display === '';
-        formContainer.style.display = isHidden ? 'block' : 'none';
-        modalOverlay.style.display = isHidden ? 'block' : 'none';
-      }
-
-      toggleBtn.addEventListener('click', toggleForm);
-
-      modalOverlay.addEventListener('click', () => {
-        formContainer.style.display = 'none';
-        modalOverlay.style.display = 'none';
-      });
-    });
-  </script>
-  <script>
-    function searchEmployee() {
-      const input = document.getElementById("searchInput");
-      const filter = input.value.toLowerCase();
-      const table = document.querySelector(".table tbody");
-      const rows = table.getElementsByTagName("tr");
-
-      for (let i = 0; i < rows.length; i++) {
-        const nameCell = rows[i].getElementsByTagName("td")[1];
-        if (nameCell) {
-          const nameText = nameCell.textContent || nameCell.innerText;
-          if (nameText.toLowerCase().indexOf(filter) > -1) {
-            rows[i].style.display = "";
-          } else {
-            rows[i].style.display = "none";
-          }
-        }
-      }
-    }
-  </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const editButtons = document.querySelectorAll(".edit-button");
-      const form = document.querySelector(".employee-form");
-      const editIdInput = document.getElementById("edit_id");
-      const formTitle = document.getElementById("formTitle");
-      const toggleForm = () => {
-        document.getElementById('formContainer').style.display = 'block';
-        document.getElementById('modalOverlay').style.display = 'block';
-      };
-
-      editButtons.forEach(button => {
-        button.addEventListener("click", () => {
-          const id = button.getAttribute("data-id");
-          const name = button.getAttribute("data-name");
-          const position = button.getAttribute("data-position");
-          const schedule = button.getAttribute("data-schedule");
-          const salary = button.getAttribute("data-salary");
-
-
-          form.querySelector("[name='name']").value = name;
-          form.querySelector("[name='position']").value = position;
-          form.querySelector("[name='schedule']").value = schedule;
-          form.querySelector("[name='salary']").value = salary;
-          editIdInput.value = id;
-
-          formTitle.textContent = "Edit Employee";
-          toggleForm();
-        });
-      });
-    });
-  </script>
-
 
 </body>
 

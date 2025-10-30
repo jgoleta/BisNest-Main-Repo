@@ -1,8 +1,9 @@
-/*Employee Unique Style*/
+/* Employee Unique Style */
 .button-container {
   margin-left: auto;
 }
 
+/* Overlay for modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -14,6 +15,7 @@
   display: none;
 }
 
+/* Employee Form Container */
 .employee-form-container {
   display: none;
   position: fixed;
@@ -28,15 +30,11 @@
   border: 1px solid #e0e0e0;
   width: 750px;
   max-width: 90vw;
+  overflow-y: auto;
+  max-height: 90vh;
 }
 
-@media (max-width: 800px) {
-  .employee-form-container {
-    width: 95vw;
-    padding: 10px;
-  }
-}
-
+/* Labels and Inputs */
 .employee-form label {
   display: block;
   margin-top: 12px;
@@ -48,27 +46,46 @@
 .employee-form textarea {
   width: 100%;
   margin-top: 6px;
+  margin-bottom: 10px;
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #bbb;
   background: #fff;
   color: #111;
-  margin-bottom: 6px;
+  font-family: inherit;
+  font-size: 15px;
+  box-sizing: border-box;
 }
 
 .submit-wrapper {
   text-align: right;
 }
 
+/* Table container */
+.table-wrapper {
+  max-height: 70vh;
+  overflow-y: auto;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  border-radius: 10px;
+}
+
+/* Sticky table header */
+.table-wrapper thead th {
+  position: sticky;
+  top: 0;
+  background: var(--primary-color);
+  color: #fff;
+  z-index: 2;
+}
+
+/* Table styling */
 .table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  overflow: hidden;
-  background-color: #fff;
-  margin-top: 20px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
   color: #111;
+  font-size: 15px;
 }
 
 .table th,
@@ -76,61 +93,124 @@
   padding: 14px 16px;
   text-align: center;
   border: none;
-  font-size: 15px;
 }
 
-.table th {
-  background-color: var(--palette-navbar);
-  color: #fff;
+.table thead th {
   font-size: 16px;
+  font-weight: 600;
 }
 
 .table tr:last-child td {
   border-bottom: none;
 }
 
-tr:hover {
-  background-color: #f5f5f5;
-}
-
-tr.selected {
-  background-color: #777;
-  color: #fff;
-  font-weight: bold;
-}
-
-th.asc::after {
-  content: " ▲";
-}
-
-th.desc::after {
-  content: " ▼";
-}
-
-.notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 15px 25px;
-  background-color: #2ecc71;
-  color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px #111;
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.notification.show {
-  opacity: 1;
-}
-
-.notification.error {
-  background-color: #0e0202;
-}
-
+/* Form Title */
 .form-title {
   font-size: 20px;
   margin-bottom: 20px;
   color: #111;
+  text-align: center;
+}
+
+/* ===============================
+   RESPONSIVENESS
+================================*/
+
+/* Tablets (up to 1024px) */
+@media (max-width: 1024px) {
+  .employee-form-container {
+    width: 85vw;
+    padding: 20px;
+  }
+
+  .table th,
+  .table td {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+/* Small tablets and large phones (up to 800px) */
+@media (max-width: 800px) {
+  .employee-form-container {
+    width: 95vw;
+    padding: 15px;
+  }
+
+  .form-title {
+    font-size: 18px;
+  }
+
+  .table-wrapper {
+    max-height: 60vh;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+/* Mobile phones (up to 600px) */
+@media (max-width: 600px) {
+  .employee-form-container {
+    width: 95vw;
+    padding: 12px;
+    max-height: 85vh;
+  }
+
+  .form-title {
+    font-size: 17px;
+  }
+
+  .employee-form input,
+  .employee-form textarea {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px;
+    font-size: 12px;
+    word-wrap: break-word;
+  }
+
+  .table-wrapper {
+    max-height: 55vh;
+  }
+
+  .submit-wrapper {
+    text-align: center;
+  }
+}
+
+/* ===============================
+   CUSTOM SCROLLBARS
+================================*/
+
+/* WebKit Browsers */
+.table-wrapper::-webkit-scrollbar,
+.employee-form-container::-webkit-scrollbar {
+  width: 10px; /* Width of vertical scrollbar */
+  height: 10px; /* Height of horizontal scrollbar */
+}
+
+.table-wrapper::-webkit-scrollbar-track,
+.employee-form-container::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+  border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb,
+.employee-form-container::-webkit-scrollbar-thumb {
+  background: var(--primary-color); /* Thumb color */
+  border-radius: 10px;
+  border: 2px solid #f1f1f1; /* Optional padding around thumb */
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover,
+.employee-form-container::-webkit-scrollbar-thumb:hover {
+  background: #4f46e5; /* Darker on hover */
 }

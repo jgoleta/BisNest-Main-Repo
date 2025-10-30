@@ -1,4 +1,4 @@
-/*Dashboard Unique Style*/
+/* Dashboard Unique Style */
 
 .dashboard-button,
 .dashboard-button-order {
@@ -17,14 +17,14 @@
 }
 
 .dashboard-button-order {
-  background-color: #1e293b !important;
-  color: #fff !important;
-  border: none !important;
+  background-color: #1e293b;
+  color: #fff;
+  border: none;
 }
 
 .dashboard-button-order:hover {
-  background-color: #4f46e5 !important;
-  border: none !important;
+  background-color: #4f46e5;
+  border: none;
 }
 
 .dashboard-button:hover {
@@ -33,11 +33,17 @@
 }
 
 .dashboard-button-container {
-  list-style: none !important;
-  display: flex !important;
-  gap: 12px !important;
-  margin-left: 76% !important;
-  padding-bottom: 20px !important;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-bottom: 20px;
+}
+
+.dashboard-button-container a {
+  color: var(--text-clr);
+  text-decoration: none;
 }
 
 .stats-grid {
@@ -47,18 +53,19 @@
   margin-bottom: 30px;
 }
 
-.stat-card {
+.stat-card,
+.chart-container {
   background-color: #ffffff;
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  border: 1px solid;
+  border: 1px solid #1e293b;
+  box-shadow: inset 10px 2px #1e293b;
 }
 
 .stat-value {
   font-size: 32px;
   font-weight: bold;
-  color: #111;
   margin: 10px 0;
 }
 
@@ -67,20 +74,15 @@
   color: #999;
 }
 
+/* Chart container adjustments */
 .chart-container {
   background-color: #ffffff;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 4px #111;
   margin-bottom: 30px;
-  height: 300px;
-}
-
-.activity-card {
-  background-color: #ffffff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 4px #111;
+  height: 450px; /* Twice the original height */
+  max-height: 45vh; /* Responsive height limit */
 }
 
 .activity-item {
@@ -107,4 +109,49 @@
   border: 1px solid #e0e0e0;
 }
 
-/*End Dashboard Content*/
+/* Responsive Adjustments */
+
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chart-container {
+    height: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-button-container {
+    justify-content: center;
+  }
+
+  .dashboard-button,
+  .dashboard-button-order {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  .chart-container {
+    height: 450px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-container {
+    height: 400px;
+    padding: 15px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .stat-card {
+    padding: 15px;
+  }
+}

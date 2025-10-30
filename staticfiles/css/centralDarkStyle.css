@@ -40,12 +40,6 @@ body.dark-mode .burger span {
   background: var(--palette-text) !important;
 }
 
-/* Dark Mode Sidebar */
-body.dark-mode .sidebar {
-  background-color: var(--palette-sidebar) !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
 body.dark-mode .sidebar ul li:hover {
   background: linear-gradient(
     165deg,
@@ -117,7 +111,11 @@ body.dark-mode .delivery-form textarea,
 body.dark-mode .delivery-form select,
 body.dark-mode .employee-form input,
 body.dark-mode .employee-form textarea,
-body.dark-mode .employee-form select {
+body.dark-mode .employee-form select body.dark-mode .order-form input,
+body.dark-mode .order-form textarea,
+body.dark-mode .order-form select,
+body.dark-mode .form-control,
+body.dark-mode #id_quantity {
   background: #1a202c;
   color: var(--palette-text);
   border: 1px solid #4a5568;
@@ -129,7 +127,8 @@ body.dark-mode .form-title {
 
 body.dark-mode .customer-form label,
 body.dark-mode .delivery-form label,
-body.dark-mode .employee-form label {
+body.dark-mode .employee-form label,
+body.dark-mode .order-form label {
   color: var(--palette-text);
 }
 
@@ -159,7 +158,7 @@ body.dark-mode .activity-card {
   border: 1px solid #4a5568;
 }
 
-body.dark-mode .stat-value {
+body.dark-mode .stat-value body.dark-mode .stats-grid {
   color: var(--palette-text);
 }
 
@@ -360,6 +359,12 @@ body.dark-mode .dark-mode-toggle {
 
 body.dark-mode .dark-mode-toggle:hover {
   background: #4a5568;
+}
+
+.body.dark-mode .tab-content div {
+  border: 1px solid var(--palette-bg-light);
+  background: var(--palette-bg-light);
+  color: var(--palette-text);
 }
 
 /* Responsive adjustments for dark mode */
