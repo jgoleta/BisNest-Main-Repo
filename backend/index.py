@@ -253,30 +253,30 @@ def add_product(request):
         new_id = f"P{new_id_number:02d}"
 
 
-        supabase = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
-        bucket = "media" 
-        file_path = f"products/{image.name}"
+        # supabase = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
+        # bucket = "media" 
+        # file_path = f"products/{image.name}"
 
-        # Read image as bytes
-        file_bytes = image.read()
+        # # Read image as bytes
+        # file_bytes = image.read()
 
-        res = supabase.storage.from_(bucket).upload(file_path, file_bytes)
-        if res.get("error"):
-            return JsonResponse({"error": res["error"]["message"]}, status=500)
+        # res = supabase.storage.from_(bucket).upload(file_path, file_bytes)
+        # if res.get("error"):
+        #     return JsonResponse({"error": res["error"]["message"]}, status=500)
 
-        public_url = supabase.storage.from_(bucket).get_public_url(file_path)
+        # public_url = supabase.storage.from_(bucket).get_public_url(file_path)
 
         product = Product.objects.create(
             product_id=new_id,
             name=name,
             price=price,
-            image=public_url 
+            # image=public_url 
         )
 
         return JsonResponse({
             'success': True,
             'id': product.product_id,
-            'image_url': public_url,
+            # 'image_url': public_url,
         })
     return JsonResponse({'error': 'Invalid method'}, status=405)
 
