@@ -49,7 +49,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('loginPage')
+    return render(request, 'login.html')
 
 def loginPage(request):
     return render(request, 'login.html')
