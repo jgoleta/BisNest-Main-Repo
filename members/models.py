@@ -40,14 +40,6 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='products/', null=True, blank=True)
 
-    def save(self, *args, **kwargs):
-        if not self.product_id:
-            last = Product.objects.order_by('-id').first()
-            new_id = f'PR{(int(last.product_id[1:]) + 1) if last and last.product_id else 1:02d}'
-            self.product_id = new_id
-        super().save(*args, **kwargs)
-
-
 class Order(models.Model):
     order_id = models.CharField(max_length=10, unique=True, blank=True, null=True)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE, null=True, blank=True)
