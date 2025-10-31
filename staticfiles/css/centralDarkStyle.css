@@ -98,7 +98,7 @@ body.dark-mode tr.selected {
 /* Dark Mode Forms */
 body.dark-mode .customer-form-container,
 body.dark-mode .employee-form-container,
-body.dark-mode .modal-form-container,
+body.dark-mode .delivery-form-container,
 body.dark-mode .order-form-container,
 body.dark-mode .form-container {
   background: #2d3748;
@@ -387,35 +387,40 @@ body.dark-mode .dark-mode-toggle:hover {
 /* Dark mode scrollbars */
 body.dark-mode .table-wrapper::-webkit-scrollbar,
 body.dark-mode .customer-form-container::-webkit-scrollbar,
-body.dark-mode .employee-form-container::-webkit-scrollbar {
+body.dark-mode .employee-form-container::-webkit-scrollbar,
+body.dark-mode .delivery-form-container::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
 body.dark-mode .table-wrapper::-webkit-scrollbar-track,
 body.dark-mode .customer-form-container::-webkit-scrollbar-track,
-body.dark-mode .employee-form-container::-webkit-scrollbar-track {
+body.dark-mode .employee-form-container::-webkit-scrollbar-track,
+body.dark-mode .delivery-form-container::-webkit-scrollbar-track {
   background: #1a202c; /* Dark track matching dark mode background */
   border-radius: 10px;
 }
 
 body.dark-mode .table-wrapper::-webkit-scrollbar-thumb,
 body.dark-mode .customer-form-container::-webkit-scrollbar-thumb,
-body.dark-mode .employee-form-container::-webkit-scrollbar-thumb {
+body.dark-mode .employee-form-container::-webkit-scrollbar-thumb,
+body.dark-mode .delivery-form-container::-webkit-scrollbar-thumb {
   background: var(--palette-bg-light); /* Accent color thumb */
   border: 2px solid #1a202c; /* Match track color */
 }
 
 body.dark-mode .table-wrapper::-webkit-scrollbar-thumb:hover,
-body.dark-mode .customer-form-container::-webkit-scrollbar-thumb:hover
-body.dark-mode .employee-form-container::-webkit-scrollbar-thumb:hover {
+body.dark-mode .customer-form-container::-webkit-scrollbar-thumb:hover,
+body.dark-mode .employee-form-container::-webkit-scrollbar-thumb:hover,
+body.dark-mode .delivery-form-container::-webkit-scrollbar-thumb:hover {
   background: var(--palette-accent-dark); /* Darker accent on hover */
 }
 
 /* Firefox support */
 body.dark-mode .table-wrapper,
-body.dark-mode .customer-form-container
-body.dark-mode .employee-form-container {
+body.dark-mode .customer-form-container,
+body.dark-mode .employee-form-container,
+body.dark-mode .delivery-form-container {
   scrollbar-width: thin;
   scrollbar-color: var(--palette-gray) #1a202c;
 }

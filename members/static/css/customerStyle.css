@@ -41,7 +41,6 @@
   display: block;
   margin-top: 12px;
   font-weight: 600;
-  color: #111;
 }
 
 .customer-form input,
@@ -132,7 +131,6 @@
   }
 }
 
-/* Small tablets and large phones (up to 800px) */
 @media (max-width: 800px) {
   .customer-form-container {
     width: 95vw;
@@ -154,7 +152,6 @@
   }
 }
 
-/* Mobile phones (up to 600px) */
 @media (max-width: 600px) {
   .customer-form-container {
     width: 95vw;

@@ -10,7 +10,7 @@
   display: none;
 }
 
-.modal-form-container {
+.delivery-form-container {
  display: none;
   position: fixed;
   top: 50%;
@@ -134,10 +134,6 @@
   margin-top: 20px;
 }
 
-.hidden {
-  display: none;
-}
-
 /* Tablets (up to 1024px) */
 @media (max-width: 1024px) {
   .delivery-form-container {
@@ -203,7 +199,7 @@
     max-height: 55vh;
   }
 
-  .submit-wrapper {
+  .form-actions {
     text-align: center;
   }
 }
