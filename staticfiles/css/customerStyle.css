@@ -5,6 +5,7 @@
 
 /* Overlay for modal */
 .modal-overlay {
+  pointer-events: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -17,6 +18,7 @@
 
 /* Customer Form Container */
 .customer-form-container {
+  pointer-events: auto;
   display: none;
   position: fixed;
   top: 50%;
