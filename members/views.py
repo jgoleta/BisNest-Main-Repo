@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import ProductForm
-from .models import Product
+from .models import Product, Customer, Employee
 
 
 # Public
@@ -50,7 +50,8 @@ def menu_view(request):
 
 @login_required(login_url='/login/')
 def employees_view(request):
-    return render(request, "employeesinfo.html", {"user": request.user})
+    employees = Employee.objects.all().order_by('id')
+    return render(request, "employeesinfo.html", {"user": request.user, "employees": employees})
 
 
 @login_required(login_url='/login/')
@@ -65,7 +66,8 @@ def payment_view(request):
 
 @login_required(login_url='/login/')
 def customer_view(request):
-    return render(request, "customer.html", {"user": request.user})
+    customers = Customer.objects.all().order_by('id')
+    return render(request, "customer.html", {"user": request.user, "customers": customers})
 
 
 @login_required(login_url='/login/')

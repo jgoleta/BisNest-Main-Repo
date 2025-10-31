@@ -20,11 +20,15 @@ class Employee(models.Model):
     class Meta:
         verbose_name = "Employee Info"
         verbose_name_plural = "Employee Info"
+        ordering = ['id']
 
 class Customer(models.Model):
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
     address = models.TextField()
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return self.name
