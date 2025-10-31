@@ -8,18 +8,31 @@ let customerData = [];
 let freedIds = [];
 let nextCustomerId = 1;
 
+function resetCustomerForm() {
+  const nameInput = document.querySelector('.customer-form input[name="name"]');
+  const phoneInput = document.querySelector('.customer-form input[name="phone"]');
+  const addressInput = document.querySelector('.customer-form input[name="address"]');
+  const editIdInput = document.querySelector('.customer-form input[name="edit_id"]');
+  const formTitle = document.getElementById("formTitle");
+
+  if (nameInput) nameInput.value = "";
+  if (phoneInput) phoneInput.value = "";
+  if (addressInput) addressInput.value = "";
+  if (editIdInput) editIdInput.remove(); //remove inputs from edit
+  if (formTitle) formTitle.textContent = "Add Customer"; //reset
+}
+
 function toggleForm() {
   const isHidden =
     formContainer.style.display === "none" ||
     formContainer.style.display === "";
+
+   if (isHidden) {
+    resetCustomerForm();
+  }
   formContainer.style.display = isHidden ? "block" : "none";
   modalOverlay.style.display = isHidden ? "block" : "none";
 }
-
-modalOverlay.addEventListener("click", () => {
-  formContainer.style.display = "none";
-  modalOverlay.style.display = "none";
-});
 
 function getNextCustomerId() {
   let idNumber;
@@ -123,23 +136,20 @@ function searchCustomer() {
   }
 }
 
-// --- Edit customer functionality ---
+
 document.addEventListener("click", function (e) {
   const editBtn = e.target.closest(".edit-button");
   if (!editBtn) return;
-  // populate modal form with data attributes
   const id = editBtn.getAttribute("data-id");
   const name = editBtn.getAttribute("data-name");
   const phone = editBtn.getAttribute("data-phone");
   const address = editBtn.getAttribute("data-address");
 
-  // show form modal
   formContainer.style.display = "block";
   modalOverlay.style.display = "block";
 
-  // set form title and values
+
   document.getElementById("formTitle").textContent = "Edit Customer";
-  // if the form fields have ids match the form, set them
   const nameInput = document.querySelector('.customer-form input[name="name"]');
   const phoneInput = document.querySelector(
     '.customer-form input[name="phone"]'
@@ -151,7 +161,6 @@ document.addEventListener("click", function (e) {
   if (phoneInput) phoneInput.value = phone || "";
   if (addressInput) addressInput.value = address || "";
 
-  // ensure a hidden input for edit id exists
   let editIdInput = document.querySelector(
     '.customer-form input[name="edit_id"]'
   );
@@ -163,6 +172,5 @@ document.addEventListener("click", function (e) {
   }
   editIdInput.value = id;
 
-  // scroll modal into view
   formContainer.scrollIntoView({ behavior: "smooth", block: "center" });
 });
