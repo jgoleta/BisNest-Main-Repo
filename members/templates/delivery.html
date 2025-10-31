@@ -154,8 +154,19 @@
       </div>
 
       <div class="modal-overlay" id="modalOverlay"></div>
+      <div class="delivery-form-container" id="deliveryForm">
+        <h2 class="form-title" id="formTitle">Add New Delivery</h2>
+        <form class="delivery-form" method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="form-actions">
+            <button class="cancel-button" type="button" id="cancelBtn">Cancel</button>
+            <button type="submit" class="submit-button">Save</button>
+          </div>
+        </form>
+      </div>
 
-      <div class="customer-table-container">
+      <div class="delivery-table-container">
         <div class="table-wrapper">
           <table class="table" id="deliveryTable">
             <thead>
@@ -212,18 +223,6 @@
               {% endfor %}
             </tbody>
           </table>
-
-          <div class="modal-form-container" id="deliveryForm">
-            <h2 class="form-title" id="formTitle">Add New Delivery</h2>
-            <form class="delivery-form" method="POST">
-              {% csrf_token %}
-              {{ form.as_p }}
-              <div class="form-actions">
-                <button class="cancel-button" type="button" id="cancelBtn">Cancel</button>
-                <button type="submit" class="submit-button">Save</button>
-              </div>
-            </form>
-          </div>
         </div>
       </div>
     </div>

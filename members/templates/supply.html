@@ -153,48 +153,52 @@
         </div>
       </div>
 
-      <div class="form-container hidden" id="supplyForm">
-        <h2 class="form-title" id="formTitle">Supply Details</h2>
-        <form method="POST">
-          {% csrf_token %}
-          <div class="form-row">
-            <div class="form-group">
-              <label for="{{ form.supply_id.id_for_label }}">Supply ID</label>
-              {{ form.supply_id }}
+      <div id="supplyModalOverlay" class="modal-overlay"></div>
+
+      <div class="supply-form-container" id="supplyFormContainer">
+        <div class="form-box">
+          <h2 class="form-title" id="formTitle">Supply Details</h2>
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-row">
+              <div class="form-group">
+                <label for="{{ form.supply_id.id_for_label }}">Supply ID</label>
+                {{ form.supply_id }}
+              </div>
+              <div class="form-group">
+                <label for="{{ form.supplier.id_for_label }}">Supplier</label>
+                {{ form.supplier }}
+              </div>
             </div>
-            <div class="form-group">
-              <label for="{{ form.supplier.id_for_label }}">Supplier</label>
-              {{ form.supplier }}
+            <div class="form-row">
+              <div class="form-group">
+                <label for="{{ form.product.id_for_label }}">Product Name</label>
+                {{ form.product }}
+              </div>
+              <div class="form-group">
+                <label for="{{ form.quantity.id_for_label }}">Quantity</label>
+                {{ form.quantity }}
+              </div>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="{{ form.product.id_for_label }}">Product Name</label>
-              {{ form.product }}
+            <div class="form-row">
+              <div class="form-group">
+                <label for="{{ form.date.id_for_label }}">Delivery Date</label>
+                {{ form.date }}
+              </div>
+              <div class="form-group">
+                <label for="{{ form.price.id_for_label }}">Total Price (₱)</label>
+                {{ form.price }}
+              </div>
             </div>
-            <div class="form-group">
-              <label for="{{ form.quantity.id_for_label }}">Quantity</label>
-              {{ form.quantity }}
+            <div class="form-actions">
+              <button type="submit" class="submit-button">Submit</button>
+              <button type="button" class="cancel-button">Cancel</button>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="{{ form.date.id_for_label }}">Delivery Date</label>
-              {{ form.date }}
-            </div>
-            <div class="form-group">
-              <label for="{{ form.price.id_for_label }}">Total Price (₱)</label>
-              {{ form.price }}
-            </div>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="cancel-button">Cancel</button>
-            <button type="submit" class="submit-button">Save</button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
 
-      <div class="supply-table-container">
+      <div class="table-container">
         <div class="table-wrapper">
           <table class="table" id="supplyTable">
             <thead>
@@ -218,9 +222,8 @@
                 <td>{{ s.date }}</td>
                 <td>₱{{ s.price }}</td>
                 <td>
-                  <button type="button" class="edit-button" data-id="{{ cust.id }}" data-name="{{ cust.name }}"
-                    data-phone="{{ cust.phone }}" data-address="{{ cust.address }}" title="Edit customer"
-                    aria-label="Edit customer" style="margin-right:8px;">
+                  <button type="button" class="edit-button" data-id="{{ s.id }}" title="Edit supply"
+                    aria-label="Edit supply" style="margin-right:8px;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                       aria-hidden="true" focusable="false">
                       <path d="M3 21v-3.75L14.81 5.44a2 2 0 0 1 2.83 0l0.92 0.92a2 2 0 0 1 0 2.83L6.75 21H3z"
@@ -247,29 +250,11 @@
           </table>
         </div>
       </div>
-
     </div>
   </main>
   </div>
 
   <div class="notification" id="notification"></div>
-
-  <script>
-    const addNewBtn = document.getElementById('addNewSupplyBtn');
-    const formContainer = document.getElementById('supplyForm');
-
-    addNewBtn.addEventListener('click', () => {
-      formContainer.classList.remove('hidden');
-    });
-
-    const cancelBtn = formContainer.querySelector('.form-actions .cancel-button');
-    if (cancelBtn) {
-      cancelBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        formContainer.classList.add('hidden');
-      });
-    }
-  </script>
 </body>
 
 </html>

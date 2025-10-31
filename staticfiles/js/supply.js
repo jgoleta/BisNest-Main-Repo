@@ -1,14 +1,27 @@
-const addNewBtn = document.getElementById('addNewSupplyBtn');
-    const formContainer = document.getElementById('supplyForm');
+// ===== Supply Form Modal Toggle =====
 
-    addNewBtn.addEventListener('click', () => {
-      formContainer.classList.remove('hidden');
-    });
+// Elements
+const addNewBtn = document.getElementById("addNewSupplyBtn");
+const supplyFormContainer = document.querySelector(".supply-form-container");
+const overlay = document.getElementById("supplyModalOverlay");
+const cancelBtn = supplyFormContainer?.querySelector(".cancel-button");
 
-    const cancelBtn = formContainer.querySelector('.form-actions .cancel-button');
-    if (cancelBtn) {
-      cancelBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        formContainer.classList.add('hidden');
-      });
-    }
+// Open Modal
+addNewBtn?.addEventListener("click", () => {
+  supplyFormContainer.classList.add("active");
+  overlay.classList.add("active");
+  document.body.style.overflow = "hidden"; // prevent background scroll
+});
+
+// Close Modal (Cancel Button Only)
+cancelBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  closeSupplyForm();
+});
+
+// Close Modal Function
+function closeSupplyForm() {
+  supplyFormContainer.classList.remove("active");
+  overlay.classList.remove("active");
+  document.body.style.overflow = "auto";
+}
