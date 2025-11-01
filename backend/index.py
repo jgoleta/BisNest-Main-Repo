@@ -169,7 +169,7 @@ def orderHistoryPage(request):
             # product_name = form.cleaned_data.get('product_name')
             # order.product_id = product_map.get(product_name, 'P0')
             form.save()
-            return redirect('history')
+            return redirect('/payment/?open_form=true')
         else:
             print("❌ INVALID form")
             print(form.errors)
