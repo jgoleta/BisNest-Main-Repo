@@ -16,6 +16,17 @@ function togglePaymentForm() {
   }
 }
 
+const params = new URLSearchParams(window.location.search); 
+if (params.get("open_form") === "true") { 
+  const formContainer = document.querySelector(".payment-form-container"); 
+  const overlay = document.getElementById("paymentModalOverlay"); 
+  if (formContainer && overlay) { 
+    formContainer.classList.add("active"); 
+    overlay.classList.add("active"); 
+    document.body.style.overflow = "hidden"; 
+  } 
+}
+
 // Close modal when overlay is clicked
 document.getElementById("paymentModalOverlay").addEventListener("click", () => {
   togglePaymentForm();
