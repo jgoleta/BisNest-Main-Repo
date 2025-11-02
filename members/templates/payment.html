@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
   <link rel="stylesheet" href="{% static 'css/paymentStyle.css' %}">
   <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="{% static 'js/darkMode.js' %}" defer></script>
   <script src="{% static 'js/sidebar.js' %}" defer></script>
 </head>
@@ -190,10 +191,10 @@
 
       <!-- Payment Table -->
       <div class="table-wrapper-payment" style="margin-top: 20px;">
-        <table class="table-payment">
+        <table class="table-payment" id="payment-table">
           <thead>
             <tr>
-              <th>Payment ID</th>
+              <th>Payment ID <button id="paymentIdSortBtn" class="sort-btn" title="Sort by ID"><i class="fas fa-sort"></i></button></th>
               <th>Order ID</th>
               <th>Customer Name</th>
               <th>Amount</th>

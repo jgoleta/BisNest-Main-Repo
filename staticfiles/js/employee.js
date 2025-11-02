@@ -111,20 +111,19 @@ function searchEmployee() {
   }
 }
 
-// Sort Employee ID functionality
+//sort by id
 document.addEventListener("DOMContentLoaded", function() {
   const sortBtn = document.getElementById("employeeIdSortBtn");
   const table = document.querySelector(".table");
   if (!sortBtn || !table) return;
 
-  let isAscending = null; // null = unsorted, true = ascending, false = descending
+  let isAscending = null;
 
   sortBtn.addEventListener("click", function(e) {
     e.stopPropagation();
     const tbody = table.querySelector("tbody");
     if (!tbody) return;
 
-    // Toggle sort order (null -> true -> false -> true -> ...)
     isAscending = isAscending === null || isAscending === false ? true : false;
 
     const rows = Array.from(tbody.querySelectorAll("tr"));
@@ -133,18 +132,17 @@ document.addEventListener("DOMContentLoaded", function() {
       const aId = a.cells[0].textContent.trim();
       const bId = b.cells[0].textContent.trim();
       
-      // Extract numeric part (ignoring prefix letter)
       const aNum = parseInt(aId.replace(/^[A-Za-z]/, "")) || 0;
       const bNum = parseInt(bId.replace(/^[A-Za-z]/, "")) || 0;
       
       return isAscending ? aNum - bNum : bNum - aNum;
     });
 
-    // Clear tbody and append sorted rows
+  
     tbody.innerHTML = "";
     rows.forEach(row => tbody.appendChild(row));
 
-    // Update icon based on current sort order
+    //Update icon 
     const icon = sortBtn.querySelector("i");
     if (icon) {
       icon.className = isAscending ? "fas fa-sort-up" : "fas fa-sort-down";

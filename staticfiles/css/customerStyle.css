@@ -78,6 +78,8 @@
   background: var(--primary-color);
   color: #fff;
   z-index: 2;
+  pointer-events: none; 
+  cursor: default; 
 }
 
 /* Table styling */

@@ -70,6 +70,40 @@ document.addEventListener("DOMContentLoaded", () => {
         formContainer.style.display = 'none';
         modalOverlay.style.display = 'none';
       });
+
+      //sort by id
+      let orderSortAscending = null;
+      const sortBtn = document.getElementById("orderIdSortBtn");
+      if (sortBtn) {
+        sortBtn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          const tbody = orderTableBody;
+          if (!tbody) return;
+
+          orderSortAscending = orderSortAscending === null || orderSortAscending === false ? true : false;
+          const rows = Array.from(tbody.querySelectorAll("tr"));
+          
+          rows.sort((a, b) => {
+            const aId = a.cells[0].textContent.trim();
+            const bId = b.cells[0].textContent.trim();
+            
+            const aNum = parseInt(aId.replace(/^[A-Za-z]/, "")) || 0;
+            const bNum = parseInt(bId.replace(/^[A-Za-z]/, "")) || 0;
+            
+            return orderSortAscending ? aNum - bNum : bNum - aNum;
+          });
+
+          tbody.innerHTML = "";
+          rows.forEach(row => tbody.appendChild(row));
+
+          //update icon
+          const icon = sortBtn.querySelector("i");
+          if (icon) {
+            icon.className = orderSortAscending ? "fas fa-sort-up" : "fas fa-sort-down";
+          }
+        });
+      }
     });
 
     function searchCustomer() {
