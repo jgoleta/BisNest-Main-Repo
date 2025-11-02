@@ -159,17 +159,27 @@
 
       <!-- Payment Form Modal -->
 
-
       <div class="payment-form-container">
         <h2 class="form-title">Add Payment</h2>
         <form method="POST" class="table-body payment-form">
           {% csrf_token %}
           <div class="table-input-row table-row">
-            <div>{{ form.payment_id }}</div>
-            <div>{{ form.order }}</div>
-            <div>{{ form.amount }}</div>
-            <div>{{ form.date }}</div>
-            <div>{{ form.method }}</div>
+            <div class="form-group">
+              <label for="{{ form.payment_id.id_for_label }}">Payment ID:</label>
+              {{ form.payment_id }}
+            </div>
+            <div class="form-group">
+              <label for="{{ form.order.id_for_label }}">Order ID:</label>
+              {{ form.order }}
+            </div>
+            <div class="form-group">
+              <label for="{{ form.customer.id_for_label }}">Customer Name:</label>
+              {{ form.amount }}
+            </div>
+            <div class="form-group">
+              <label for="{{ form.method.id_for_label }}">Method:</label>
+              {{ form.method }}
+            </div>
             <div class="submit-wrapper">
               <button type="submit" class="submit-button">Submit</button>
               <button type="button" class="cancel-button" onclick="togglePaymentForm()">Cancel</button>
@@ -237,7 +247,7 @@
 
     </div>
   </main>
-<script src="{% static 'js/payment.js' %}"></script>
+  <script src="{% static 'js/payment.js' %}"></script>
 </body>
 
 </html>

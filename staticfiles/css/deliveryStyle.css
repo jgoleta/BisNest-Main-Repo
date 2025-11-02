@@ -36,9 +36,8 @@
 }
 
 .delivery-form input,
-.delivery-form textarea,
-.delivery-form select {
-  width: 100%;
+.delivery-form select{
+  width: -webkit-fill-available;
   margin-top: 6px;
   margin-bottom: 10px;
   padding: 10px;
@@ -97,8 +96,6 @@
   margin-bottom: 20px;
   color: #111;
 }
-
-
 
 .status-select,
 .status-select-form {
@@ -202,4 +199,19 @@
   .form-actions {
     text-align: center;
   }
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* space between icon and text */
+  font-weight: 600;
+  color: #111;
+}
+
+/* Optional: adjust SVG size and position */
+.form-group label svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }

@@ -46,7 +46,7 @@
 
 .employee-form input,
 .employee-form textarea {
-  width: 100%;
+  width: -webkit-fill-available;
   margin-top: 6px;
   margin-bottom: 10px;
   padding: 10px;
@@ -186,4 +186,20 @@
   .submit-wrapper {
     text-align: center;
   }
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* space between icon and text */
+  font-weight: 600;
+  color: #111;
+}
+
+
+/* Optional: adjust SVG size and position */
+.form-group label svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
