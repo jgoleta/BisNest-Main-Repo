@@ -78,8 +78,14 @@
   background: var(--primary-color);
   color: #fff;
   z-index: 2;
-  pointer-events: none; 
-  cursor: default; 
+}
+
+/* Allow pointer events on buttons inside table headers */
+.table-wrapper thead th button,
+.table thead th button {
+  pointer-events: auto;
+  position: relative;
+  z-index: 3;
 }
 
 /* Table styling */

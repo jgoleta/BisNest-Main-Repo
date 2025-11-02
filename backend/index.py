@@ -151,32 +151,25 @@ def delete_payment(request, payment_id):
 
 def orderHistoryPage(request):
     if request.method == 'POST':
-        print("🔸 POST received:", request.POST)
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            # Di na natin to kailangan padi
-            # print("✅ VALID form")
-            # order = form.save(commit=False)
-            # product_map = {
-            #     'Whole Chicken': 'P1',
-            #     'Chicken Feet': 'P2',
-            #     'Chicken Head': 'P3',
-            #     'Chicken Liver': 'P4',
-            #     'Chicken Intestine': 'P5',
-            #     'Chicken Blood': 'P6',
-            #     'Chicken Gizzard': 'P7',
-            # }
-            # product_name = form.cleaned_data.get('product_name')
-            # order.product_id = product_map.get(product_name, 'P0')
-            form.save()
-            return redirect('/payment/?open_form=true')
-        else:
-            print("❌ INVALID form")
-            print(form.errors)
+        edit_id = request.POST.get('edit_id')
+
+        if edit_id:  # existing order edit
+            order = get_object_or_404(Order, pk=edit_id)
+            form = OrderForm(request.POST, instance=order)
+            if form.is_valid():
+                form.save()
+                return redirect('history')
+        else:  # create new order
+            form = OrderForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/payment/?open_form=true')
+            else:
+                print("❌ INVALID form")
+                print(form.errors)
     else:
-        form = OrderForm(initial={
-            'order_id': f"O{Order.objects.count() + 1:04d}"
-        })
+        form = OrderForm(initial={'order_id': f"O{Order.objects.count() + 1:04d}"})
+
 
     orders = Order.objects.all()
     return render(request, 'history.html', {

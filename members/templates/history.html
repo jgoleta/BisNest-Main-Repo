@@ -163,7 +163,7 @@
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Search Customer Name:" onkeyup="searchCustomer()">
                 <div class="button-container">
-                    <button class="toggle-form-button" onclick="toggleForm()">+ New</button>
+                    <button type="button" class="toggle-form-button">+ New</button>
                 </div>
             </div>
             <div class="order-form-container">
@@ -248,10 +248,16 @@
                                 <td>{{ o.date }}</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button type="button" class="edit-button" data-id="{{ cust.id }}"
-                                            data-name="{{ cust.name }}" data-phone="{{ cust.phone }}"
-                                            data-address="{{ cust.address }}" title="Edit customer"
-                                            aria-label="Edit customer">
+                                        <button type="button" class="edit-button"
+    data-id="{{ o.id }}"
+    data-order_id="{{ o.order_id }}"
+    data-customer="{{ o.customer.id }}"
+    data-employee="{{ o.employee.id }}"
+    data-product="{{ o.product.id }}"
+    data-quantity="{{ o.quantity }}"
+    data-amount="{{ o.amount }}"
+    title="Edit Order" aria-label="Edit Order">
+
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                                                 <path
