@@ -34,6 +34,14 @@
   max-height: 90vh;
 }
 
+.order-form-container.active {
+  display: block;
+}
+.modal-overlay.active {
+  display: block;
+}
+
+
 /* Labels and Inputs */
 .order-form label {
   display: block;

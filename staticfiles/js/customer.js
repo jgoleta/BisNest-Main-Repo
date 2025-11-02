@@ -89,6 +89,33 @@ function searchCustomer() {
   });
 }
 
+document.querySelectorAll("#customer-table th").forEach((header, colIndex) => {
+  if (colIndex > 1) return;
+
+  header.style.cursor = "pointer";
+  header.addEventListener("click", () => {
+    const isAscending = header.classList.contains("asc");
+    document
+      .querySelectorAll("#customer-table th")
+      .forEach((th) => th.classList.remove("asc", "desc"));
+    header.classList.add(isAscending ? "desc" : "asc");
+
+    customerData.sort((a, b) => {
+      const aValue = Object.values(a)[colIndex];
+      const bValue = Object.values(b)[colIndex];
+      return isAscending
+        ? aValue
+            .toString()
+            .localeCompare(bValue.toString(), undefined, { numeric: true })
+        : bValue
+            .toString()
+            .localeCompare(aValue.toString(), undefined, { numeric: true });
+    });
+
+    renderTable();
+  });
+});
+
 function searchCustomer() {
   const input = document.getElementById("searchInput");
   const filter = (input.value || "").toLowerCase();
@@ -148,84 +175,43 @@ document.addEventListener("click", function (e) {
   formContainer.scrollIntoView({ behavior: "smooth", block: "center" });
 });
 
-//sort by id
-let customerSortAscending = null;
-
-function initCustomerSort() {
+// Sort Customer ID functionality
+document.addEventListener("DOMContentLoaded", function() {
   const sortBtn = document.getElementById("customerIdSortBtn");
   const table = document.getElementById("customer-table");
   if (!sortBtn || !table) return;
 
+  let isAscending = null; // null = unsorted, true = ascending, false = descending
+
   sortBtn.addEventListener("click", function(e) {
     e.stopPropagation();
-    e.preventDefault();
-    
     const tbody = table.querySelector("tbody");
-    if (!tbody) {
-      console.error("Customer table tbody not found");
-      return;
-    }
+    if (!tbody) return;
 
-    // Get all rows, including hidden ones
+    // Toggle sort order (null -> true -> false -> true -> ...)
+    isAscending = isAscending === null || isAscending === false ? true : false;
+
     const rows = Array.from(tbody.querySelectorAll("tr"));
     
-    if (rows.length === 0) {
-      console.warn("No rows found in customer table");
-      return;
-    }
-
-    // Preserve display state for each row BEFORE sorting
-    const rowsWithState = rows.map(row => {
-      const display = row.style.display || "";
-      return {
-        element: row,
-        display: display
-      };
-    });
-
-    // Toggle sort direction
-    customerSortAscending = customerSortAscending === null || customerSortAscending === false ? true : false;
-
-    // Sort rows by Customer ID (numerically, ignoring prefix)
-    rowsWithState.sort((a, b) => {
-      const aIdCell = a.element.cells[0];
-      const bIdCell = b.element.cells[0];
+    rows.sort((a, b) => {
+      const aId = a.cells[0].textContent.trim();
+      const bId = b.cells[0].textContent.trim();
       
-      if (!aIdCell || !bIdCell) return 0;
-      
-      const aId = aIdCell.textContent.trim();
-      const bId = bIdCell.textContent.trim();
-      
-      if (!aId || !bId) return 0;
-      
+      // Extract numeric part (ignoring prefix letter)
       const aNum = parseInt(aId.replace(/^[A-Za-z]/, "")) || 0;
       const bNum = parseInt(bId.replace(/^[A-Za-z]/, "")) || 0;
       
-      return customerSortAscending ? aNum - bNum : bNum - aNum;
+      return isAscending ? aNum - bNum : bNum - aNum;
     });
 
-    // Clear and re-append sorted rows
+    // Clear tbody and append sorted rows
     tbody.innerHTML = "";
-    rowsWithState.forEach(({ element, display }) => {
-      tbody.appendChild(element);
-      // Restore display state (empty string means visible, "none" means hidden)
-      if (display === "none") {
-        element.style.display = "none";
-      } else {
-        element.style.display = "";
-      }
-    });
+    rows.forEach(row => tbody.appendChild(row));
 
-    //update icon
+    // Update icon based on current sort order
     const icon = sortBtn.querySelector("i");
     if (icon) {
-      icon.className = customerSortAscending ? "fas fa-sort-up" : "fas fa-sort-down";
+      icon.className = isAscending ? "fas fa-sort-up" : "fas fa-sort-down";
     }
   });
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initCustomerSort);
-} else {
-  initCustomerSort();
-}
+});
