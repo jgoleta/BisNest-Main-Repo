@@ -390,6 +390,24 @@ main {
 
 
 
+/* Sort Button Styles */
+.sort-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 5px;
+  color: inherit;
+  vertical-align: middle;
+}
+
+.sort-btn:hover {
+  color: var(--accent-clr);
+}
+
+.sort-btn i {
+  font-size: 14px;
+}
+
 /*Custom Scroll*/
 .table-wrapper::-webkit-scrollbar,
 .customer-form-container::-webkit-scrollbar,

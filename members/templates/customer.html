@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=dashboard" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="{% static 'js/darkMode.js' %}" defer></script>
     <script src="{% static 'js/sidebar.js' %}" defer></script>
     <script src="{% static 'js/customer.js' %}" defer></script>
@@ -214,7 +215,7 @@
                     <table class="table" id="customer-table">
                         <thead>
                             <tr>
-                                <th>Customer ID</th>
+                                <th>Customer ID <button id="customerIdSortBtn" class="sort-btn" title="Sort by ID"><i class="fas fa-sort"></i></button></th>
                                 <th>Name</th>
                                 <th>Phone</th>
                                 <th>Address</th>
