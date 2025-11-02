@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
     <link rel="stylesheet" href="{% static 'css/orderStyle.css' %}">
     <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="{% static 'js/darkMode.js' %}" defer></script>
     <script src="{% static 'js/sidebar.js' %}" defer></script>
     <script src="{% static 'js/order.js' %}" defer></script>
@@ -224,10 +225,10 @@
             <div class="modal-overlay" id="modalOverlay" style="display: none;"></div>
             <div class="order-table-container">
                 <div class="table-wrapper">
-                    <table class="table">
+                    <table class="table" id="order-table">
                         <thead>
                             <tr>
-                                <th>Order Name</th>
+                                <th>Order Name <button id="orderIdSortBtn" class="sort-btn" title="Sort by ID"><i class="fas fa-sort"></i></button></th>
                                 <th>Customer Name</th>
                                 <th>Employee Name</th>
                                 <th>Product Name</th>

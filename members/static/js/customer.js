@@ -89,6 +89,33 @@ function searchCustomer() {
   });
 }
 
+document.querySelectorAll("#customer-table th").forEach((header, colIndex) => {
+  if (colIndex > 1) return;
+
+  header.style.cursor = "pointer";
+  header.addEventListener("click", () => {
+    const isAscending = header.classList.contains("asc");
+    document
+      .querySelectorAll("#customer-table th")
+      .forEach((th) => th.classList.remove("asc", "desc"));
+    header.classList.add(isAscending ? "desc" : "asc");
+
+    customerData.sort((a, b) => {
+      const aValue = Object.values(a)[colIndex];
+      const bValue = Object.values(b)[colIndex];
+      return isAscending
+        ? aValue
+            .toString()
+            .localeCompare(bValue.toString(), undefined, { numeric: true })
+        : bValue
+            .toString()
+            .localeCompare(aValue.toString(), undefined, { numeric: true });
+    });
+
+    renderTable();
+  });
+});
+
 function searchCustomer() {
   const input = document.getElementById("searchInput");
   const filter = (input.value || "").toLowerCase();

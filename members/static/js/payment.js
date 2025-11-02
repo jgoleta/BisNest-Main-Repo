@@ -73,3 +73,47 @@ document.querySelectorAll(".edit-button").forEach((button) => {
     document.body.style.overflow = "hidden";
   });
 });
+
+//sort by id
+let paymentSortAscending = null;
+
+function initPaymentSort() {
+  const sortBtn = document.getElementById("paymentIdSortBtn");
+  const table = document.getElementById("payment-table");
+  if (!sortBtn || !table) return;
+
+  sortBtn.addEventListener("click", function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    const tbody = table.querySelector("tbody");
+    if (!tbody) return;
+
+    paymentSortAscending = paymentSortAscending === null || paymentSortAscending === false ? true : false;
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    
+    rows.sort((a, b) => {
+      const aId = a.cells[0].textContent.trim();
+      const bId = b.cells[0].textContent.trim();
+      
+      const aNum = parseInt(aId.replace(/^[A-Za-z]/, "")) || 0;
+      const bNum = parseInt(bId.replace(/^[A-Za-z]/, "")) || 0;
+      
+      return paymentSortAscending ? aNum - bNum : bNum - aNum;
+    });
+
+    tbody.innerHTML = "";
+    rows.forEach(row => tbody.appendChild(row));
+
+    //update icon
+    const icon = sortBtn.querySelector("i");
+    if (icon) {
+      icon.className = paymentSortAscending ? "fas fa-sort-up" : "fas fa-sort-down";
+    }
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPaymentSort);
+} else {
+  initPaymentSort();
+}
