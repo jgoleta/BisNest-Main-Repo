@@ -324,9 +324,7 @@ main {
 }
 
 .toggle-form-button,
-.add-button,
-.submit-button,
-.cancel-button {
+.add-button{
   padding: 12px 20px;
   font-weight: bold;
   border: none;
@@ -351,6 +349,41 @@ main {
   background-color: #4f46e5 !important;
   border: none !important;
 }
+
+.cancel-button:hover {
+  background: red;
+  border: none !important;
+  color: #ffffff;
+}
+
+
+.button-container {
+  margin-left: auto;
+}
+
+
+.cancel-button,
+.submit-button {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+.cancel-button {
+  background: #ccc;
+  color: #222;
+  margin-right: 10px;
+}
+
+
+.submit-button {
+  background: var(--accent-clr, #5e63ff) !important;
+  color: #fff;
+}
+
 
 .button-container {
   margin-left: auto;
