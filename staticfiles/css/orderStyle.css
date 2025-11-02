@@ -45,7 +45,7 @@
 .order-form input,
 .order-form textarea,
 .order-form select {
-  width: 100%;
+  width: -webkit-fill-available;
   margin-top: 6px;
   margin-bottom: 10px;
   padding: 10px;

@@ -301,8 +301,9 @@ main {
 
 .delete-button:hover,
 .delete-modal-btn:hover,
-.delete-btn:hover {
-  background: #b40202 !important;
+.delete-btn:hover,
+.cancel-button:hover {
+  background: red !important;
   color: #ffffff !important;
   border: none;
 }
@@ -344,23 +345,14 @@ main {
 .toggle-form-button:hover,
 .add-button:hover,
 .submit-button:hover,
-.edit-button:hover,
-.cancel-button:hover {
+.edit-button:hover{
   background-color: #4f46e5 !important;
   border: none !important;
 }
 
-.cancel-button:hover {
-  background: red;
-  border: none !important;
-  color: #ffffff;
-}
-
-
 .button-container {
   margin-left: auto;
 }
-
 
 .cancel-button,
 .submit-button {
@@ -371,19 +363,16 @@ main {
   cursor: pointer;
 }
 
-
 .cancel-button {
   background: #ccc;
   color: #222;
   margin-right: 10px;
 }
 
-
 .submit-button {
   background: var(--accent-clr, #5e63ff) !important;
   color: #fff;
 }
-
 
 .button-container {
   margin-left: auto;

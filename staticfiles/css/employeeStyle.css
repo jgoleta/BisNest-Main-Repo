@@ -46,7 +46,7 @@
 
 .employee-form input,
 .employee-form textarea {
-  width: 100%;
+  width: -webkit-fill-available;
   margin-top: 6px;
   margin-bottom: 10px;
   padding: 10px;

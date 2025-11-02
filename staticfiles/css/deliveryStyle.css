@@ -36,9 +36,8 @@
 }
 
 .delivery-form input,
-.delivery-form textarea,
-.delivery-form select {
-  width: 100%;
+.delivery-form select{
+  width: -webkit-fill-available;
   margin-top: 6px;
   margin-bottom: 10px;
   padding: 10px;
@@ -97,8 +96,6 @@
   margin-bottom: 20px;
   color: #111;
 }
-
-
 
 .status-select,
 .status-select-form {
