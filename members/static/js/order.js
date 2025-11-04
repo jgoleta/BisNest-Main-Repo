@@ -158,3 +158,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+function searchCustomer() {
+      const input = document.getElementById("searchInput");
+      const filter = (input.value || "").toLowerCase();
+      const table = document.querySelector(".table tbody");
+      if (!table) return;
+      const rows = table.getElementsByTagName("tr");
+
+      for (let i = 0; i < rows.length; i++) {
+        const nameCell = rows[i].getElementsByTagName("td")[1];
+        if (nameCell) {
+          const nameText = nameCell.textContent || nameCell.innerText;
+          if (nameText.toLowerCase().indexOf(filter) > -1) {
+            rows[i].style.display = "";
+          } else {
+            rows[i].style.display = "none";
+          }
+        }
+      }
+    }
