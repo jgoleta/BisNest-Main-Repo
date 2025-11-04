@@ -7,28 +7,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const sortBtn = document.getElementById("orderIdSortBtn");
   const orderTableBody = document.querySelector("#order-table tbody");
 
-  // ✅ Reset form (completely clears edit state)
+  //reset form
   function resetOrderForm() {
     if (!orderForm) return;
     orderForm.reset();
 
-    // Remove hidden edit_id (very important)
     const editIdInput = document.querySelector('input[name="edit_id"]');
     if (editIdInput) editIdInput.remove();
 
-    // Restore default form title
     const title = document.getElementById("formTitle");
     if (title) title.textContent = "Order Information";
   }
 
-  // ✅ Open modal
+  //open modal
   function openModal() {
     formContainer.style.display = "block";
     modalOverlay.style.display = "block";
     document.body.style.overflow = "hidden";
   }
 
-  // ✅ Close modal
+  //close modal
   function closeModal() {
     formContainer.style.display = "none";
     modalOverlay.style.display = "none";
@@ -64,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 }
 
 
-  // ✅ Cancel button
+  //cancel button
   if (cancelBtn) {
     cancelBtn.addEventListener("click", (e) => {
       e.preventDefault();
@@ -73,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ✅ Overlay click closes form
   if (modalOverlay) {
     modalOverlay.addEventListener("click", () => {
       closeModal();
@@ -81,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ✅ Edit button handler
+  //edit button 
   document.addEventListener("click", (e) => {
     const btn = e.target.closest(".edit-button");
     if (!btn) return;
@@ -96,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const quantity = btn.getAttribute("data-quantity");
     const amount = btn.getAttribute("data-amount");
 
-    // Fill form
+    //form
     const orderIdInput = document.querySelector('[name="order_id"]');
     const customerInput = document.querySelector('[name="customer"]');
     const employeeInput = document.querySelector('[name="employee"]');
@@ -111,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (quantityInput) quantityInput.value = quantity || "";
     if (amountInput) amountInput.value = amount || "";
 
-    // Create hidden edit_id field dynamically
     let editIdInput = document.querySelector('input[name="edit_id"]');
     if (!editIdInput) {
       editIdInput = document.createElement("input");
@@ -121,14 +117,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     editIdInput.value = id || "";
 
-    // Update form title
     const formTitle = document.getElementById("formTitle");
     if (formTitle) formTitle.textContent = "Edit Order";
 
     openModal();
   });
 
-  // ✅ Sorting (fixes the previous bug)
+  //sort
   let orderSortAscending = true;
   if (sortBtn) {
     sortBtn.addEventListener("click", (e) => {
@@ -153,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ✅ Handle form submit
+  //form submut
   if (orderForm) {
     orderForm.addEventListener("submit", () => {
       // prevent multiple clicks
