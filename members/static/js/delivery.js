@@ -58,3 +58,29 @@ function getCookie(name) {
       modalOverlay.addEventListener('click', toggleForm);
       cancelBtn.addEventListener('click', toggleForm);
     });
+
+const sortBtn = document.getElementById("deliveryIdSortBtn");
+let deliverySortAscending = true;
+
+if (sortBtn) {
+  sortBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const rows = Array.from(deliveryTableBody.querySelectorAll("tr"));
+    deliverySortAscending = !deliverySortAscending;
+
+    rows.sort((a, b) => {
+      const aId = parseInt(a.cells[0].textContent.replace(/\D/g, "")) || 0;
+      const bId = parseInt(b.cells[0].textContent.replace(/\D/g, "")) || 0;
+      return deliverySortAscending ? aId - bId : bId - aId;
+    });
+
+    deliveryTableBody.innerHTML = "";
+    rows.forEach((r) => deliveryTableBody.appendChild(r));
+
+    const icon = sortBtn.querySelector("i");
+    if (icon)
+      icon.className = deliverySortAscending
+        ? "fas fa-sort-up"
+        : "fas fa-sort-down";
+  });
+}
