@@ -206,7 +206,7 @@
                     <tbody class="table-body">
                         {% for sale in sales %}
                         <tr>
-                            <td>{{ sale.date }}</td>
+                            <td>{{ sale.date|date:"Y-m-d" }}</td>
                             <td>{{ sale.order.product.name }}</td>
                             <td>{{ sale.order.quantity }}</td>
                             <td>₱{{ sale.order.product.price }}</td>
@@ -317,6 +317,7 @@
             <div class="week-selector">
                 <label for="weekSelect">Choose which week to view:</label>
                 <input type="week" id="weekSelect" onchange="filterByWeek()">
+                <div id="weekDisplay" style="margin-top:8px;"></div>
             </div>
 
             <div class="weekly-summary">

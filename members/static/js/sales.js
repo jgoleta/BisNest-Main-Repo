@@ -167,7 +167,10 @@ function initializeDateSelectors() {
   const today = new Date();
   const dateInput = document.getElementById("dateSelect");
   if (dateInput) {
-    dateInput.value = today.toISOString().split("T")[0];
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+    dateInput.value = `${yyyy}-${mm}-${dd}`; 
   }
 
   const weekInput = document.getElementById("weekSelect");
@@ -193,8 +196,8 @@ function filterByDate() {
   if (!selectedDate) return;
 
   const filteredData = salesData.filter((sale) => {
-    const saleDate = new Date(sale.date).toISOString().split("T")[0];
-    return saleDate === selectedDate;
+    const saleDateStr = String(sale.date).slice(0, 10);
+    return saleDateStr === selectedDate;
   });
 
   updateDailySummary(filteredData);
