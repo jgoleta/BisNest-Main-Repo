@@ -85,8 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     e.preventDefault();
 
-    const id = btn.getAttribute("data-id"); // actual DB id
-    const order_id = btn.getAttribute("data-order_id"); // visible order id
+    const id = btn.getAttribute("data-id"); 
+    const order_id = btn.getAttribute("data-order_id");
     const customer = btn.getAttribute("data-customer");
     const employee = btn.getAttribute("data-employee");
     const product = btn.getAttribute("data-product");
