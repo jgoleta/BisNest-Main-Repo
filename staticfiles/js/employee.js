@@ -111,9 +111,9 @@ function searchEmployee() {
   }
 }
 
-//sort by id
-document.addEventListener("DOMContentLoaded", function() {
-  const sortBtn = document.getElementById("employeeIdSortBtn");
+//sort by name
+(function() {
+  const sortBtn = document.getElementById("employeeNameSortBtn"); // id in HTML
   const table = document.querySelector(".table");
   if (!sortBtn || !table) return;
 
@@ -127,26 +127,22 @@ document.addEventListener("DOMContentLoaded", function() {
     isAscending = isAscending === null || isAscending === false ? true : false;
 
     const rows = Array.from(tbody.querySelectorAll("tr"));
-    
+
     rows.sort((a, b) => {
-      const aId = a.cells[0].textContent.trim();
-      const bId = b.cells[0].textContent.trim();
-      
-      const aNum = parseInt(aId.replace(/^[A-Za-z]/, "")) || 0;
-      const bNum = parseInt(bId.replace(/^[A-Za-z]/, "")) || 0;
-      
-      return isAscending ? aNum - bNum : bNum - aNum;
+      const aName = (a.cells[1].textContent || "").trim().toLowerCase();
+      const bName = (b.cells[1].textContent || "").trim().toLowerCase();
+      return isAscending
+        ? aName.localeCompare(bName, undefined, { sensitivity: "base", numeric: false })
+        : bName.localeCompare(aName, undefined, { sensitivity: "base", numeric: false });
     });
 
-  
     tbody.innerHTML = "";
     rows.forEach(row => tbody.appendChild(row));
 
-    //Update icon 
     const icon = sortBtn.querySelector("i");
     if (icon) {
       icon.className = isAscending ? "fas fa-sort-up" : "fas fa-sort-down";
     }
   });
-});
+})();
 
