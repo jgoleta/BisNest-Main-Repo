@@ -124,6 +124,18 @@
   color: #e74c3c;
 }
 
+.status-select option[value="Pending"] {
+    color: #f39c12;
+}
+
+.status-select option[value="Delivered"] {
+    color: #2ecc71;
+}
+
+.status-select option[value="Cancelled"] {
+    color:#e74c3c;
+}
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
