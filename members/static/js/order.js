@@ -125,28 +125,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //sort
   let orderSortAscending = true;
-  if (sortBtn) {
-    sortBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const rows = Array.from(orderTableBody.querySelectorAll("tr"));
-      orderSortAscending = !orderSortAscending;
-
-      rows.sort((a, b) => {
-        const aId = parseInt(a.cells[0].textContent.replace(/\D/g, "")) || 0;
-        const bId = parseInt(b.cells[0].textContent.replace(/\D/g, "")) || 0;
-        return orderSortAscending ? aId - bId : bId - aId;
-      });
-
-      orderTableBody.innerHTML = "";
-      rows.forEach((r) => orderTableBody.appendChild(r));
-
-      const icon = sortBtn.querySelector("i");
-      if (icon)
-        icon.className = orderSortAscending
-          ? "fas fa-sort-up"
-          : "fas fa-sort-down";
-    });
+if (sortBtn && orderTableBody) {
+  // detect customer column index from the table header (robust if columns moved)
+  const orderTable = document.querySelector("#order-table");
+  let customerColIndex = 1; // fallback
+  if (orderTable) {
+    const ths = Array.from(orderTable.querySelectorAll("thead th"));
+    const idx = ths.findIndex(th => (th.textContent || "").trim().toLowerCase().includes("customer"));
+    if (idx !== -1) customerColIndex = idx;
   }
+
+  sortBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const rows = Array.from(orderTableBody.querySelectorAll("tr"));
+    orderSortAscending = !orderSortAscending; // toggle
+    rows.sort((a, b) => {
+      const aText = (a.cells[customerColIndex]?.textContent || "").trim().toLowerCase();
+      const bText = (b.cells[customerColIndex]?.textContent || "").trim().toLowerCase();
+      return orderSortAscending
+        ? aText.localeCompare(bText, undefined, { sensitivity: "base", numeric: false })
+        : bText.localeCompare(aText, undefined, { sensitivity: "base", numeric: false });
+    });
+    orderTableBody.innerHTML = "";
+    rows.forEach(r => orderTableBody.appendChild(r));
+    const icon = sortBtn.querySelector("i");
+    if (icon) icon.className = orderSortAscending ? "fas fa-sort-up" : "fas fa-sort-down";
+  });
+}
 
   //form submut
   if (orderForm) {
