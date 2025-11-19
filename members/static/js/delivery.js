@@ -62,14 +62,13 @@ function getCookie(name) {
 
 document.addEventListener('DOMContentLoaded', function () {
   const sortBtn = document.getElementById("deliveryNameSortBtn");
-  // match the actual table id in your HTML
   const deliveryTable = document.querySelector("#deliveryTable");
   const deliveryTableBody = document.querySelector("#deliveryTableBody");
   if (!sortBtn || !deliveryTable || !deliveryTableBody) return;
 
   let deliverySortAscending = true;
 
-  // detect customer column index by header text (fallback to 2: Delivery ID(0), Order ID(1), Customer(2))
+
   let customerColIndex = 2;
   const ths = Array.from(deliveryTable.querySelectorAll("thead th"));
   const idx = ths.findIndex(th => (th.textContent || "").trim().toLowerCase().includes("customer"));
@@ -78,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
   sortBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const rows = Array.from(deliveryTableBody.querySelectorAll("tr"));
-    deliverySortAscending = !deliverySortAscending; // toggle order
+    deliverySortAscending = !deliverySortAscending; //toggle order
 
     rows.sort((a, b) => {
       const aText = (a.cells[customerColIndex]?.textContent || "").trim().toLowerCase();
