@@ -25,6 +25,16 @@ body {
   grid-template-columns: auto 1fr;
 }
 
+.header-container {
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+  background-color: var(--sidebar-clr);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1em 2em;
+  color: var(--text-clr);
+}
+
 /*Sidebar Style*/
 #sidebar {
   box-sizing: border-box;
