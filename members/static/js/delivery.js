@@ -58,3 +58,26 @@ function getCookie(name) {
       modalOverlay.addEventListener('click', toggleForm);
       cancelBtn.addEventListener('click', toggleForm);
     });
+
+    //search by customer name
+function searchCustomer() {
+  const input = document.getElementById("searchInput");
+  const filter = (input.value || "").toLowerCase();
+  const tableBody =
+    document.querySelector("#deliveryTableBody") ||
+    document.querySelector(".table tbody") ||
+    document.querySelector("table tbody");
+  if (!tableBody) return;
+  const rows = tableBody.getElementsByTagName("tr");
+
+  for (let i = 0; i < rows.length; i++) {
+    const tds = rows[i].getElementsByTagName("td");
+    const nameCell = tds[2] || tds[1];
+    if (nameCell) {
+      const nameText = nameCell.textContent || nameCell.innerText;
+      rows[i].style.display = nameText.toLowerCase().includes(filter) ? "" : "none";
+    } else {
+      rows[i].style.display = filter ? "none" : "";
+    }
+  }
+}
