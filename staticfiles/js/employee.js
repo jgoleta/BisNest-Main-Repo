@@ -146,7 +146,7 @@ function searchEmployee() {
   });
 })();
 
-
+//sort by join date
 (function() {
   const sortBtn = document.getElementById("employeeJoinDateSortBtn"); // add this id to your HTML button
   const table = document.querySelector(".table");
@@ -197,4 +197,3 @@ function searchEmployee() {
     }
   });
 })();
-
