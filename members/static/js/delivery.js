@@ -114,3 +114,55 @@ function searchCustomer() {
     }
   }
 }
+
+//sort by join date
+(function() {
+  const sortBtn = document.getElementById("employeeJoinDateSortBtn"); // add this id to your HTML button
+  const table = document.querySelector(".table");
+  if (!sortBtn || !table) return;
+
+  let isAscending = null;
+
+  sortBtn.addEventListener("click", function(e) {
+    e.stopPropagation();
+    const tbody = table.querySelector("tbody");
+    if (!tbody) return;
+
+    isAscending = isAscending === null || isAscending === false ? true : false;
+
+    const ths = Array.from(table.querySelectorAll("thead th"));
+    let dateColIndex = ths.findIndex(th => {
+      const txt = (th.textContent || "").trim().toLowerCase();
+      return txt.includes("join") || txt.includes("joined") || txt.includes("join date") || txt.includes("date joined");
+    });
+    if (dateColIndex === -1) {
+      dateColIndex = ths.findIndex(th => (th.textContent || "").trim().toLowerCase().includes("date"));
+    }
+    if (dateColIndex === -1) dateColIndex = 2;
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    rows.sort((a, b) => {
+      const aText = (a.cells[dateColIndex]?.textContent || "").trim();
+      const bText = (b.cells[dateColIndex]?.textContent || "").trim();
+
+      const aDate = Date.parse(aText);
+      const bDate = Date.parse(bText);
+
+      if (!isNaN(aDate) && !isNaN(bDate)) {
+        return isAscending ? aDate - bDate : bDate - aDate;
+      }
+
+      const aLower = aText.toLowerCase();
+      const bLower = bText.toLowerCase();
+      return isAscending ? aLower.localeCompare(bLower) : bLower.localeCompare(aLower);
+    });
+
+    tbody.innerHTML = "";
+    rows.forEach(row => tbody.appendChild(row));
+
+    const icon = sortBtn.querySelector("i");
+    if (icon) {
+      icon.className = isAscending ? "fas fa-sort-up" : "fas fa-sort-down";
+    }
+  });
+})();
