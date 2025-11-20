@@ -86,6 +86,7 @@
               <th>Position</th>
               <th>Schedule</th>
               <th>Daily Salary</th>
+              <th>Join Date</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -98,6 +99,7 @@
               <td>{{ emp.position }}</td>
               <td>{{ emp.schedule }}</td>
               <td>{{ emp.salary }}</td>
+              <td>{{ emp.join_date}}</td>
               <td>
                 <button type="button" class="edit-button" data-id="{{ emp.id }}" data-name="{{ emp.name }}"
                   data-position="{{ emp.position }}" data-schedule="{{ emp.schedule }}" data-salary="{{ emp.salary }}"
