@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
   sortBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const rows = Array.from(deliveryTableBody.querySelectorAll("tr"));
-    deliverySortAscending = !deliverySortAscending; // toggle order
+    deliverySortAscending = !deliverySortAscending; //toggle order
 
     rows.sort((a, b) => {
       const aText = (a.cells[customerColIndex]?.textContent || "").trim().toLowerCase();

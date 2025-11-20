@@ -12,7 +12,7 @@
 
 /* Sales Report */
 .table-wrapper {
-  max-height: 50vh;
+  max-height: 60vh;
   overflow: auto;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
   background: var(--base-clr);
