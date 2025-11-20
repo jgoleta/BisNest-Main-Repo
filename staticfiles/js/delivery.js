@@ -62,14 +62,12 @@ function getCookie(name) {
 
 document.addEventListener('DOMContentLoaded', function () {
   const sortBtn = document.getElementById("deliveryNameSortBtn");
-  // match the actual table id in your HTML
   const deliveryTable = document.querySelector("#deliveryTable");
   const deliveryTableBody = document.querySelector("#deliveryTableBody");
   if (!sortBtn || !deliveryTable || !deliveryTableBody) return;
 
   let deliverySortAscending = true;
 
-  // detect customer column index by header text (fallback to 2: Delivery ID(0), Order ID(1), Customer(2))
   let customerColIndex = 2;
   const ths = Array.from(deliveryTable.querySelectorAll("thead th"));
   const idx = ths.findIndex(th => (th.textContent || "").trim().toLowerCase().includes("customer"));
@@ -95,3 +93,24 @@ document.addEventListener('DOMContentLoaded', function () {
     if (icon) icon.className = deliverySortAscending ? "fas fa-sort-up" : "fas fa-sort-down";
   });
 });
+
+//search by customer name
+function searchCustomer() {
+  const input = document.getElementById("searchInput");
+  const filter = (input.value || "").toLowerCase();
+  const tableBody =
+    document.querySelector("#deliveryTableBody") ||
+    document.querySelector(".table tbody") ||
+    document.querySelector("table tbody");
+  if (!tableBody) return;
+  const rows = tableBody.getElementsByTagName("tr");
+
+  for (let i = 0; i < rows.length; i++) {
+    const tds = rows[i].getElementsByTagName("td");
+    const nameCell = tds[2] || tds[1];
+    if (nameCell) {
+      const nameText = nameCell.textContent || nameCell.innerText;
+      rows[i].style.display = nameText.toLowerCase().includes(filter) ? "" : "none";
+    }
+  }
+}

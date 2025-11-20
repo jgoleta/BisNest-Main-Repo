@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let deliverySortAscending = true;
 
-
   let customerColIndex = 2;
   const ths = Array.from(deliveryTable.querySelectorAll("thead th"));
   const idx = ths.findIndex(th => (th.textContent || "").trim().toLowerCase().includes("customer"));
@@ -94,3 +93,24 @@ document.addEventListener('DOMContentLoaded', function () {
     if (icon) icon.className = deliverySortAscending ? "fas fa-sort-up" : "fas fa-sort-down";
   });
 });
+
+//search by customer name
+function searchCustomer() {
+  const input = document.getElementById("searchInput");
+  const filter = (input.value || "").toLowerCase();
+  const tableBody =
+    document.querySelector("#deliveryTableBody") ||
+    document.querySelector(".table tbody") ||
+    document.querySelector("table tbody");
+  if (!tableBody) return;
+  const rows = tableBody.getElementsByTagName("tr");
+
+  for (let i = 0; i < rows.length; i++) {
+    const tds = rows[i].getElementsByTagName("td");
+    const nameCell = tds[2] || tds[1];
+    if (nameCell) {
+      const nameText = nameCell.textContent || nameCell.innerText;
+      rows[i].style.display = nameText.toLowerCase().includes(filter) ? "" : "none";
+    }
+  }
+}
