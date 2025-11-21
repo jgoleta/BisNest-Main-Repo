@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BisNest Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/adminStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=dashboard" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="{% static 'js/darkMode.js' %}" defer></script>
+    <script src="{% static 'js/sidebar.js' %}" defer></script>
+    <script src="{% static 'js/admin.js' %}" defer></script>
+
+</head>
+
+<body>
+
+    {% include 'sidebar.html' %}
+
+    <main class="main-content">
+
+        {% include 'header.html' with page="Admin Dashboard" %}
+
+        <div class="container">
+            <p class="muted">Overview, recent activity and quick administration actions.</p>
+
+            <div class="main-grid">
+                <div>
+                    <div class="cards-row">
+                        <div class="card metric">
+                            <div class="label">Total Users</div>
+                            <div class="value" id="totalUsers">—</div>
+                            <div class="small">Active and invited accounts</div>
+                        </div>
+                        <div class="card metric">
+                            <div class="label">Active Sessions</div>
+                            <div class="value" id="activeSessions">—</div>
+                            <div class="small">Active sessions in the last 24h</div>
+                        </div>
+                        <div class="card metric">
+                            <div class="label">Errors (24h)</div>
+                            <div class="value" id="errors24">—</div>
+                            <div class="small">Critical errors in the last day</div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-top:14px">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <h3 style="margin:0">Recent Activity</h3>
+                            <div class="small">Showing latest events</div>
+                        </div>
+                        <div class="controls">
+                            <input class="search" id="activitySearch" placeholder="Search activity (user, action, ip)">
+                            <button class="btn ghost" id="exportBtn">Export</button>
+                        </div>
+
+                        <div class="table-wrap" style="margin-top:12px">
+                            <table id="activityTable">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>User</th>
+                                        <th>Action</th>
+                                        <th>IP</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- rows populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <aside>
+                    <div class="widget card">
+                        <h3 style="margin:0 0 8px 0">Quick Actions</h3>
+                        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+                            <button class="btn" id="manageUsers">Manage Users</button>
+                            <button class="btn ghost" id="siteSettings">Site Settings</button>
+                            <button class="btn ghost" id="viewLogs">View Logs</button>
+                        </div>
+                    </div>
+
+                    <div class="widget card">
+                        <h4 style="margin:0 0 8px 0">System Info</h4>
+                        <div class="small">Version: <strong>1.2.0</strong></div>
+                        <div class="small">Last deploy: <strong>2025-11-20 22:14</strong></div>
+                    </div>
+
+                    <div class="widget card">
+                        <h4 style="margin:0 0 8px 0">Support</h4>
+                        <div class="small">Need help? Contact <a
+                                href="mailto:support@example.com">support@example.com</a>
+                        </div>
+                    </div>
+
+                    <div class="widget card" id="userAccessWidget">
+                        <h4 style="margin:0 0 8px 0">User Access</h4>
+                        <div class="small">Grant add/edit/delete permissions to users.</div>
+                        <div style="margin-top:10px;">
+                            <table class="access-table" id="userAccessTable">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Permissions</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <footer>
+                © 2025 MyApp — Admin console. Designed for administrators only.
+            </footer>
+        </div>
+    </main>
+
+</body>
+
+</html>

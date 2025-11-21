@@ -1,0 +1,241 @@
+:root {
+  --page-pad: 20px;
+  --card-bg: #fff;
+  --muted: #6b7280;
+  --accent: #0078d4;
+  --surface: #f8fafc;
+  --card-border: #e6e9ee;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+h1 {
+  margin: 6px 0 4px 0;
+  font-size: 20px;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* two-column layout */
+.main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+@media (max-width: 880px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(12, 12, 14, 0.04);
+}
+
+.cards-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 880px) {
+  .cards-row {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metric .value {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.metric .label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Table */
+.table-wrap {
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #eef2f6;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  font-weight: 600;
+  color: #111827;
+  background: transparent;
+}
+
+/* Right column widgets */
+.widget {
+  margin-bottom: 12px;
+}
+
+.small {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.search {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e6e9ee;
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid #dbe8f7;
+}
+
+/* Footer */
+footer {
+  padding: 14px 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Logout modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+
+.modal {
+  background: #fff;
+  padding: 18px;
+  border-radius: 10px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 12px 40px rgba(2, 6, 23, 0.25);
+}
+
+.modal h3 {
+  margin: 0 0 8px 0;
+}
+
+.modal .row {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+/* Permissions / User Access styles */
+.access-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+.access-table th,
+.access-table td {
+  padding: 8px;
+  border-bottom: 1px solid #eef2f6;
+  text-align: left;
+  font-size: 14px;
+}
+.access-table th {
+  font-weight: 600;
+  color: #111827;
+}
+.perm-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.perm-badge {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #eef6ff;
+  color: var(--accent);
+  border: 1px solid #dbeffd;
+}
+.manage-btn {
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 0;
+  background: #f3f4f6;
+  cursor: pointer;
+}
+.manage-btn:hover {
+  background: #eceef2;
+}
+
+.permission-row .no-perms {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Small form inside modal */
+.perm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+.perm-form label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.perm-form input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}

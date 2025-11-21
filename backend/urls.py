@@ -32,6 +32,7 @@ urlpatterns = [
     path('supply/', login_required(index.supplyPage, login_url='/login/'), name='supply'),
     path('sales/', login_required(index.salesPage, login_url='/login/'), name='sales'),
     path('about/', login_required(index.aboutPage, login_url='/login/'), name='about'),
+    path('admin-settings/', login_required(index.adminSettingsPage, login_url='/login/'), name='admin_settings'),
 
     # --- crud ---
     path('employee-info/delete/<int:employee_id>/', index.delete_employee, name='delete_employee'),
