@@ -23,8 +23,6 @@
     {% include 'header.html' with page="Payment Management" %}
 
     <div class="container">
-      <h1 class="web-page">Payment Management</h1>
-
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search Payment by Order ID:" onkeyup="searchPayment()">
         <div class="button-container">
@@ -72,7 +70,7 @@
               <th>Order ID</th>
               <th>Customer Name</th>
               <th>Amount</th>
-              <th>Date</th>
+              <th>Date <button id="paymentDateSortBtn" class="sort-btn" title="Sort by date"><i class="fas fa-sort"></i></button></th>
               <th>Method</th>
               <th>Action</th>
             </tr>

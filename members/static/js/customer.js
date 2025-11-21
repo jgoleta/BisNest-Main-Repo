@@ -182,3 +182,53 @@ document.addEventListener("click", function (e) {
     }
   });
 })();
+
+//sort by date added
+(function() {
+  const sortBtn = document.getElementById("customerDateSortBtn");
+  const table = document.querySelector(".table");
+  if (!sortBtn || !table) return;
+
+  let isAscending = null;
+
+  sortBtn.addEventListener("click", function(e) {
+    e.stopPropagation();
+    const tbody = table.querySelector("tbody");
+    if (!tbody) return;
+
+    isAscending = isAscending === null || isAscending === false ? true : false;
+
+    const ths = Array.from(table.querySelectorAll("thead th"));
+    let dateColIndex = ths.findIndex(th => {
+      const txt = (th.textContent || "").trim().toLowerCase();
+      return txt.includes("date added") || txt.includes("date") || txt.includes("added");
+    });
+    if (dateColIndex === -1) dateColIndex = 4; // fallback column index
+
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    rows.sort((a, b) => {
+      const aText = (a.cells[dateColIndex]?.textContent || "").trim();
+      const bText = (b.cells[dateColIndex]?.textContent || "").trim();
+
+      const aDate = Date.parse(aText);
+      const bDate = Date.parse(bText);
+
+      if (!isNaN(aDate) && !isNaN(bDate)) {
+        return isAscending ? aDate - bDate : bDate - aDate;
+      }
+
+      const aLower = aText.toLowerCase();
+      const bLower = bText.toLowerCase();
+      return isAscending ? aLower.localeCompare(bLower) : bLower.localeCompare(aLower);
+    });
+
+    tbody.innerHTML = "";
+    rows.forEach(row => tbody.appendChild(row));
+
+    const icon = sortBtn.querySelector("i");
+    if (icon) {
+      icon.className = isAscending ? "fas fa-sort-up" : "fas fa-sort-down";
+    }
+  });
+})();

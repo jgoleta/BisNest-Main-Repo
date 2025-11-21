@@ -34,33 +34,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (newBtn) {
-  newBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    resetOrderForm(); // clear previous state
+    newBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      resetOrderForm(); // clear previous state
 
-    const orderIdInput = document.querySelector('[name="order_id"]');
-    if (orderIdInput) {
-      const rows = document.querySelectorAll("#order-table tbody tr");
+      const orderIdInput = document.querySelector('[name="order_id"]');
+      if (orderIdInput) {
+        const rows = document.querySelectorAll("#order-table tbody tr");
 
-      if (rows.length > 0) {
-        // Find the *highest* existing numeric part among all IDs
-        let maxNum = 0;
-        rows.forEach((row) => {
-          const idText = row.cells[0].textContent.trim();
-          const num = parseInt(idText.replace(/\D/g, "")) || 0;
-          if (num > maxNum) maxNum = num;
-        });
-        const nextNum = maxNum + 1;
-        orderIdInput.value = `O${nextNum.toString().padStart(4, "0")}`;
-      } else {
-        orderIdInput.value = "O0001";
+        if (rows.length > 0) {
+          // Find the *highest* existing numeric part among all IDs
+          let maxNum = 0;
+          rows.forEach((row) => {
+            const idText = row.cells[0].textContent.trim();
+            const num = parseInt(idText.replace(/\D/g, "")) || 0;
+            if (num > maxNum) maxNum = num;
+          });
+          const nextNum = maxNum + 1;
+          orderIdInput.value = `O${nextNum.toString().padStart(4, "0")}`;
+        } else {
+          orderIdInput.value = "O0001";
+        }
       }
-    }
 
-    openModal();
-  });
-}
-
+      openModal();
+    });
+  }
 
   //cancel button
   if (cancelBtn) {
@@ -78,14 +77,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  //edit button 
+  //edit button
   document.addEventListener("click", (e) => {
     const btn = e.target.closest(".edit-button");
     if (!btn) return;
 
     e.preventDefault();
 
-    const id = btn.getAttribute("data-id"); 
+    const id = btn.getAttribute("data-id");
     const order_id = btn.getAttribute("data-order_id");
     const customer = btn.getAttribute("data-customer");
     const employee = btn.getAttribute("data-employee");
@@ -125,33 +124,102 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //sort
   let orderSortAscending = true;
-if (sortBtn && orderTableBody) {
-  // detect customer column index from the table header (robust if columns moved)
-  const orderTable = document.querySelector("#order-table");
-  let customerColIndex = 1; // fallback
-  if (orderTable) {
-    const ths = Array.from(orderTable.querySelectorAll("thead th"));
-    const idx = ths.findIndex(th => (th.textContent || "").trim().toLowerCase().includes("customer"));
-    if (idx !== -1) customerColIndex = idx;
+  if (sortBtn && orderTableBody) {
+    // detect customer column index from the table header (robust if columns moved)
+    const orderTable = document.querySelector("#order-table");
+    let customerColIndex = 1; // fallback
+    if (orderTable) {
+      const ths = Array.from(orderTable.querySelectorAll("thead th"));
+      const idx = ths.findIndex((th) =>
+        (th.textContent || "").trim().toLowerCase().includes("customer")
+      );
+      if (idx !== -1) customerColIndex = idx;
+    }
+
+    sortBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const rows = Array.from(orderTableBody.querySelectorAll("tr"));
+      orderSortAscending = !orderSortAscending; // toggle
+      rows.sort((a, b) => {
+        const aText = (a.cells[customerColIndex]?.textContent || "")
+          .trim()
+          .toLowerCase();
+        const bText = (b.cells[customerColIndex]?.textContent || "")
+          .trim()
+          .toLowerCase();
+        return orderSortAscending
+          ? aText.localeCompare(bText, undefined, {
+              sensitivity: "base",
+              numeric: false,
+            })
+          : bText.localeCompare(aText, undefined, {
+              sensitivity: "base",
+              numeric: false,
+            });
+      });
+      orderTableBody.innerHTML = "";
+      rows.forEach((r) => orderTableBody.appendChild(r));
+      const icon = sortBtn.querySelector("i");
+      if (icon)
+        icon.className = orderSortAscending
+          ? "fas fa-sort-up"
+          : "fas fa-sort-down";
+    });
   }
 
-  sortBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const rows = Array.from(orderTableBody.querySelectorAll("tr"));
-    orderSortAscending = !orderSortAscending; // toggle
-    rows.sort((a, b) => {
-      const aText = (a.cells[customerColIndex]?.textContent || "").trim().toLowerCase();
-      const bText = (b.cells[customerColIndex]?.textContent || "").trim().toLowerCase();
-      return orderSortAscending
-        ? aText.localeCompare(bText, undefined, { sensitivity: "base", numeric: false })
-        : bText.localeCompare(aText, undefined, { sensitivity: "base", numeric: false });
+  let orderDateAscending = null;
+  const orderDateSortBtn = document.getElementById("orderDateSortBtn");
+  if (orderDateSortBtn && orderTableBody) {
+    orderDateSortBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      const tbody = orderTableBody;
+      if (!tbody) return;
+
+      //ascend on 1st click
+      orderDateAscending =
+        orderDateAscending === null || orderDateAscending === false
+          ? true
+          : false;
+
+      const orderTable = document.querySelector("#order-table");
+      let dateColIndex = 5;
+      if (orderTable) {
+        const ths = Array.from(orderTable.querySelectorAll("thead th"));
+        const idx = ths.findIndex((th) =>
+          (th.textContent || "").trim().toLowerCase().includes("date")
+        );
+        if (idx !== -1) dateColIndex = idx;
+      }
+
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+      rows.sort((a, b) => {
+        const aText = (a.cells[dateColIndex]?.textContent || "").trim();
+        const bText = (b.cells[dateColIndex]?.textContent || "").trim();
+
+        const aDate = Date.parse(aText);
+        const bDate = Date.parse(bText);
+
+        if (!isNaN(aDate) && !isNaN(bDate)) {
+          return orderDateAscending ? aDate - bDate : bDate - aDate;
+        }
+
+        const aLower = aText.toLowerCase();
+        const bLower = bText.toLowerCase();
+        return orderDateAscending
+          ? aLower.localeCompare(bLower)
+          : bLower.localeCompare(aLower);
+      });
+
+      tbody.innerHTML = "";
+      rows.forEach((r) => tbody.appendChild(r));
+
+      const icon = orderDateSortBtn.querySelector("i");
+      if (icon)
+        icon.className = orderDateAscending
+          ? "fas fa-sort-up"
+          : "fas fa-sort-down";
     });
-    orderTableBody.innerHTML = "";
-    rows.forEach(r => orderTableBody.appendChild(r));
-    const icon = sortBtn.querySelector("i");
-    if (icon) icon.className = orderSortAscending ? "fas fa-sort-up" : "fas fa-sort-down";
-  });
-}
+  }
 
   //form submut
   if (orderForm) {
@@ -165,21 +233,21 @@ if (sortBtn && orderTableBody) {
 });
 
 function searchCustomer() {
-      const input = document.getElementById("searchInput");
-      const filter = (input.value || "").toLowerCase();
-      const table = document.querySelector(".table tbody");
-      if (!table) return;
-      const rows = table.getElementsByTagName("tr");
+  const input = document.getElementById("searchInput");
+  const filter = (input.value || "").toLowerCase();
+  const table = document.querySelector(".table tbody");
+  if (!table) return;
+  const rows = table.getElementsByTagName("tr");
 
-      for (let i = 0; i < rows.length; i++) {
-        const nameCell = rows[i].getElementsByTagName("td")[1];
-        if (nameCell) {
-          const nameText = nameCell.textContent || nameCell.innerText;
-          if (nameText.toLowerCase().indexOf(filter) > -1) {
-            rows[i].style.display = "";
-          } else {
-            rows[i].style.display = "none";
-          }
-        }
+  for (let i = 0; i < rows.length; i++) {
+    const nameCell = rows[i].getElementsByTagName("td")[1];
+    if (nameCell) {
+      const nameText = nameCell.textContent || nameCell.innerText;
+      if (nameText.toLowerCase().indexOf(filter) > -1) {
+        rows[i].style.display = "";
+      } else {
+        rows[i].style.display = "none";
       }
     }
+  }
+}

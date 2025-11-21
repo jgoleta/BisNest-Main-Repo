@@ -37,8 +37,6 @@
           <button class="product-button-style" data-id="{{ product.product_id }}" data-name="{{ product.name }}"
             data-price="{{ product.price }}" data-stock="{{ product.stock }}"
             data-image="{% if product.image %}{{ product.image.url }}{% endif %}">
-            <img src="{% if product.image %}{{ product.image.url }}{% else %}{{ '' }}{% endif %}" class="parts-logo"
-              alt="{{ product.name }}">
             <p class="product-price-label">₱{{ product.price|floatformat:2 }}</p>
             <p class="product-price-name">{{ product.name }}</p>
           </button>
@@ -71,10 +69,6 @@
             <div class="modal-label">
               <label for="add-product-price">Price (₱):</label>
               {{ form.price }}
-            </div>
-            <div class="modal-label">
-              <label for="add-product-image">Image:</label>
-              {{ form.image }}
             </div>
             <button type="submit" class="submit-button"
               style="margin-top: 18px; min-width: 120px; font-size: 1.1rem; float: right;">Add</button>

@@ -85,6 +85,7 @@
                                             class="fas fa-sort"></i></button></th>
                                 <th>Phone</th>
                                 <th>Address</th>
+                                <th>Date Added <button id="customerDateSortBtn" class="sort-btn" title="Sort by date"><i class="fas fa-sort"></i></button></th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -96,6 +97,7 @@
                                 <td>{{ cust.name }}</td>
                                 <td>{{ cust.phone }}</td>
                                 <td>{{ cust.address }}</td>
+                                <td>{{ cust.date_added }}</td>
                                 <td>
                                     <button type="button" class="edit-button" data-id="{{ cust.id }}"
                                         data-name="{{ cust.name }}" data-phone="{{ cust.phone }}"
