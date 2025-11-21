@@ -25,6 +25,16 @@ body {
   grid-template-columns: auto 1fr;
 }
 
+.header-container {
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+  background-color: var(--sidebar-clr);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1em 2em;
+  color: var(--text-clr);
+}
+
 /*Sidebar Style*/
 #sidebar {
   box-sizing: border-box;
@@ -301,8 +311,9 @@ main {
 
 .delete-button:hover,
 .delete-modal-btn:hover,
-.delete-btn:hover {
-  background: #b40202 !important;
+.delete-btn:hover,
+.cancel-button:hover {
+  background: red !important;
   color: #ffffff !important;
   border: none;
 }
@@ -324,9 +335,7 @@ main {
 }
 
 .toggle-form-button,
-.add-button,
-.submit-button,
-.cancel-button {
+.add-button{
   padding: 12px 20px;
   font-weight: bold;
   border: none;
@@ -346,10 +355,33 @@ main {
 .toggle-form-button:hover,
 .add-button:hover,
 .submit-button:hover,
-.edit-button:hover,
-.cancel-button:hover {
+.edit-button:hover{
   background-color: #4f46e5 !important;
   border: none !important;
+}
+
+.button-container {
+  margin-left: auto;
+}
+
+.cancel-button,
+.submit-button {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background: #ccc;
+  color: #222;
+  margin-right: 10px;
+}
+
+.submit-button {
+  background: var(--accent-clr, #5e63ff) !important;
+  color: #fff;
 }
 
 .button-container {
@@ -367,6 +399,30 @@ main {
 }
 
 
+
+/* Sort Button Styles */
+.sort-btn {
+  background: none;
+  border: none;
+  cursor: pointer !important;
+  padding: 0 5px;
+  color: inherit;
+  vertical-align: middle;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+  user-select: none;
+}
+
+.sort-btn:hover {
+  color: var(--accent-clr);
+}
+
+.sort-btn i {
+  font-size: 14px;
+  pointer-events: none;
+}
 
 /*Custom Scroll*/
 .table-wrapper::-webkit-scrollbar,

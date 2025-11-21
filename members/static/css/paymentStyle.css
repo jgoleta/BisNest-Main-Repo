@@ -1,122 +1,216 @@
-/*Main Content*/
+
+/* Button container */
+.button-container {
+  margin-left: auto;
+}
+
+/* Overlay for modal */
+.modal-overlay-payment {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1001;
+  display: none;
+}
+
+/* Payment Form Container */
+.payment-form-container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1002;
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e0e0e0;
+  width: 750px;
+  max-width: 90vw;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+/* Payment Form Inputs */
+.payment-form label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+  color: #111;
+}
+
+.payment-form input,
+.payment-form select,
+.payment-form textarea {
+  width: -webkit-fill-available;
+  margin-top: 6px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  background: #fff;
+  color: #111;
+  font-family: inherit;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.submit-wrapper {
+  text-align: right;
+}
+
+/* Table Wrapper */
+.table-wrapper-payment {
+  max-height: 70vh;
+  overflow-y: auto;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  border-radius: 10px;
+}
+
+/* Sticky Header */
+.table-wrapper-payment thead th {
+  position: sticky;
+  top: 0;
+  background: var(--primary-color);
+  color: #fff;
+  z-index: 2;
+}
+
+/* Table Styling */
+.table-payment {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: #111;
+  font-size: 15px;
+}
+
+.table-payment th,
+.table-payment td {
+  padding: 14px 16px;
+  text-align: center;
+  border: none;
+}
+
+.table-payment thead th {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.table-payment tr:last-child td {
+  border-bottom: none;
+}
+
+/* Form Title */
+.form-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #111;
+  text-align: center;
+}
+
+/* ===============================
+   RESPONSIVENESS
+================================*/
+
+@media (max-width: 1024px) {
+  .payment-form-container {
+    width: 85vw;
+    padding: 20px;
+  }
+
+  .table-payment th,
+  .table-payment td {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 800px) {
+  .payment-form-container {
+    width: 95vw;
+    padding: 15px;
+  }
+
+  .form-title {
+    font-size: 18px;
+  }
+
+  .table-wrapper-payment {
+    max-height: 60vh;
+  }
+
+  .table-payment th,
+  .table-payment td {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 600px) {
+  .payment-form-container {
+    width: 95vw;
+    padding: 12px;
+    max-height: 85vh;
+  }
+
+  .form-title {
+    font-size: 17px;
+  }
+
+  .payment-form input,
+  .payment-form select,
+  .payment-form textarea {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .table-payment th,
+  .table-payment td {
+    padding: 8px;
+    font-size: 12px;
+    word-wrap: break-word;
+  }
+
+  .table-wrapper-payment {
+    max-height: 55vh;
+  }
+
+  .submit-wrapper {
+    text-align: center;
+  }
+}
+.payment-form-container,
+.modal-overlay {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.payment-form-container.active,
+.modal-overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* space between icon and text */
+  font-weight: 600;
+  color: #111;
+}
 
 
-    .main-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 40px;
-      background: #fff;
-      height: 100%;
-      margin-top: 80px;
-    }
+/* Optional: adjust SVG size and position */
+.form-group label svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
 
-    .search-bar {
-      margin: 10px 0;
-      margin-top: -10px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .search-bar input {
-      padding: 10px 14px;
-      border: 1px solid #bbb;
-      border-radius: 8px;
-      font-size: 15px;
-      max-width: 500px;
-      flex: 1;
-      background: #fff;
-      color: #111;
-    }
-
-    /*End Main Content*/
-
-    /*Payment Unique Style*/
-    .submitted-payments .table-header,
-    .submitted-payments .table-row {
-      text-align: center;
-    }
-
-    .table-container {
-      width: 100%;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .table-row div,
-    .table-header div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .table-header {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      background-color: #1e293b;
-      color: #fff;
-      padding: 12px 0;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .table-body {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .table-row {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      padding: 12px 0;
-      border-bottom: 1px solid #ddd;
-      align-items: center;
-    }
-
-    .table-input-row {
-      background-color: #ffffff !important;
-      border: none !important;
-      box-shadow: none !important;
-      margin-bottom: 20px !important;
-    }
-    
-    .table-input-row div {
-      justify-content: center !important;
-      
-
-    }
-
-    .table-row select,
-    .table-row input {
-      width: 90%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-family: 'Sen', sans-serif;
-    }
-
-    .table-row:nth-child(even) {
-      background-color: #f5f5f5;
-    }
-
-    @media (max-width: 768px) {
-
-      .table-header,
-      .table-row {
-        grid-template-columns: repeat(5, 1fr);
-      }
-
-      .table-header div:nth-child(6),
-      .table-row div:nth-child(6) {
-        display: none;
-      }
-    }
-
-    .action-buttons {
-      display: inline-flex;
-      gap: 0.5rem;
-      align-items: center;
-      justify-content: center;
-    }
-    /*End Table*/

@@ -89,33 +89,6 @@ function searchCustomer() {
   });
 }
 
-document.querySelectorAll("#customer-table th").forEach((header, colIndex) => {
-  if (colIndex > 1) return;
-
-  header.style.cursor = "pointer";
-  header.addEventListener("click", () => {
-    const isAscending = header.classList.contains("asc");
-    document
-      .querySelectorAll("#customer-table th")
-      .forEach((th) => th.classList.remove("asc", "desc"));
-    header.classList.add(isAscending ? "desc" : "asc");
-
-    customerData.sort((a, b) => {
-      const aValue = Object.values(a)[colIndex];
-      const bValue = Object.values(b)[colIndex];
-      return isAscending
-        ? aValue
-            .toString()
-            .localeCompare(bValue.toString(), undefined, { numeric: true })
-        : bValue
-            .toString()
-            .localeCompare(aValue.toString(), undefined, { numeric: true });
-    });
-
-    renderTable();
-  });
-});
-
 function searchCustomer() {
   const input = document.getElementById("searchInput");
   const filter = (input.value || "").toLowerCase();
@@ -174,3 +147,88 @@ document.addEventListener("click", function (e) {
 
   formContainer.scrollIntoView({ behavior: "smooth", block: "center" });
 });
+
+// Sort customer by name
+(function() {
+  const sortBtn = document.getElementById("customerNameSortBtn"); // id in HTML
+  const table = document.querySelector(".table");
+  if (!sortBtn || !table) return;
+
+  let isAscending = null;
+
+  sortBtn.addEventListener("click", function(e) {
+    e.stopPropagation();
+    const tbody = table.querySelector("tbody");
+    if (!tbody) return;
+
+    isAscending = isAscending === null || isAscending === false ? true : false;
+
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    rows.sort((a, b) => {
+      const aName = (a.cells[1].textContent || "").trim().toLowerCase();
+      const bName = (b.cells[1].textContent || "").trim().toLowerCase();
+      return isAscending
+        ? aName.localeCompare(bName, undefined, { sensitivity: "base", numeric: false })
+        : bName.localeCompare(aName, undefined, { sensitivity: "base", numeric: false });
+    });
+
+    tbody.innerHTML = "";
+    rows.forEach(row => tbody.appendChild(row));
+
+    const icon = sortBtn.querySelector("i");
+    if (icon) {
+      icon.className = isAscending ? "fas fa-sort-up" : "fas fa-sort-down";
+    }
+  });
+})();
+
+//sort by date added
+(function() {
+  const sortBtn = document.getElementById("customerDateSortBtn");
+  const table = document.querySelector(".table");
+  if (!sortBtn || !table) return;
+
+  let isAscending = null;
+
+  sortBtn.addEventListener("click", function(e) {
+    e.stopPropagation();
+    const tbody = table.querySelector("tbody");
+    if (!tbody) return;
+
+    isAscending = isAscending === null || isAscending === false ? true : false;
+
+    const ths = Array.from(table.querySelectorAll("thead th"));
+    let dateColIndex = ths.findIndex(th => {
+      const txt = (th.textContent || "").trim().toLowerCase();
+      return txt.includes("date added") || txt.includes("date") || txt.includes("added");
+    });
+    if (dateColIndex === -1) dateColIndex = 4; // fallback column index
+
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    rows.sort((a, b) => {
+      const aText = (a.cells[dateColIndex]?.textContent || "").trim();
+      const bText = (b.cells[dateColIndex]?.textContent || "").trim();
+
+      const aDate = Date.parse(aText);
+      const bDate = Date.parse(bText);
+
+      if (!isNaN(aDate) && !isNaN(bDate)) {
+        return isAscending ? aDate - bDate : bDate - aDate;
+      }
+
+      const aLower = aText.toLowerCase();
+      const bLower = bText.toLowerCase();
+      return isAscending ? aLower.localeCompare(bLower) : bLower.localeCompare(aLower);
+    });
+
+    tbody.innerHTML = "";
+    rows.forEach(row => tbody.appendChild(row));
+
+    const icon = sortBtn.querySelector("i");
+    if (icon) {
+      icon.className = isAscending ? "fas fa-sort-up" : "fas fa-sort-down";
+    }
+  });
+})();

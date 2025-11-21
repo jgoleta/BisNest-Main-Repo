@@ -26,6 +26,7 @@ class Customer(models.Model):
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
     address = models.TextField()
+    date_added = models.DateField(default=now)
 
     class Meta:
         ordering = ['id']
