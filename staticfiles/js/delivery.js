@@ -60,54 +60,54 @@ function getCookie(name) {
       cancelBtn.addEventListener('click', toggleForm);
 
       // sort by scheduled date
-    let deliveryDateAscending = null;
-    const deliveryDateSortBtn = document.getElementById('deliveryDateSortBtn');
-    if (deliveryDateSortBtn && deliveryTableBody) {
-      deliveryDateSortBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        // toggle: start ascending on first click
-        deliveryDateAscending =
-          deliveryDateAscending === null || deliveryDateAscending === false
-            ? true
-            : false;
+      let deliveryDateAscending = null;
+      const deliveryDateSortBtn = document.getElementById('deliveryDateSortBtn');
+      if (deliveryDateSortBtn && deliveryTableBody) {
+        deliveryDateSortBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          // toggle: start ascending on first click
+          deliveryDateAscending =
+            deliveryDateAscending === null || deliveryDateAscending === false
+              ? true
+              : false;
 
-        const deliveryTable = document.getElementById('deliveryTable');
-        let dateColIndex = 4; // fallback (Delivery ID=0, Order ID=1, Customer=2, Address=3, Scheduled Date=4)
-        if (deliveryTable) {
-          const ths = Array.from(deliveryTable.querySelectorAll('thead th'));
-          const idx = ths.findIndex((th) =>
-            (th.textContent || '').trim().toLowerCase().includes('date')
-          );
-          if (idx !== -1) dateColIndex = idx;
-        }
-
-        const rows = Array.from(deliveryTableBody.querySelectorAll('tr'));
-        rows.sort((a, b) => {
-          const aText = (a.cells[dateColIndex]?.textContent || '').trim();
-          const bText = (b.cells[dateColIndex]?.textContent || '').trim();
-
-          const aDate = Date.parse(aText);
-          const bDate = Date.parse(bText);
-
-          if (!isNaN(aDate) && !isNaN(bDate)) {
-            return deliveryDateAscending ? aDate - bDate : bDate - aDate;
+          const deliveryTable = document.getElementById('deliveryTable');
+          let dateColIndex = 4; // fallback (Delivery ID=0, Order ID=1, Customer=2, Address=3, Scheduled Date=4)
+          if (deliveryTable) {
+            const ths = Array.from(deliveryTable.querySelectorAll('thead th'));
+            const idx = ths.findIndex((th) =>
+              (th.textContent || '').trim().toLowerCase().includes('date')
+            );
+            if (idx !== -1) dateColIndex = idx;
           }
 
-          const aLower = aText.toLowerCase();
-          const bLower = bText.toLowerCase();
-          return deliveryDateAscending
-            ? aLower.localeCompare(bLower)
-            : bLower.localeCompare(aLower);
+          const rows = Array.from(deliveryTableBody.querySelectorAll('tr'));
+          rows.sort((a, b) => {
+            const aText = (a.cells[dateColIndex]?.textContent || '').trim();
+            const bText = (b.cells[dateColIndex]?.textContent || '').trim();
+
+            const aDate = Date.parse(aText);
+            const bDate = Date.parse(bText);
+
+            if (!isNaN(aDate) && !isNaN(bDate)) {
+              return deliveryDateAscending ? aDate - bDate : bDate - aDate;
+            }
+
+            const aLower = aText.toLowerCase();
+            const bLower = bText.toLowerCase();
+            return deliveryDateAscending
+              ? aLower.localeCompare(bLower)
+              : bLower.localeCompare(aLower);
+          });
+
+          deliveryTableBody.innerHTML = '';
+          rows.forEach((r) => deliveryTableBody.appendChild(r));
+
+          const icon = deliveryDateSortBtn.querySelector('i');
+          if (icon)
+            icon.className = deliveryDateAscending ? 'fas fa-sort-up' : 'fas fa-sort-down';
         });
-
-        deliveryTableBody.innerHTML = '';
-        rows.forEach((r) => deliveryTableBody.appendChild(r));
-
-        const icon = deliveryDateSortBtn.querySelector('i');
-        if (icon)
-          icon.className = deliveryDateAscending ? 'fas fa-sort-up' : 'fas fa-sort-down';
-      });
-    }
+      }
     });
 
 
@@ -145,23 +145,43 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-//search by customer name
+// search deliveries by delivery ID, order ID, or customer name
 function searchCustomer() {
   const input = document.getElementById("searchInput");
-  const filter = (input.value || "").toLowerCase();
+  const filter = (input.value || "").toLowerCase().trim();
   const tableBody =
     document.querySelector("#deliveryTableBody") ||
     document.querySelector(".table tbody") ||
     document.querySelector("table tbody");
+
   if (!tableBody) return;
   const rows = tableBody.getElementsByTagName("tr");
 
   for (let i = 0; i < rows.length; i++) {
     const tds = rows[i].getElementsByTagName("td");
-    const nameCell = tds[2] || tds[1];
-    if (nameCell) {
-      const nameText = nameCell.textContent || nameCell.innerText;
-      rows[i].style.display = nameText.toLowerCase().includes(filter) ? "" : "none";
+    if (!tds.length) {
+      rows[i].style.display = filter ? "none" : "";
+      continue;
     }
+
+    const deliveryIdText = tds[0] ? (tds[0].textContent || "").toLowerCase() : "";
+    const orderIdText = tds[1] ? (tds[1].textContent || "").toLowerCase() : "";
+    const customerNameText = tds[2]
+      ? (tds[2].textContent || "").toLowerCase()
+      : tds[1]
+      ? (tds[1].textContent || "").toLowerCase()
+      : "";
+
+    if (!filter) {
+      rows[i].style.display = "";
+      continue;
+    }
+
+    const matches =
+      deliveryIdText.includes(filter) ||
+      orderIdText.includes(filter) ||
+      customerNameText.includes(filter);
+
+    rows[i].style.display = matches ? "" : "none";
   }
 }

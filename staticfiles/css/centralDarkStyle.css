@@ -371,8 +371,8 @@ body.dark-mode .dark-mode-toggle:hover {
 /* Responsive adjustments for dark mode */
 @media (max-width: 768px) {
   .dark-mode-toggle {
-    right: 20px;
-    top: 30px;
+    left: 12px;
+    bottom: 20px;
     width: 35px;
     height: 35px;
   }
@@ -424,4 +424,6 @@ body.dark-mode .delivery-form-container {
   scrollbar-width: thin;
   scrollbar-color: var(--palette-gray) #1a202c;
 }
+
+/* (reverted) sidebar-specific dark mode toggle styles removed */
 
