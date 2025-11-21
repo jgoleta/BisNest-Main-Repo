@@ -48,6 +48,7 @@ function getCookie(name) {
       const formContainer = document.getElementById('deliveryForm');
       const modalOverlay = document.getElementById('modalOverlay');
       const cancelBtn = document.getElementById('cancelBtn');
+      const deliveryTableBody = document.getElementById('deliveryTableBody');
 
       function toggleForm() {
         const isHidden = formContainer.style.display === 'none' || formContainer.style.display === '';
@@ -57,6 +58,56 @@ function getCookie(name) {
       addBtn.addEventListener('click', toggleForm);
       modalOverlay.addEventListener('click', toggleForm);
       cancelBtn.addEventListener('click', toggleForm);
+
+      // sort by scheduled date
+    let deliveryDateAscending = null;
+    const deliveryDateSortBtn = document.getElementById('deliveryDateSortBtn');
+    if (deliveryDateSortBtn && deliveryTableBody) {
+      deliveryDateSortBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        // toggle: start ascending on first click
+        deliveryDateAscending =
+          deliveryDateAscending === null || deliveryDateAscending === false
+            ? true
+            : false;
+
+        const deliveryTable = document.getElementById('deliveryTable');
+        let dateColIndex = 4; // fallback (Delivery ID=0, Order ID=1, Customer=2, Address=3, Scheduled Date=4)
+        if (deliveryTable) {
+          const ths = Array.from(deliveryTable.querySelectorAll('thead th'));
+          const idx = ths.findIndex((th) =>
+            (th.textContent || '').trim().toLowerCase().includes('date')
+          );
+          if (idx !== -1) dateColIndex = idx;
+        }
+
+        const rows = Array.from(deliveryTableBody.querySelectorAll('tr'));
+        rows.sort((a, b) => {
+          const aText = (a.cells[dateColIndex]?.textContent || '').trim();
+          const bText = (b.cells[dateColIndex]?.textContent || '').trim();
+
+          const aDate = Date.parse(aText);
+          const bDate = Date.parse(bText);
+
+          if (!isNaN(aDate) && !isNaN(bDate)) {
+            return deliveryDateAscending ? aDate - bDate : bDate - aDate;
+          }
+
+          const aLower = aText.toLowerCase();
+          const bLower = bText.toLowerCase();
+          return deliveryDateAscending
+            ? aLower.localeCompare(bLower)
+            : bLower.localeCompare(aLower);
+        });
+
+        deliveryTableBody.innerHTML = '';
+        rows.forEach((r) => deliveryTableBody.appendChild(r));
+
+        const icon = deliveryDateSortBtn.querySelector('i');
+        if (icon)
+          icon.className = deliveryDateAscending ? 'fas fa-sort-up' : 'fas fa-sort-down';
+      });
+    }
     });
 
 
@@ -76,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
   sortBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const rows = Array.from(deliveryTableBody.querySelectorAll("tr"));
-    deliverySortAscending = !deliverySortAscending; // toggle order
+    deliverySortAscending = !deliverySortAscending; //toggle order
 
     rows.sort((a, b) => {
       const aText = (a.cells[customerColIndex]?.textContent || "").trim().toLowerCase();
