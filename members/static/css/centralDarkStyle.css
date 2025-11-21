@@ -370,7 +370,7 @@
 }
 
 #theme-switch {
-  background-color: var(--base-clr);
+  background-color: var(--palette-header);
   align-items: center;
 }
 

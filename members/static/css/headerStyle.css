@@ -12,9 +12,6 @@
   --font-ui: 'Roboto', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
 }
 
-
-
-
 /* Apply base font in case centralStyle isn't present */
 body { font-family: var(--font-sans); }
 
@@ -159,8 +156,7 @@ body { font-family: var(--font-sans); }
   padding-left: 8px;
 }
 
-.menu-item:hover,
-.menu-item:focus {
+.menu-item:hover {
   background: rgba(0, 0, 0, 0.04);
 }
 
@@ -177,7 +173,6 @@ body { font-family: var(--font-sans); }
   color: var(--danger);
 }
 
-/* Ensure hidden attribute hides the menu */
 .user-menu[hidden] {
   display: none !important;
 }
@@ -204,9 +199,7 @@ body { font-family: var(--font-sans); }
 
 /* Disable hover/focus background for the theme-switch (dark mode) button when dark mode is active */
 .darkmode #theme-switch:hover,
-[data-theme="dark"] #theme-switch:hover,
-.darkmode #theme-switch:focus,
-[data-theme="dark"] #theme-switch:focus {
+[data-theme="dark"] #theme-switch:hover {
   background: transparent !important;
   color: inherit !important;
 }
