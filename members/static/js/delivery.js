@@ -59,25 +59,44 @@ function getCookie(name) {
       cancelBtn.addEventListener('click', toggleForm);
     });
 
-    //search by customer name
+// search deliveries by delivery ID, order ID, or customer name
 function searchCustomer() {
   const input = document.getElementById("searchInput");
-  const filter = (input.value || "").toLowerCase();
+  const filter = (input.value || "").toLowerCase().trim();
   const tableBody =
     document.querySelector("#deliveryTableBody") ||
     document.querySelector(".table tbody") ||
     document.querySelector("table tbody");
+
   if (!tableBody) return;
+
   const rows = tableBody.getElementsByTagName("tr");
 
   for (let i = 0; i < rows.length; i++) {
     const tds = rows[i].getElementsByTagName("td");
-    const nameCell = tds[2] || tds[1];
-    if (nameCell) {
-      const nameText = nameCell.textContent || nameCell.innerText;
-      rows[i].style.display = nameText.toLowerCase().includes(filter) ? "" : "none";
-    } else {
+    if (!tds.length) {
       rows[i].style.display = filter ? "none" : "";
+      continue;
     }
+
+    const deliveryIdText = tds[0] ? (tds[0].textContent || "").toLowerCase() : "";
+    const orderIdText = tds[1] ? (tds[1].textContent || "").toLowerCase() : "";
+    const customerNameText = tds[2]
+      ? (tds[2].textContent || "").toLowerCase()
+      : tds[1]
+      ? (tds[1].textContent || "").toLowerCase()
+      : "";
+
+    if (!filter) {
+      rows[i].style.display = "";
+      continue;
+    }
+
+    const matches =
+      deliveryIdText.includes(filter) ||
+      orderIdText.includes(filter) ||
+      customerNameText.includes(filter);
+
+    rows[i].style.display = matches ? "" : "none";
   }
 }
