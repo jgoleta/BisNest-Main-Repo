@@ -1,8 +1,6 @@
 const toggleButton = document.getElementById('toggle-btn');
 const sidebar = document.getElementById('sidebar');
 
-// Initialize state from localStorage so the sidebar doesn't unexpectedly open/close
-// when navigating between pages.
 function initSidebarState() {
     try {
         const saved = localStorage.getItem('sidebarClosed');
@@ -14,7 +12,6 @@ function initSidebarState() {
             if (toggleButton) toggleButton.classList.remove('rotate');
         }
     } catch (e) {
-        // ignore localStorage errors (e.g., private mode)
     }
 }
 
@@ -22,7 +19,6 @@ function persistSidebarState() {
     try {
         localStorage.setItem('sidebarClosed', sidebar.classList.contains('close') ? 'true' : 'false');
     } catch (e) {
-        // ignore
     }
 }
 
@@ -47,12 +43,6 @@ function toggleSubMenu(button) {
     next.classList.toggle('show');
     button.classList.toggle('rotate');
 
-    // Note: Do NOT open the sidebar when toggling submenus. The sidebar should
-    // only be opened/closed via `toggleSidebar()` (user clicking the main
-    // toggle). This keeps the sidebar state predictable across navigation.
-    // When a submenu is toggled we want the sidebar to expand so the submenu
-    // items are visible — same behavior as clicking the main toggle. Persist
-    // that state so the expanded sidebar survives navigation.
     if (sidebar && sidebar.classList.contains('close')) {
         sidebar.classList.remove('close');
         if (toggleButton) toggleButton.classList.remove('rotate');
@@ -68,5 +58,4 @@ function closeAllSubMenus() {
     });
 }
 
-// Init on load
 document.addEventListener('DOMContentLoaded', initSidebarState);

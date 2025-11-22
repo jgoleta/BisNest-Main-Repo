@@ -16,204 +16,206 @@
 </head>
 
 <body>
-    
+
     {% include 'sidebar.html' %}
 
     <main class="main-content">
-
-        <div class="year-selector">
-            <label for="yearSelect">Select Year:</label>
-            <select id="yearSelect" onchange="filterByYear()">
-                <option value="">All Years</option>
-            </select>
-        </div>
-
-        <div class="yearly-summary">
-            <div class="summary-card">
-                <h3>Total Sales</h3>
-                <div class="value" id="totalSales">₱0.00</div>
-            </div>
-            <div class="summary-card">
-                <h3>Average Monthly</h3>
-                <div class="value" id="avgMonthly">₱0.00</div>
-            </div>
-            <div class="summary-card">
-                <h3>Total Transactions</h3>
-                <div class="value" id="totalTransactions">0</div>
-            </div>
-            <div class="summary-card">
-                <h3>Best Month</h3>
-                <div class="value" id="bestMonth">-</div>
-            </div>
-        </div>
-
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('detailed')">Detailed Sales</button>
-            <button class="tab" onclick="switchTab('monthly')">Monthly Sales</button>
-            <button class="tab" onclick="switchTab('daily')">Daily Sales</button>
-            <button class="tab" onclick="switchTab('weekly')">Weekly Sales</button>
-        </div>
-
-        <div id="detailed-tab" class="tab-content active">
-            <div class="table-wrapper">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Product Name</th>
-                            <th>Quantity Sold</th>
-                            <th>Price</th>
-                            <th>Total (₱)</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-body">
-                        {% for sale in sales %}
-                        <tr>
-                            <td>{{ sale.date|date:"Y-m-d" }}</td>
-                            <td>{{ sale.order.product.name }}</td>
-                            <td>{{ sale.order.quantity }}</td>
-                            <td>₱{{ sale.order.product.price }}</td>
-                            <td class="row-total">₱{{ sale.amount }}</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button type="button" class="edit-button" data-id="{{ cust.id }}"
-                                        data-name="{{ cust.name }}" data-phone="{{ cust.phone }}"
-                                        data-address="{{ cust.address }}" title="Edit customer"
-                                        aria-label="Edit customer">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                                            <path
-                                                d="M3 21v-3.75L14.81 5.44a2 2 0 0 1 2.83 0l0.92 0.92a2 2 0 0 1 0 2.83L6.75 21H3z"
-                                                stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                            <path
-                                                d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                                                stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                        </svg>
-                                    </button>
-
-                                    <form method="POST" action="{% url 'delete_sale' sale.id %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="delete-button" aria-label="Delete sale"><svg
-                                                xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                                <path
-                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                            </svg></button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                    <tfoot>
-                        <tr class="grand-total-row">
-                            <td colspan="4" style="text-align: right; font-weight: bold;">Grand Total:</td>
-                            <td id="grandTotal">₱0.00</td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-
-        <div id="monthly-tab" class="tab-content">
-            <div class="monthly-breakdown">
-                <table class="monthly-table">
-                    <thead>
-                        <tr>
-                            <th>Month</th>
-                            <th>Total Sales (₱)</th>
-                            <th>Transactions</th>
-                            <th>Average per Transaction</th>
-                        </tr>
-                    </thead>
-                    <tbody id="monthlyTableBody">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="daily-tab" class="tab-content">
-            <div class="date-selector">
-                <label for="dateSelect">Select Date:</label>
-                <input type="date" id="dateSelect" onchange="filterByDate()">
+        {% include 'header.html' with page="Sales Tracker" %}
+        <div class="container">
+            <div class="year-selector">
+                <label for="yearSelect">Select Year:</label>
+                <select id="yearSelect" onchange="filterByYear()">
+                    <option value="">All Years</option>
+                </select>
             </div>
 
-            <div class="daily-summary">
+            <div class="yearly-summary">
                 <div class="summary-card">
-                    <h3>Daily Total</h3>
-                    <div class="value" id="dailyTotal">₱0.00</div>
+                    <h3>Total Sales</h3>
+                    <div class="value" id="totalSales">₱0.00</div>
                 </div>
                 <div class="summary-card">
-                    <h3>Transactions</h3>
-                    <div class="value" id="dailyTransactions">0</div>
-                </div>
-                <div class="summary-card">
-                    <h3>Average per Sale</h3>
-                    <div class="value" id="dailyAverage">₱0.00</div>
-                </div>
-            </div>
-
-            <div class="daily-breakdown">
-                <table class="monthly-table">
-                    <thead>
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Quantity Sold</th>
-                            <th>Price per Unit</th>
-                            <th>Total (₱)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="dailyTableBody">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="weekly-tab" class="tab-content">
-            <div class="week-selector">
-                <label for="weekSelect">Choose which week to view:</label>
-                <input type="week" id="weekSelect" onchange="filterByWeek()">
-                <div id="weekDisplay" style="margin-top:8px;"></div>
-            </div>
-
-            <div class="weekly-summary">
-                <div class="summary-card">
-                    <h3>Weekly Total</h3>
-                    <div class="value" id="weeklyTotal">₱0.00</div>
+                    <h3>Average Monthly</h3>
+                    <div class="value" id="avgMonthly">₱0.00</div>
                 </div>
                 <div class="summary-card">
                     <h3>Total Transactions</h3>
-                    <div class="value" id="weeklyTransactions">0</div>
+                    <div class="value" id="totalTransactions">0</div>
                 </div>
                 <div class="summary-card">
-                    <h3>Daily Average</h3>
-                    <div class="value" id="weeklyDailyAverage">₱0.00</div>
+                    <h3>Best Month</h3>
+                    <div class="value" id="bestMonth">-</div>
                 </div>
             </div>
 
-            <div class="weekly-breakdown">
-                <table class="monthly-table">
-                    <thead>
-                        <tr>
-                            <th>Day</th>
-                            <th>Total Sales (₱)</th>
-                            <th>Transactions</th>
-                            <th>Average per Transaction</th>
-                        </tr>
-                    </thead>
-                    <tbody id="weeklyTableBody">
-                    </tbody>
-                </table>
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('detailed')">Detailed Sales</button>
+                <button class="tab" onclick="switchTab('monthly')">Monthly Sales</button>
+                <button class="tab" onclick="switchTab('daily')">Daily Sales</button>
+                <button class="tab" onclick="switchTab('weekly')">Weekly Sales</button>
+            </div>
+
+            <div id="detailed-tab" class="tab-content active">
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Product Name</th>
+                                <th>Quantity Sold</th>
+                                <th>Price</th>
+                                <th>Total (₱)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            {% for sale in sales %}
+                            <tr>
+                                <td>{{ sale.date|date:"Y-m-d" }}</td>
+                                <td>{{ sale.order.product.name }}</td>
+                                <td>{{ sale.order.quantity }}</td>
+                                <td>₱{{ sale.order.product.price }}</td>
+                                <td class="row-total">₱{{ sale.amount }}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button type="button" class="edit-button" data-id="{{ cust.id }}"
+                                            data-name="{{ cust.name }}" data-phone="{{ cust.phone }}"
+                                            data-address="{{ cust.address }}" title="Edit customer"
+                                            aria-label="Edit customer">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                                                <path
+                                                    d="M3 21v-3.75L14.81 5.44a2 2 0 0 1 2.83 0l0.92 0.92a2 2 0 0 1 0 2.83L6.75 21H3z"
+                                                    stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                                                    stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+                                        </button>
+
+                                        <form method="POST" action="{% url 'delete_sale' sale.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="delete-button" aria-label="Delete sale"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                    <path
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                </svg></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr class="grand-total-row">
+                                <td colspan="4" style="text-align: right; font-weight: bold;">Grand Total:</td>
+                                <td id="grandTotal">₱0.00</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div id="monthly-tab" class="tab-content">
+                <div class="monthly-breakdown">
+                    <table class="monthly-table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Total Sales (₱)</th>
+                                <th>Transactions</th>
+                                <th>Average per Transaction</th>
+                            </tr>
+                        </thead>
+                        <tbody id="monthlyTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="daily-tab" class="tab-content">
+                <div class="date-selector">
+                    <label for="dateSelect">Select Date:</label>
+                    <input type="date" id="dateSelect" onchange="filterByDate()">
+                </div>
+
+                <div class="daily-summary">
+                    <div class="summary-card">
+                        <h3>Daily Total</h3>
+                        <div class="value" id="dailyTotal">₱0.00</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Transactions</h3>
+                        <div class="value" id="dailyTransactions">0</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Average per Sale</h3>
+                        <div class="value" id="dailyAverage">₱0.00</div>
+                    </div>
+                </div>
+
+                <div class="daily-breakdown">
+                    <table class="monthly-table">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Quantity Sold</th>
+                                <th>Price per Unit</th>
+                                <th>Total (₱)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dailyTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="weekly-tab" class="tab-content">
+                <div class="week-selector">
+                    <label for="weekSelect">Choose which week to view:</label>
+                    <input type="week" id="weekSelect" onchange="filterByWeek()">
+                    <div id="weekDisplay" style="margin-top:8px;"></div>
+                </div>
+
+                <div class="weekly-summary">
+                    <div class="summary-card">
+                        <h3>Weekly Total</h3>
+                        <div class="value" id="weeklyTotal">₱0.00</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Transactions</h3>
+                        <div class="value" id="weeklyTransactions">0</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Daily Average</h3>
+                        <div class="value" id="weeklyDailyAverage">₱0.00</div>
+                    </div>
+                </div>
+
+                <div class="weekly-breakdown">
+                    <table class="monthly-table">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Total Sales (₱)</th>
+                                <th>Transactions</th>
+                                <th>Average per Transaction</th>
+                            </tr>
+                        </thead>
+                        <tbody id="weeklyTableBody">
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>
-        
+
 </body>
 
 </html>

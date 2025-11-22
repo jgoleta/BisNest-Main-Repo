@@ -46,6 +46,22 @@ def signupPage(request):
 def aboutPage(request):
     return render(request, 'about.html')
 
+
+@login_required
+def adminSettingsPage(request):
+    """Render the admin settings/dashboard page. Protected by login_required in urls.py."""
+    # You can add context data here as needed for metrics, activity logs, etc.
+    context = {
+        # placeholders for JS to fill or backend to populate
+        'total_users': User.objects.count(),
+    }
+    return render(request, 'admin.html', context)
+
+def delete_supply(request, supply_id):
+    supply = get_object_or_404(Supply, pk=supply_id)
+    supply.delete()
+    return redirect('supply')
+
 def register_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')

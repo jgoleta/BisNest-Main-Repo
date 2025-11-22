@@ -1,4 +1,5 @@
 :root {
+  /* Colors */
   --base-clr: #ffffff;
   --line-clr: #42434a;
   --hover-clr: #222533;
@@ -8,12 +9,24 @@
   --sidebar-clr: #1e293b;
   --main-text-color: #000000;
   --primary-color: #1e293b;
+  --palette-accent: #6366f1;
+  --palette-accent-dark: #4f46e5;
+
+  --font-sans: "Inter", "Segoe UI", Tahoma, Verdana, system-ui, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-heading: "Public sans", sans-serif;
+  --font-ui: "Roboto", "Segoe UI", system-ui, "Helvetica Neue", Arial,
+    sans-serif;
 }
+
+/* Load fonts from Google Fonts (Inter, Merriweather, Roboto) */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&family=Roboto:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 * {
   margin: 0;
   padding: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-sans);
 }
 
 body {
@@ -89,6 +102,9 @@ body {
   align-items: center;
   gap: 1em;
 }
+#sidebar .logo span {
+  color: var(--palette-accent);
+}
 .dropdown-btn {
   width: 100%;
   text-align: left;
@@ -146,18 +162,17 @@ body {
 
 /*Main Style*/
 main {
-  padding: min(30px, 7%);
+  padding: min(0px, 7%);
 }
 
 .container {
   border: none;
-  margin-bottom: 10px;
+  margin-bottom: 0px !important;
   padding: min(3em, 15%);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
-  
+
   h1,
   p {
-    margin-top: -20px;
+    margin-top: 0px;
   }
 }
 /*End Main Style*/
@@ -168,11 +183,12 @@ main {
     grid-template-columns: 1fr;
   }
   main {
-    padding: 2em 1em 60px 1em;
+    padding: 0 0 60px 0;
   }
+
   .container {
     border: none;
-    padding: 0;
+    padding: 0 1em 0 1em;
   }
   #sidebar {
     height: 60px;
@@ -261,28 +277,6 @@ main {
 }
 /*End Search Bar*/
 
-/*Button*/
-.btn-signout {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  background: transparent !important;
-  border: none !important;
-  color: var(--text-clr);
-  min-width: 120px !important;
-  padding: 8px 12px !important;
-  font-size: medium;
-  cursor: pointer;
-}
-
-.btn-signout .signout-icon {
-  width: 18px !important;
-  height: 18px !important;
-  display: inline-block !important;
-  vertical-align: middle !important;
-  fill: currentColor !important;
-}
-
 /* Action buttons wrapper to align edit/delete */
 .action-buttons {
   display: inline-flex;
@@ -335,7 +329,7 @@ main {
 }
 
 .toggle-form-button,
-.add-button{
+.add-button {
   padding: 12px 20px;
   font-weight: bold;
   border: none;
@@ -355,7 +349,7 @@ main {
 .toggle-form-button:hover,
 .add-button:hover,
 .submit-button:hover,
-.edit-button:hover{
+.edit-button:hover {
   background-color: #4f46e5 !important;
   border: none !important;
 }
@@ -398,8 +392,6 @@ main {
   justify-content: center;
 }
 
-
-
 /* Sort Button Styles */
 .sort-btn {
   background: none;
@@ -428,7 +420,7 @@ main {
 .table-wrapper::-webkit-scrollbar,
 .customer-form-container::-webkit-scrollbar,
 .employee-form-container::-webkit-scrollbar,
-.order-form-container::-webkit-scrollbar{
+.order-form-container::-webkit-scrollbar {
   width: 10px; /* Width of vertical scrollbar */
   height: 10px; /* Height of horizontal scrollbar */
 }

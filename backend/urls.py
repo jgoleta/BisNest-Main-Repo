@@ -33,6 +33,7 @@ urlpatterns = [
     path('supply/', login_required(suppliesController.supplyPage, login_url='/login/'), name='supply'),
     path('sales/', login_required(salesreportController.salesPage, login_url='/login/'), name='sales'),
     path('about/', login_required(index.aboutPage, login_url='/login/'), name='about'),
+    path('admin-settings/', login_required(index.adminSettingsPage, login_url='/login/'), name='admin_settings'),
 
     # --- crud ---
     path('employee-info/delete/<int:employee_id>/', employeesController.delete_employee, name='delete_employee'),
