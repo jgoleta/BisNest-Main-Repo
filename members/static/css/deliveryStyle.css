@@ -32,7 +32,6 @@
   display: block;
   margin-top: 12px;
   font-weight: 600;
-  color: var(--text-clr);
 }
 
 .delivery-form input,
@@ -54,7 +53,6 @@
   overflow-y: auto;
   background: #fff;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
-  border-radius: 10px;
 }
 
 /* Sticky table header */
@@ -94,7 +92,7 @@
 .form-title {
   font-size: 20px;
   margin-bottom: 20px;
-  color: #111;
+  text-align: center;
 }
 
 .status-select,
@@ -218,7 +216,6 @@
   align-items: center;
   gap: 6px; /* space between icon and text */
   font-weight: 600;
-  color: #111;
 }
 
 /* Optional: adjust SVG size and position */

@@ -38,19 +38,36 @@
           {% csrf_token %}
           <div class="table-input-row table-row">
             <div class="form-group">
-              <label for="{{ form.payment_id.id_for_label }}">Payment ID:</label>
+              <label for="{{ form.payment_id.id_for_label }}">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+                  fill="#06a736">
+                  <path
+                    d="M120-192q-29.7 0-50.85-21.15Q48-234.3 48-264v-408h72v408h672v72H120Zm144-144q-29.7 0-50.85-21.15Q192-378.3 192-408v-288q0-29 21.15-50.5T264-768h576q29 0 50.5 21.5T912-696v288q0 29.7-21.5 50.85Q869-336 840-336H264Zm72-72q0-29-21.5-50.5T264-480v72h72Zm432 0h72v-72q-30 0-51 21.5T768-408Zm-216.5-24q50.5 0 85.5-34.5t35-85q0-50.5-35-85.5t-85-35q-51 0-85.5 35T432-552q0 51 34.5 85.5t85 34.5ZM264-624q29 0 50.5-21.15T336-696h-72v72Zm576 0v-72h-72q0 30 21.15 51T840-624Z" />
+                </svg> Payment ID:</label>
               {{ form.payment_id }}
             </div>
             <div class="form-group">
-              <label for="{{ form.order.id_for_label }}">Order ID:</label>
+              <label for="{{ form.order.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg" height="20px"
+                  viewBox="0 -960 960 960" width="20px" fill="#8C1AF6">
+                  <path
+                    d="M192-192v-480l-76-161 65-31 91 192h416l91-192 65 30-76 162v480H192Zm228-264h120q15.3 0 25.65-10.29Q576-476.58 576-491.79t-10.35-25.71Q555.3-528 540-528H420q-15.3 0-25.65 10.29Q384-507.42 384-492.21t10.35 25.71Q404.7-456 420-456Z" />
+                </svg> Order ID:</label>
               {{ form.order }}
             </div>
             <div class="form-group">
-              <label for="{{ form.amount.id_for_label }}">Amount:</label>
+              <label for="{{ form.amount.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg" height="20px"
+                  viewBox="0 -960 960 960" width="20px" fill="#A96424">
+                  <path
+                    d="M240-96 96-240l144-144 51 51-57 57h492l-57-57 51-51 144 144L720-96l-51-51 57-57H234l57 57-51 51Zm240-432q50 0 85-34.5t35-85.5q0-50-35-85t-85-35q-51 0-85.5 35T360-648q0 51 34.5 85.5T480-528Zm-288 96q-30 0-51-21t-21-51v-288q0-29 21-50.5t51-21.5h576q29 0 50.5 21.5T840-792v288q0 30-21.5 51T768-432H192Zm0-72h72q0-29-21.5-50.5T192-576l2 72h-2Zm504 0h74l-2-72q-30 0-51 21.5T696-504Zm72-216 2-72h-74q0 30 21 51t51 21Zm-576 0q29 0 50.5-21t21.5-51h-72 2l-2 72Z" />
+                </svg> Amount:</label>
               {{ form.amount }}
             </div>
             <div class="form-group">
-              <label for="{{ form.method.id_for_label }}">Method:</label>
+              <label for="{{ form.method.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg" height="20px"
+                  viewBox="0 -960 960 960" width="20px" fill="#2854C5">
+                  <path
+                    d="M480-528q-51 0-85.5-34.5t-34.5-85q0-50.5 34.5-85.5t85-35q50.5 0 85.5 35t35 85q0 51-35 85.5T480-528Zm-288 96q-29.7 0-50.85-21.15Q120-474.3 120-504v-288q0-29 21.15-50.5T192-864h576q29 0 50.5 21.5T840-792v288q0 29.7-21.5 50.85Q797-432 768-432H192Zm72-72h432q0-29 21.15-50.5T768-576v-144q-29.7 0-50.85-21.15Q696-762.3 696-792H264q0 30-21.5 51T192-720v144q29 0 50.5 21.5T264-504Zm-72 0v-288 288ZM480-96l144-144-51-51-57 57v-150h-72v150l-57-57-51 51L480-96Z" />
+                </svg> Method:</label>
               {{ form.method }}
             </div>
             <div class="submit-wrapper">

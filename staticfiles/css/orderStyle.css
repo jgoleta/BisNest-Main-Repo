@@ -47,7 +47,6 @@
   display: block;
   margin-top: 12px;
   font-weight: 600;
-  color: var(--text-clr);
 }
 
 .order-form input,
@@ -66,12 +65,10 @@
   box-sizing: border-box;
 }
 
-/* Submit Button Wrapper */
 .submit-wrapper {
   text-align: right;
 }
 
-/* Table container */
 .table-wrapper {
   max-height: 70vh;
   overflow-y: auto;
@@ -80,7 +77,6 @@
   border-radius: 10px;
 }
 
-/* Override scrolling for order table (uses pagination instead) */
 .order-table-container .table-wrapper {
   max-height: none !important;
   overflow: visible !important;
@@ -208,7 +204,6 @@
   align-items: center;
   gap: 6px; /* space between icon and text */
   font-weight: 600;
-  color: #111;
 }
 
 

@@ -41,7 +41,6 @@
   display: block;
   margin-top: 12px;
   font-weight: 600;
-  color: var(--text-clr);
 }
 
 .employee-form input,
@@ -109,7 +108,6 @@
 .form-title {
   font-size: 20px;
   margin-bottom: 20px;
-  color: #111;
   text-align: center;
 }
 
@@ -192,7 +190,6 @@
   align-items: center;
   gap: 6px; /* space between icon and text */
   font-weight: 600;
-  color: #111;
 }
 
 /* Optional: adjust SVG size and position */
