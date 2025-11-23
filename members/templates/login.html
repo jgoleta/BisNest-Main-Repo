@@ -8,23 +8,11 @@
   <title>Login / Signup</title>
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="{% static 'css/loginStyle.css' %}">
-  <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
   <script src="{% static 'js/darkMode.js' %}" defer></script>
 
 </head>
 
 <body>
-  {% if messages %}
-  <div class="messages" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
-    {% for message in messages %}
-    <div class="message {% if message.tags %}{{ message.tags }}{% endif %}"
-      style="padding: 15px; margin-bottom: 10px; border-radius: 5px; 
-                {% if message.tags == 'error' %}background-color: #ff6b6b; color: white;{% else %}background-color: #51cf66; color: white;{% endif %}">
-      {{ message }}
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
   <div class="container">
     <div class="form-box login">
       <form method="POST" action="{% url 'login_view' %}">

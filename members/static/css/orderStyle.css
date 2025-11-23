@@ -23,7 +23,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1002;
-  background: #fff;
+  background: var(--base-clr);
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
@@ -47,7 +47,7 @@
   display: block;
   margin-top: 12px;
   font-weight: 600;
-  color: #111;
+  color: var(--text-clr);
 }
 
 .order-form input,
@@ -78,6 +78,12 @@
   background: #fff;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
   border-radius: 10px;
+}
+
+/* Override scrolling for order table (uses pagination instead) */
+.order-table-container .table-wrapper {
+  max-height: none !important;
+  overflow: visible !important;
 }
 
 /* Sticky table header */
@@ -211,4 +217,56 @@
   width: 20px;
   height: 20px;
   flex-shrink: 0;
+}
+
+/* Pagination styles for order table */
+#order-pagination {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+#order-pagination .pagination {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#order-pagination .pagination button {
+  padding: 8px 12px;
+  border: 1px solid var(--border-clr);
+  background: var(--base-clr);
+  color: var(--main-text-color);
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+#order-pagination .pagination button:hover {
+  background: var(--primary-color);
+  color: var(--w-text-clr);
+  border-color: var(--primary-color);
+}
+
+#order-pagination .pagination button[aria-current="page"] {
+  background: var(--primary-color);
+  color: var(--w-text-clr);
+  border-color: var(--primary-color);
+  cursor: default;
+}
+
+#order-pagination .pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#order-pagination .pagination .ellipsis {
+  padding: 8px 4px;
+  color: var(--muted-clr);
 }

@@ -24,8 +24,8 @@
   }
   
   body {
-    background-color: var(--page-bg);
-    color: var(--palette-text);
+    background-color: var(--base-clr);
+    color: var(--text-clr);
     line-height: 1.6;
     scroll-behavior: smooth;
   }

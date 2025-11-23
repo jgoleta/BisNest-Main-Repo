@@ -98,7 +98,8 @@
                                 <th>Employee Name</th>
                                 <th>Product Name</th>
                                 <th>Amount</th>
-                                <th>Date <button id="orderDateSortBtn" class="sort-btn" title="Sort by date"><i class="fas fa-sort"></i></button></th>
+                                <th>Date <button id="orderDateSortBtn" class="sort-btn" title="Sort by date"><i
+                                            class="fas fa-sort"></i></button></th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -119,29 +120,22 @@
                                             data-quantity="{{ o.quantity }}" data-amount="{{ o.amount }}"
                                             title="Edit Order" aria-label="Edit Order">
 
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="16px"
+                                                viewBox="0 -960 960 960" width="16px" fill="#FFFFFF">
                                                 <path
-                                                    d="M3 21v-3.75L14.81 5.44a2 2 0 0 1 2.83 0l0.92 0.92a2 2 0 0 1 0 2.83L6.75 21H3z"
-                                                    stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path
-                                                    d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                                                    stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
+                                                    d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
                                             </svg>
                                         </button>
 
                                         <form method="POST" action="{% url 'delete_order' o.id %}">
                                             {% csrf_token %}
-                                            <button type="submit" class="delete-button" aria-label="Delete order"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <button type="submit" class="delete-button" aria-label="Delete order">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="20px"
+                                                    viewBox="0 -960 960 960" width="20px" fill="#FFFFFF">
                                                     <path
-                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                                    <path
-                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                                </svg></button>
+                                                        d="M312-144q-29.7 0-50.85-21.15Q240-186.3 240-216v-480h-48v-72h192v-48h192v48h192v72h-48v479.57Q720-186 698.85-165T648-144H312Zm72-144h72v-336h-72v336Zm120 0h72v-336h-72v336Z" />
+                                                </svg>
+                                            </button>
                                         </form>
                                     </div>
                                 </td>
@@ -150,6 +144,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div id="order-pagination"></div>
             </div>
         </div>
     </main>

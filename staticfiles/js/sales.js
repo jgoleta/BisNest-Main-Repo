@@ -389,3 +389,220 @@ window.addEventListener("load", () => {
   });
   document.getElementById("grandTotal").textContent = `₱${total.toFixed(2)}`;
 });
+
+/* ==============================
+   Client-side Pagination for Sales Tables
+   =============================== */
+(function() {
+  const detailedTable = document.getElementById('detailed-sales-table');
+  const detailedPaginationContainer = document.getElementById('detailed-pagination');
+  const dailyTableBody = document.getElementById('dailyTableBody');
+  const dailyPaginationContainer = document.getElementById('daily-pagination');
+
+  if (!detailedTable || !detailedPaginationContainer || !dailyTableBody || !dailyPaginationContainer) return;
+
+  const rowsPerPage = 10;
+  let detailedCurrentPage = 1;
+  let dailyCurrentPage = 1;
+
+  // ===== DETAILED SALES TABLE PAGINATION =====
+  function getDetailedAllRows() {
+    return Array.from(detailedTable.querySelectorAll('tbody tr'));
+  }
+
+  function showDetailedPage(page) {
+    const allRows = getDetailedAllRows();
+    allRows.forEach(r => r.style.display = 'none');
+    
+    const total = allRows.length;
+    const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
+    if (page < 1) page = 1;
+    if (page > totalPages) page = totalPages;
+    detailedCurrentPage = page;
+
+    const start = (detailedCurrentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    allRows.slice(start, end).forEach(r => r.style.display = '');
+
+    renderDetailedPaginationControls(totalPages);
+  }
+
+  function renderDetailedPaginationControls(totalPages) {
+    detailedPaginationContainer.innerHTML = '';
+    const pager = document.createElement('div');
+    pager.className = 'pagination';
+
+    const prev = document.createElement('button');
+    prev.className = 'page-prev';
+    prev.textContent = 'Prev';
+    prev.disabled = detailedCurrentPage === 1;
+    prev.addEventListener('click', () => showDetailedPage(detailedCurrentPage - 1));
+    pager.appendChild(prev);
+
+    // Page number buttons
+    const maxButtons = 7;
+    let startPage = Math.max(1, detailedCurrentPage - Math.floor(maxButtons / 2));
+    let endPage = startPage + maxButtons - 1;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(1, endPage - maxButtons + 1);
+    }
+
+    if (startPage > 1) {
+      const btn = document.createElement('button');
+      btn.textContent = '1';
+      btn.addEventListener('click', () => showDetailedPage(1));
+      pager.appendChild(btn);
+      if (startPage > 2) {
+        const ell = document.createElement('span');
+        ell.className = 'ellipsis';
+        ell.textContent = '…';
+        pager.appendChild(ell);
+      }
+    }
+
+    for (let p = startPage; p <= endPage; p++) {
+      const btn = document.createElement('button');
+      btn.textContent = String(p);
+      if (p === detailedCurrentPage) btn.setAttribute('aria-current', 'page');
+      btn.addEventListener('click', () => showDetailedPage(p));
+      pager.appendChild(btn);
+    }
+
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        const ell = document.createElement('span');
+        ell.className = 'ellipsis';
+        ell.textContent = '…';
+        pager.appendChild(ell);
+      }
+      const btn = document.createElement('button');
+      btn.textContent = String(totalPages);
+      btn.addEventListener('click', () => showDetailedPage(totalPages));
+      pager.appendChild(btn);
+    }
+
+    const next = document.createElement('button');
+    next.className = 'page-next';
+    next.textContent = 'Next';
+    next.disabled = detailedCurrentPage === totalPages;
+    next.addEventListener('click', () => showDetailedPage(detailedCurrentPage + 1));
+    pager.appendChild(next);
+
+    detailedPaginationContainer.appendChild(pager);
+  }
+
+  // ===== DAILY BREAKDOWN TABLE PAGINATION =====
+  function getDailyAllRows() {
+    return Array.from(dailyTableBody.querySelectorAll('tr'));
+  }
+
+  function showDailyPage(page) {
+    const allRows = getDailyAllRows();
+    allRows.forEach(r => r.style.display = 'none');
+    
+    const total = allRows.length;
+    const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
+    if (page < 1) page = 1;
+    if (page > totalPages) page = totalPages;
+    dailyCurrentPage = page;
+
+    const start = (dailyCurrentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    allRows.slice(start, end).forEach(r => r.style.display = '');
+
+    renderDailyPaginationControls(totalPages);
+  }
+
+  function renderDailyPaginationControls(totalPages) {
+    dailyPaginationContainer.innerHTML = '';
+    const pager = document.createElement('div');
+    pager.className = 'pagination';
+
+    const prev = document.createElement('button');
+    prev.className = 'page-prev';
+    prev.textContent = 'Prev';
+    prev.disabled = dailyCurrentPage === 1;
+    prev.addEventListener('click', () => showDailyPage(dailyCurrentPage - 1));
+    pager.appendChild(prev);
+
+    // Page number buttons
+    const maxButtons = 7;
+    let startPage = Math.max(1, dailyCurrentPage - Math.floor(maxButtons / 2));
+    let endPage = startPage + maxButtons - 1;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(1, endPage - maxButtons + 1);
+    }
+
+    if (startPage > 1) {
+      const btn = document.createElement('button');
+      btn.textContent = '1';
+      btn.addEventListener('click', () => showDailyPage(1));
+      pager.appendChild(btn);
+      if (startPage > 2) {
+        const ell = document.createElement('span');
+        ell.className = 'ellipsis';
+        ell.textContent = '…';
+        pager.appendChild(ell);
+      }
+    }
+
+    for (let p = startPage; p <= endPage; p++) {
+      const btn = document.createElement('button');
+      btn.textContent = String(p);
+      if (p === dailyCurrentPage) btn.setAttribute('aria-current', 'page');
+      btn.addEventListener('click', () => showDailyPage(p));
+      pager.appendChild(btn);
+    }
+
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        const ell = document.createElement('span');
+        ell.className = 'ellipsis';
+        ell.textContent = '…';
+        pager.appendChild(ell);
+      }
+      const btn = document.createElement('button');
+      btn.textContent = String(totalPages);
+      btn.addEventListener('click', () => showDailyPage(totalPages));
+      pager.appendChild(btn);
+    }
+
+    const next = document.createElement('button');
+    next.className = 'page-next';
+    next.textContent = 'Next';
+    next.disabled = dailyCurrentPage === totalPages;
+    next.addEventListener('click', () => showDailyPage(dailyCurrentPage + 1));
+    pager.appendChild(next);
+
+    dailyPaginationContainer.appendChild(pager);
+  }
+
+  // Initial pagination on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    showDetailedPage(1);
+    showDailyPage(1);
+  });
+
+  // Recalculate daily pagination whenever daily breakdown is updated
+  const originalUpdateDailyBreakdown = window.updateDailyBreakdown;
+  if (typeof originalUpdateDailyBreakdown === 'function') {
+    window.updateDailyBreakdown = function(data) {
+      originalUpdateDailyBreakdown.call(this, data);
+      dailyCurrentPage = 1;
+      showDailyPage(1);
+    };
+  }
+
+  // Attempt immediate run in case script is deferred and DOM already parsed
+  setTimeout(() => {
+    if (!document.readyState || document.readyState !== 'loading') {
+      showDetailedPage(1);
+      showDailyPage(1);
+    }
+  }, 50);
+
+})();

@@ -18,18 +18,13 @@ function resetCustomerForm() {
   if (nameInput) nameInput.value = "";
   if (phoneInput) phoneInput.value = "";
   if (addressInput) addressInput.value = "";
-  if (editIdInput) editIdInput.remove(); //remove inputs from edit
-  if (formTitle) formTitle.textContent = "Add Customer"; //reset
+  if (editIdInput) editIdInput.remove();
+  if (formTitle) formTitle.textContent = "Add Customer";
 }
 
 function toggleForm() {
-  const isHidden =
-    formContainer.style.display === "none" ||
-    formContainer.style.display === "";
-
-   if (isHidden) {
-    resetCustomerForm();
-  }
+  const isHidden = formContainer.style.display === "none" || formContainer.style.display === "";
+  if (isHidden) resetCustomerForm();
   formContainer.style.display = isHidden ? "block" : "none";
   modalOverlay.style.display = isHidden ? "block" : "none";
 }
@@ -45,6 +40,7 @@ function getNextCustomerId() {
 }
 
 function renderTable() {
+  if (!customerTableBody) return;
   customerTableBody.innerHTML = "";
   customerData.forEach((cust, index) => {
     const row = document.createElement("tr");
@@ -56,59 +52,42 @@ function renderTable() {
         `;
     row.setAttribute("data-index", index);
     row.addEventListener("click", () => {
-      document
-        .querySelectorAll("tr")
-        .forEach((r) => r.classList.remove("selected"));
+      document.querySelectorAll("tr").forEach((r) => r.classList.remove("selected"));
       row.classList.add("selected");
     });
     customerTableBody.appendChild(row);
   });
 }
 
-deleteButton.addEventListener("click", () => {
-  const selectedRow = document.querySelector("tr.selected");
-  if (selectedRow) {
-    const index = selectedRow.getAttribute("data-index");
-    const removed = customerData.splice(index, 1)[0];
-
-    const idNumber = parseInt(removed.id.substring(1));
-    freedIds.push(idNumber);
-
-    renderTable();
-  } else {
-    alert("Please select a row to delete.");
-  }
-});
-
-function searchCustomer() {
-  const query = document.getElementById("searchInput").value.toLowerCase();
-  const rows = document.querySelectorAll("#customer-table tbody tr");
-  rows.forEach((row) => {
-    const name = row.children[1].textContent.toLowerCase();
-    row.style.display = name.includes(query) ? "" : "none";
+if (deleteButton) {
+  deleteButton.addEventListener("click", () => {
+    const selectedRow = document.querySelector("tr.selected");
+    if (selectedRow) {
+      const index = selectedRow.getAttribute("data-index");
+      const removed = customerData.splice(index, 1)[0];
+      const idNumber = parseInt(removed.id.substring(1));
+      freedIds.push(idNumber);
+      renderTable();
+    } else {
+      alert("Please select a row to delete.");
+    }
   });
 }
 
 function searchCustomer() {
   const input = document.getElementById("searchInput");
-  const filter = (input.value || "").toLowerCase();
-  const table = document.querySelector(".table tbody");
-  if (!table) return;
-  const rows = table.getElementsByTagName("tr");
-
+  const filter = (input && input.value || "").toLowerCase();
+  const tableBody = document.querySelector(".table tbody");
+  if (!tableBody) return;
+  const rows = tableBody.getElementsByTagName("tr");
   for (let i = 0; i < rows.length; i++) {
     const nameCell = rows[i].getElementsByTagName("td")[1];
     if (nameCell) {
       const nameText = nameCell.textContent || nameCell.innerText;
-      if (nameText.toLowerCase().indexOf(filter) > -1) {
-        rows[i].style.display = "";
-      } else {
-        rows[i].style.display = "none";
-      }
+      rows[i].style.display = nameText.toLowerCase().indexOf(filter) > -1 ? "" : "none";
     }
   }
 }
-
 
 document.addEventListener("click", function (e) {
   const editBtn = e.target.closest(".edit-button");
@@ -121,22 +100,15 @@ document.addEventListener("click", function (e) {
   formContainer.style.display = "block";
   modalOverlay.style.display = "block";
 
-
   document.getElementById("formTitle").textContent = "Edit Customer";
   const nameInput = document.querySelector('.customer-form input[name="name"]');
-  const phoneInput = document.querySelector(
-    '.customer-form input[name="phone"]'
-  );
-  const addressInput = document.querySelector(
-    '.customer-form input[name="address"]'
-  );
+  const phoneInput = document.querySelector('.customer-form input[name="phone"]');
+  const addressInput = document.querySelector('.customer-form input[name="address"]');
   if (nameInput) nameInput.value = name || "";
   if (phoneInput) phoneInput.value = phone || "";
   if (addressInput) addressInput.value = address || "";
 
-  let editIdInput = document.querySelector(
-    '.customer-form input[name="edit_id"]'
-  );
+  let editIdInput = document.querySelector('.customer-form input[name="edit_id"]');
   if (!editIdInput) {
     editIdInput = document.createElement("input");
     editIdInput.type = "hidden";
@@ -231,4 +203,119 @@ document.addEventListener("click", function (e) {
       icon.className = isAscending ? "fas fa-sort-up" : "fas fa-sort-down";
     }
   });
+})();
+
+/* Pagination*/
+(function() {
+  const table = document.getElementById('customer-table');
+  const paginationContainer = document.getElementById('customer-pagination');
+  if (!table || !paginationContainer) return;
+
+  let currentPage = 1;
+  const rowsPerPage = 10; 
+
+  function getAllRows() {
+    return Array.from(table.querySelectorAll('tbody tr'));
+  }
+
+  function getFilteredRows() {
+
+    const input = document.getElementById('searchInput');
+    const filter = (input && input.value || '').toLowerCase().trim();
+    if (!filter) return getAllRows();
+    return getAllRows().filter(r => {
+      const nameCell = r.querySelectorAll('td')[1];
+      if (!nameCell) return false;
+      const txt = (nameCell.textContent || nameCell.innerText || '').toLowerCase();
+      return txt.indexOf(filter) > -1;
+    });
+  }
+
+  function showPage(page) {
+    const allRows = getAllRows();
+    const visibleRows = getFilteredRows();
+    allRows.forEach(r => r.style.display = 'none');
+    const total = visibleRows.length;
+    const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
+    if (page < 1) page = 1;
+    if (page > totalPages) page = totalPages;
+    currentPage = page;
+
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    visibleRows.slice(start, end).forEach(r => r.style.display = '');
+
+    renderPaginationControls(totalPages);
+  }
+
+  function renderPaginationControls(totalPages) {
+    paginationContainer.innerHTML = '';
+    const pager = document.createElement('div');
+    pager.className = 'pagination';
+
+    const prev = document.createElement('button');
+    prev.className = 'page-prev';
+    prev.textContent = 'Prev';
+    prev.disabled = currentPage === 1;
+    prev.addEventListener('click', () => showPage(currentPage - 1));
+    pager.appendChild(prev);
+
+    const maxButtons = 7;
+    let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+    let endPage = startPage + maxButtons - 1;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(1, endPage - maxButtons + 1);
+    }
+
+    if (startPage > 1) {
+      const btn = document.createElement('button'); btn.textContent = '1'; btn.addEventListener('click', () => showPage(1)); pager.appendChild(btn);
+      if (startPage > 2) { const ell = document.createElement('span'); ell.className = 'ellipsis'; ell.textContent = '…'; pager.appendChild(ell); }
+    }
+
+    for (let p = startPage; p <= endPage; p++) {
+      const btn = document.createElement('button');
+      btn.textContent = String(p);
+      if (p === currentPage) btn.setAttribute('aria-current', 'page');
+      btn.addEventListener('click', () => showPage(p));
+      pager.appendChild(btn);
+    }
+
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) { const ell = document.createElement('span'); ell.className = 'ellipsis'; ell.textContent = '…'; pager.appendChild(ell); }
+      const btn = document.createElement('button'); btn.textContent = String(totalPages); btn.addEventListener('click', () => showPage(totalPages)); pager.appendChild(btn);
+    }
+
+    const next = document.createElement('button');
+    next.className = 'page-next';
+    next.textContent = 'Next';
+    next.disabled = currentPage === totalPages;
+    next.addEventListener('click', () => showPage(currentPage + 1));
+    pager.appendChild(next);
+
+    paginationContainer.appendChild(pager);
+  }
+
+  function recalcAndShowFirstOrCurrent() {
+    const total = getFilteredRows().length;
+    const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
+    if (currentPage > totalPages) currentPage = totalPages;
+    showPage(currentPage);
+  }
+
+  const originalSearch = window.searchCustomer;
+  window.searchCustomer = function() {
+    try { if (typeof originalSearch === 'function') originalSearch(); }
+    finally { recalcAndShowFirstOrCurrent(); }
+  };
+
+  const nameSortBtn = document.getElementById('customerNameSortBtn');
+  const dateSortBtn = document.getElementById('customerDateSortBtn');
+  if (nameSortBtn) nameSortBtn.addEventListener('click', () => setTimeout(recalcAndShowFirstOrCurrent, 50));
+  if (dateSortBtn) dateSortBtn.addEventListener('click', () => setTimeout(recalcAndShowFirstOrCurrent, 50));
+
+  document.addEventListener('DOMContentLoaded', () => { showPage(1); });
+  setTimeout(() => { if (!document.readyState || document.readyState !== 'loading') showPage(1); }, 50);
+
 })();

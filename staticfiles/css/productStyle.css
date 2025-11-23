@@ -13,8 +13,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background-color: #fff;
-      box-shadow: 0px 2px 4px #111;
+      background-color: var(--base-clr);
+      box-shadow: 0px 2px 4px rgba(0,0,0,0.08);
       transition: background 0.3s ease;
       display: flex;
       justify-content: center;
@@ -36,7 +36,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: #fff7e6;
+      background: var(--base-clr);
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
       transition: background 0.3s ease;
       justify-content: center;
@@ -47,7 +47,7 @@
     .product-price-label {
       margin-top: 10px;
       font-weight: bold;
-      color: #111;
+      color: var(--text-clr);
     }
 
     .modal {
@@ -63,7 +63,7 @@
     }
 
     .modal-content {
-      background: #fff;
+      background: var(--base-clr);
       margin: 10% auto;
       padding: 32px 36px 28px 36px;
       border-radius: 16px;
@@ -79,7 +79,7 @@
 
     .modal-content h2 {
       margin-top: 0;
-      color: #111;
+      color: var(--text-clr);
       font-size: 2rem;
       margin-bottom: 8px;
     }
@@ -205,7 +205,7 @@
       top: 20px;
       right: 20px;
       padding: 15px 25px;
-      background-color: #2ecc71;
+      background-color: var(--dn-success, #2ecc71);
       color: #fff;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
