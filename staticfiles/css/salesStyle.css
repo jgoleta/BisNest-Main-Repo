@@ -1,23 +1,18 @@
-:root {
-  --base-clr: #ffffff;
-  --line-clr: #42434a;
-  --hover-clr: #222533;
-  --text-clr: #ffffff;
-  --accent-clr: #5e63ff;
-  --seconday-text-clr: #b0b3c1;
-  --sidebar-clr: #1e293b;
-  --main-text-color: #000000;
-  --primary-color: #1e293b;
-}
 
 /* Sales Report */
 .table-wrapper {
-  max-height: 70vh !important;
+  max-height: 60vh;
   overflow: auto;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
   background: var(--base-clr);
   position: relative;
   border-radius: 10px;
+}
+
+/* Override scrolling for detailed sales table (uses pagination instead) */
+#detailed-tab .table-wrapper {
+  max-height: none;
+  overflow: visible;
 }
 
 .grand-total-row {
@@ -35,25 +30,6 @@
   background: var(--base-clr);
 }
 
-.form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.form input,
-.form select {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 6px;
-  border: 1px solid #bbb;
-  flex: 1;
-  transition: all 0.3s ease;
-  background: #fff;
-  color: var(--main-text-color);
-}
-
 .form input:hover,
 .form select:hover {
   border-color: var(--primary-color);
@@ -67,21 +43,20 @@
   background: var(--base-clr);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
   color: var(--main-text-color);
-  max-height: 70vh;
 }
 
 .table th,
 .table td {
   padding: 14px 16px;
   text-align: center;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border-clr);
 }
 
 .table-wrapper thead th {
   position: sticky;
   top: 0;
   background: var(--primary-color);
-  color: var(--text-clr);
+  color: var(--w-text-clr);
   z-index: 5;
 }
 
@@ -126,23 +101,21 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-bottom: 20px;
   padding: 15px;
-  background: #f8fafc;
-  border-radius: 10px;
-  border: 1px solid #e0e0e0;
+  background: var(--base-clr);
 }
 
 .year-selector label {
-  font-weight: bold;
-  color: var(--primary-color);
+  color: var(--muted-clr);
 }
 
-.year-selector select {
+.year-selector select,
+.date-selector input,
+.week-selector input {
   padding: 8px 12px;
   border-radius: 6px;
   border: 1px solid #bbb;
-  background: #fff;
+  background: var(--base-clr);
   color: var(--main-text-color);
   font-size: 14px;
   cursor: pointer;
@@ -160,9 +133,8 @@
   background: linear-gradient(
     135deg,
     var(--primary-color) 0%,
-    var(--accent-clr) 100%
+    var(--palette-accent) 100%
   );
-  color: var(--text-clr);
   padding: 20px;
   border-radius: 12px;
   text-align: center;
@@ -173,11 +145,13 @@
   font-size: 14px;
   margin-bottom: 8px;
   opacity: 0.9;
+  color: var(--w-text-clr);
 }
 
 .summary-card .value {
   font-size: 22px;
   font-weight: bold;
+  color: var(--w-text-clr);
 }
 
 /* Monthly Breakdown */
@@ -209,7 +183,7 @@
 
 .monthly-table th {
   background: var(--primary-color);
-  color: var(--text-clr);
+  color: var(--w-text-clr);
 }
 
 .monthly-table tr:hover {
@@ -230,7 +204,7 @@
   cursor: pointer;
   font-size: 16px;
   font-weight: 600;
-  color: #666;
+  color: var(--muted-clr);
   border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
 }
@@ -271,17 +245,6 @@
   color: var(--primary-color);
 }
 
-.date-selector input,
-.week-selector input {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #bbb;
-  background: #fff;
-  color: var(--main-text-color);
-  font-size: 14px;
-  cursor: pointer;
-}
-
 .week-display {
   font-weight: bold;
   color: var(--accent-clr);
@@ -300,7 +263,7 @@
 .daily-summary .summary-card,
 .weekly-summary .summary-card {
   background: var(--primary-color);
-  color: var(--text-clr);
+  color: var(--w-text-clr);
   padding: 12px;
   border-radius: 8px;
   text-align: center;
@@ -312,12 +275,14 @@
   font-size: 12px;
   margin-bottom: 4px;
   opacity: 0.9;
+  color: var(--w-text-clr);
 }
 
 .daily-summary .summary-card .value,
 .weekly-summary .summary-card .value {
   font-size: 16px;
   font-weight: bold;
+  color: var(--w-text-clr);
 }
 
 .daily-breakdown,
@@ -329,4 +294,65 @@
 .weekly-breakdown h3 {
   margin-bottom: 15px;
   font-size: 18px;
+  color: var(--w-text-clr);
 }
+
+/* Pagination styles for sales tables */
+#detailed-pagination,
+#daily-pagination {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+#detailed-pagination .pagination,
+#daily-pagination .pagination {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#detailed-pagination .pagination button,
+#daily-pagination .pagination button {
+  padding: 8px 12px;
+  border: 1px solid var(--border-clr);
+  background: var(--base-clr);
+  color: var(--main-text-color);
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+#detailed-pagination .pagination button:hover,
+#daily-pagination .pagination button:hover {
+  background: var(--primary-color);
+  color: var(--w-text-clr);
+  border-color: var(--primary-color);
+}
+
+#detailed-pagination .pagination button[aria-current="page"],
+#daily-pagination .pagination button[aria-current="page"] {
+  background: var(--primary-color);
+  color: var(--w-text-clr);
+  border-color: var(--primary-color);
+  cursor: default;
+}
+
+#detailed-pagination .pagination button:disabled,
+#daily-pagination .pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#detailed-pagination .pagination .ellipsis,
+#daily-pagination .pagination .ellipsis {
+  padding: 8px 4px;
+  color: var(--muted-clr);
+}
+

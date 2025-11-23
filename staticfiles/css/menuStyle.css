@@ -8,8 +8,8 @@
   font-weight: bold;
   border: 0.5px solid #ffffff;
   border-radius: 10px;
-  background-color: var(--palette-bg-light);
-  color: #000000;
+  background-color: var(--base-clr);
+  color: var(--text-clr);
   cursor: pointer;
   transition: background 0.3s, color 0.3s;
   font-size: medium;
@@ -17,8 +17,8 @@
 }
 
 .dashboard-button-order {
-  background-color: #1e293b;
-  color: #fff;
+  background-color: var(--primary-color);
+  color: var(--base-clr);
   border: none;
 }
 
@@ -28,8 +28,8 @@
 }
 
 .dashboard-button:hover {
-  background-color: #e2e6e9;
-  border: #e2e6e9 1px solid;
+  background-color: var(--base-clr);
+  border: 1px solid var(--border-clr);
 }
 
 .dashboard-button-container {

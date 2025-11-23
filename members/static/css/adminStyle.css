@@ -38,8 +38,8 @@ h1 {
 
 /* Cards */
 .card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
+  background: var(--surface-clr, var(--card-bg, #fff));
+  border: 1px solid var(--border-clr, var(--card-border, #e6e9ee));
   border-radius: 10px;
   padding: 16px;
   box-shadow: 0 6px 18px rgba(12, 12, 14, 0.04);
@@ -70,7 +70,7 @@ h1 {
 
 .metric .label {
   font-size: 13px;
-  color: var(--muted);
+  color: var(--muted-clr, var(--muted));
 }
 
 /* Table */
@@ -86,14 +86,14 @@ table {
 th,
 td {
   padding: 10px 8px;
-  border-bottom: 1px solid #eef2f6;
+  border-bottom: 1px solid var(--border-clr, #eef2f6);
   text-align: left;
   font-size: 14px;
 }
 
 th {
   font-weight: 600;
-  color: #111827;
+  color: var(--text-clr, #111827);
   background: transparent;
 }
 

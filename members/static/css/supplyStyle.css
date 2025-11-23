@@ -21,7 +21,7 @@
   left: 50%;
   transform: translate(-50%, -50%) scale(0.95);
   z-index: 1002;
-  background: #fff;
+  background: var(--base-clr);
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
@@ -56,7 +56,7 @@
   border-radius: 6px;
   border: 1px solid #bbb;
   background: #fff;
-  color: #111;
+  color: var(--text-clr);
   font-family: inherit;
   font-size: 15px;
   box-sizing: border-box;
@@ -66,7 +66,7 @@
 .table-wrapper {
   max-height: 70vh;
   overflow-y: auto;
-  background: #fff;
+  background: var(--base-clr);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
   border-radius: 10px;
 }
@@ -359,4 +359,56 @@
   .submit-wrapper {
     text-align: center;
   }
+}
+
+/* Pagination styles for supply table */
+#supply-pagination {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+#supply-pagination .pagination {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#supply-pagination .pagination button {
+  padding: 8px 12px;
+  border: 1px solid var(--border-clr);
+  background: var(--base-clr);
+  color: var(--main-text-color);
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+#supply-pagination .pagination button:hover {
+  background: var(--primary-color);
+  color: var(--w-text-clr);
+  border-color: var(--primary-color);
+}
+
+#supply-pagination .pagination button[aria-current="page"] {
+  background: var(--primary-color);
+  color: var(--w-text-clr);
+  border-color: var(--primary-color);
+  cursor: default;
+}
+
+#supply-pagination .pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#supply-pagination .pagination .ellipsis {
+  padding: 8px 4px;
+  color: var(--muted-clr);
 }

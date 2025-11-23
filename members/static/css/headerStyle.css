@@ -1,19 +1,21 @@
-
 :root {
   --header-height: 64px;
-  --header-bg: #ffffff;
-  --header-border: #e6e6e6;
-  --accent: #6366f1;
+  --header-bg: var(--surface-clr);
+  --header-border: var(--border-clr);
+  --accent: var(--accent-clr);
   --danger: #fc0800;
   --header-padding: 16px;
 
-  --font-sans: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, system-ui,
+    -apple-system, "Helvetica Neue", Arial, sans-serif;
   --font-heading: sans-serif;
-  --font-ui: 'Roboto', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-ui: "Roboto", "Segoe UI", system-ui, -apple-system, "Helvetica Neue",
+    Arial, sans-serif;
 }
 
-/* Apply base font in case centralStyle isn't present */
-body { font-family: var(--font-sans); }
+body {
+  font-family: var(--font-sans);
+}
 
 .app-header {
   display: flex;
@@ -96,8 +98,8 @@ body { font-family: var(--font-sans); }
   display: inline-grid;
   place-items: center;
   border-radius: 50%;
-  background: linear-gradient(180deg, #f3f4ff, #eef2ff);
-  color: #222;
+  background: linear-gradient(180deg, var(--surface-clr, #f3f4ff), #eef2ff);
+  color: var(--text-clr, #222);
 }
 .user-name {
   font-weight: 600;
@@ -118,8 +120,8 @@ body { font-family: var(--font-sans); }
   top: calc(var(--header-height) + 8px);
   min-width: 220px;
   max-width: 320px;
-  background: var(--base-clr, #ffffff);
-  border: 1px solid var(--header-border);
+  background: var(--surface-clr, var(--base-clr, #ffffff));
+  border: 1px solid var(--border-clr, var(--header-border));
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.12);
   border-radius: 10px;
   padding: 8px;
@@ -197,14 +199,12 @@ body { font-family: var(--font-sans); }
   }
 }
 
-/* Disable hover/focus background for the theme-switch (dark mode) button when dark mode is active */
 .darkmode #theme-switch:hover,
 [data-theme="dark"] #theme-switch:hover {
   background: transparent !important;
   color: inherit !important;
 }
 
-/* Also ensure the theme-switch doesn't get the generic menu-item hover when focused or hovered while darkmode is active */
 .darkmode .menu-item#theme-switch:hover,
 [data-theme="dark"] .menu-item#theme-switch:hover {
   background: transparent !important;

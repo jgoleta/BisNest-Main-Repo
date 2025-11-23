@@ -25,27 +25,23 @@ class ProductForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
-                'id': 'add-product-name',
-                'style': 'width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;'
+                'id': 'add-product-name'
             }),
             'stock': forms.NumberInput(attrs={
                 'class': 'form-control',
                 'id': 'add-product-stock',
-                'min': 0,
-                'style': 'width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;'
+                'min': 0
             }),
             'price': forms.NumberInput(attrs={
                 'class': 'form-control',
                 'id': 'add-product-price',
-                'step': 0.01,
-                'style': 'width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #bbb; font-size: 1rem;'
+                'step': 0.01
             }),
             'image': forms.ClearableFileInput(attrs={
                 'class': 'form-control-file',
                 'id': 'add-product-image',
                 'accept': 'image/*',
-                'onchange': 'previewAddImage(event)',
-                'style': 'width: 100%; margin-top: 6px;'
+                'onchange': 'previewAddImage(event)'
             }),
         }
 
