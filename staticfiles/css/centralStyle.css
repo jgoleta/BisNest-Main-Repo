@@ -9,7 +9,7 @@
   --border-clr: #e6e9ee;
   --hover-clr: #222533;
   --palette-accent: #6366f1;
-  --palette-accent-dark: #4f46e5;
+  --palette-accent-dark: #4a4df0;
   --seconday-text-clr: #b0b3c1;
   --line-clr: #42434a;
 
@@ -265,7 +265,6 @@ main {
 
 /*Search Bar*/
 .search-bar {
-  margin: 10px 0;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -312,15 +311,16 @@ main {
 .delete-button:hover,
 .delete-modal-btn:hover,
 .delete-btn:hover,
-.cancel-button:hover {
-  background: red !important;
-  color: #ffffff !important;
-  border: none;
+.cancel-button:hover,
+.remove-button:hover {
+  background: #c41d1d;
+  box-shadow: 0 8px 20px rgba(30, 41, 59, 0.3);
+  transform: translateY(-2px);
+  color: var(--w-text-clr);
 }
 
 .edit-button {
-  background-color: var(--primary-color);
-  color: #fff;
+  background-color: var(--palette-accent);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -335,17 +335,26 @@ main {
 }
 
 .toggle-form-button,
-.add-button {
-  padding: 12px 20px;
-  font-weight: bold;
-  border: none;
+.add-button,
+.remove-button,
+.submit-button,
+.cancel-button {
+  padding: 11px 28px;
+  font-size: 0.95rem;
+  font-weight: 600;
   border-radius: 10px;
-  background-color: var(--primary-color);
-  color: #fff;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s;
-  width: 100px;
-  box-shadow: #111827 0px 2px 7px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  min-width: 100px;
+  letter-spacing: 0.3px;
+  text-transform: capitalize;
+  background: var(--palette-accent, #5e63ff);
+  color: var(--w-text-clr);
+}
+
+.remove-button {
+  background-color: #d63c3c;
 }
 
 .toggle-form-button {
@@ -356,8 +365,9 @@ main {
 .add-button:hover,
 .submit-button:hover,
 .edit-button:hover {
-  background-color: #4f46e5 !important;
-  border: none !important;
+  background: var(--palette-accent);
+  box-shadow: 0 8px 20px rgba(30, 41, 59, 0.3);
+  transform: translateY(-2px);
 }
 
 .button-container {
@@ -381,7 +391,6 @@ main {
 
 .submit-button {
   background: var(--palette-accent, #5e63ff) !important;
-  color: #fff;
 }
 
 .button-container {
@@ -404,7 +413,7 @@ main {
   border: none;
   cursor: pointer !important;
   padding: 0 5px;
-  color: inherit;
+  color: var(--w-text-clr) !important;
   vertical-align: middle;
   pointer-events: auto !important;
   position: relative;
@@ -420,44 +429,30 @@ main {
 .sort-btn i {
   font-size: 14px;
   pointer-events: none;
+  color: var(--w-text-clr);
 }
 
 /*Custom Scroll*/
-.table-wrapper::-webkit-scrollbar,
-.customer-form-container::-webkit-scrollbar,
-.employee-form-container::-webkit-scrollbar,
 .order-form-container::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
-.table-wrapper::-webkit-scrollbar-track,
-.customer-form-container::-webkit-scrollbar-track,
-.employee-form-container::-webkit-scrollbar-track,
 .order-form-container::-webkit-scrollbar-track {
   background: #f1f1f1; /* Track color */
   border-radius: 10px;
 }
 
-.table-wrapper::-webkit-scrollbar-thumb,
-.customer-form-container::-webkit-scrollbar-thumb,
-.employee-form-container::-webkit-scrollbar-thumb,
 .order-form-container::-webkit-scrollbar-thumb {
   background: var(--primary-color); /* Thumb color */
   border-radius: 10px;
   border: 2px solid #f1f1f1; /* Optional padding around thumb */
 }
 
-.table-wrapper::-webkit-scrollbar-thumb:hover,
-.customer-form-container::-webkit-scrollbar-thumb:hover,
-.employee-form-container::-webkit-scrollbar-thumb:hover,
 .order-form-container::-webkit-scrollbar-thumb:hover {
   background: #4f46e5; /* Darker on hover */
 }
 
-.table-wrapper,
-.customer-form-container,
-.employee-form-container,
 .order-form-container {
   scrollbar-width: thin;
   scrollbar-color: var(--primary-color) #b0b3c1;
@@ -501,4 +496,77 @@ main {
 .pagination .ellipsis {
   padding: 6px 8px;
   color: var(--muted-clr);
+}
+
+/* Table container */
+.table-wrapper {
+  background: var(--base-clr);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  border-radius: 10px;
+  overflow: visible;
+  margin: 10px 0;
+}
+
+.table-wrapper thead th {
+  top: 0;
+  background: var(--primary-color);
+  color: #fff;
+  z-index: 2;
+}
+
+/* Table styling */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: #111;
+  font-size: 15px;
+}
+
+.table th,
+.table td {
+  padding: 14px 16px;
+  text-align: center;
+  border: none;
+}
+
+.table thead th {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Form Title */
+.form-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.submit-wrapper {
+  text-align: right;
+}
+
+/* Allow pointer events on buttons inside table headers */
+.table-wrapper thead th button,
+.table thead th button {
+  pointer-events: auto;
+  position: relative;
+  z-index: 3;
+}
+
+/* Overlay for modal */
+.modal-overlay {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1001;
+  display: none;
 }

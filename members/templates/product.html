@@ -15,7 +15,7 @@
 </head>
 
 <body>
-  
+
   {% include 'sidebar.html' %}
 
   <main class="main-content">
@@ -23,15 +23,18 @@
     {% include 'header.html' with page="Product Management" %}
 
     <div class="container">
-      <div style="display: flex; justify-content: flex-end; margin-bottom: 20px; gap: 10px;">
-        <button id="add-product-btn" class="toggle-form-button">+ New</button>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search Product Name:" onkeyup="searchCustomer()">
+        <div class="button-container">
+          <button id="add-product-btn" class="toggle-form-button">+ New</button>
+        </div>
       </div>
-      <div id="product-list"
-        style="display: flex; flex-direction: column; align-items: center; gap: 2rem; margin-top: 30px;">
+
+      <div id="product-list">
         {% if products %}
         {% for product in products %}
         {% if forloop.counter0|divisibleby:6 %}
-        <div style="display:flex; gap:2rem; margin-bottom:2rem;">
+        <div class="product-display">
           {% endif %}
 
           <button class="product-button-style" data-id="{{ product.product_id }}" data-name="{{ product.name }}"
@@ -56,22 +59,25 @@
           <span class="close-add-modal close-button">&times;</span>
           <h2>Add Product</h2>
           <div class="modal-divider"></div>
-          <form id="add-product-form" method="post" enctype="multipart/form-data">
+          <form id="product-form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="modal-label">
-              <label for="add-product-name">Product Name:</label>
-              {{ form.name }}
+            <div class="form-row">
+              <div class="form-group">
+                <label for="{{ form.name.id_for_label }}">Product Name:</label>
+                {{ form.name }}
+              </div>
+              <div class="form-group">
+                <label for="{{ form.stock.id_for_label }}">Stock:</label>
+                {{ form.stock }}
+              </div>
+              <div class="form-group">
+                <label for="{{ form.price.id_for_label }}">Price:</label>
+                {{ form.price }}
+              </div>
             </div>
-            <div class="modal-label">
-              <label for="add-product-stock">Stock:</label>
-              {{ form.stock }}
+            <div class="modal-actions">
+              <button type="submit" class="submit-button">Submit</button>
             </div>
-            <div class="modal-label">
-              <label for="add-product-price">Price (₱):</label>
-              {{ form.price }}
-            </div>
-            <button type="submit" class="submit-button"
-              style="margin-top: 18px; min-width: 120px; font-size: 1.1rem; float: right;">Add</button>
           </form>
         </div>
       </div>
@@ -82,27 +88,29 @@
           <h2 id="modal-product-name">Product Name</h2>
           <div class="modal-divider"></div>
           <p><strong>ID:</strong> <span id="modal-product-id"></span></p>
-          <div style="margin-bottom: 18px;">
-            <label for="modal-product-name-input"><strong>Name:</strong></label>
-            <input type="text" id="modal-product-name-input"
-              style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #bbb;">
+
+          <div class="form-group">
+            <label for="modal-product-name-input" class="modal-label">Name:</label>
+            <input type="text" id="modal-product-name-input">
           </div>
-          <div style="margin-bottom: 18px;">
-            <label for="modal-product-stock"><strong>Stock:</strong></label>
-            <input type="number" id="modal-product-stock" min="0"
-              style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #bbb;">
+          <div class="form-group">
+            <label for="modal-product-stock" class="modal-label">Stock:</label>
+            <input type="number" id="modal-product-stock" min="0">
           </div>
-          <div style="margin-bottom: 18px;">
-            <label for="modal-product-price"><strong>Price (₱):</strong></label>
-            <input type="number" id="modal-product-price" min="0" step="0.01"
-              style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #bbb;">
+          <div class="form-group">
+            <label for="modal-product-price" class="modal-label">Price (₱):</label>
+            <input type="number" id="modal-product-price" min="0" step="0.01">
           </div>
+
           <div class="modal-actions">
-            <button id="save-price-btn" class="submit-button">Save Changes</button>
-            <button id="delete-modal-btn" class="delete-modal-btn">Delete</button>
+            <button id="save-price-btn" class="submit-button">Save</button>
+            <button id="delete-modal-btn" class="remove-button">Remove</button>
           </div>
         </div>
       </div>
+
+      <!-- Notification -->
+      <div id="notification" class="notification"></div>
     </div>
   </main>
 
