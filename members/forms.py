@@ -82,10 +82,11 @@ class OrderForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'order_id': forms.TextInput(attrs={'readonly': True, 'class': 'form-control'}),
-            'customer_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'employee_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'product_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'amount': forms.NumberInput(attrs={'readonly': True,'placeholder': 'Automatically Computed', 'class': 'form-control'}),
+            'customer': forms.Select(attrs={'class': 'form-control'}),
+            'employee': forms.Select(attrs={'class': 'form-control'}),
+            'product': forms.Select(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'min': '0.01'}),
+            'amount': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Automatically Computed', 'class': 'form-control'}),
             'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
 
