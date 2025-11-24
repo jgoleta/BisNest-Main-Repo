@@ -32,23 +32,23 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <div>Total Sales</div>
-                    <div class="stat-value" id="totalSales">₱0</div>
-                    <div class="stat-note">No data yet</div>
+                    <div class="stat-value" id="totalSales">₱{{ total_sales|default:0|floatformat:2 }}</div>
+                    <div class="stat-note">All-time collected payments</div>
                 </div>
                 <div class="stat-card">
                     <div>Orders</div>
-                    <div class="stat-value" id="totalOrders">0</div>
-                    <div class="stat-note">No data yet</div>
+                    <div class="stat-value" id="totalOrders">{{ total_orders|default:0 }}</div>
+                    <div class="stat-note">Total orders in system</div>
                 </div>
                 <div class="stat-card">
                     <div>New Customers</div>
-                    <div class="stat-value" id="newCustomers">0</div>
-                    <div class="stat-note">No data yet</div>
+                    <div class="stat-value" id="newCustomers">{{ new_customers|default:0 }}</div>
+                    <div class="stat-note">Added in last 30 days</div>
                 </div>
                 <div class="stat-card">
                     <div>Inventory</div>
-                    <div class="stat-value" id="inventoryLevel">0%</div>
-                    <div class="stat-note">No data yet</div>
+                    <div class="stat-value" id="inventoryLevel">{{ inventory_level|default:0 }}%</div>
+                    <div class="stat-note">Products with available stock</div>
                 </div>
             </div>
 
@@ -60,7 +60,7 @@
         </div>
     </main>
 
-</body>
+    {{ monthly_sales|json_script:"monthly-sales-data" }}
 
 </body>
 
