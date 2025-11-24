@@ -46,14 +46,17 @@ class ProductForm(forms.ModelForm):
         }
 
 class DeliveryForm(forms.ModelForm):
+    delivery_id = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True})
+    )
+
     class Meta:
         model = Delivery
         fields = '__all__'
         widgets = {
-            'delivery_id': forms.TextInput(attrs={'class': 'form-control'}),
-            'order_id': forms.TextInput(attrs={'class': 'form-control'}),
-            'customer_name': forms.Select(attrs={'class': 'form-control'}),
-            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'order': forms.Select(attrs={'class': 'form-control'}),
+            'customer': forms.Select(attrs={'class': 'form-control'}),
             'scheduled_date': forms.DateInput(attrs={
                 'class': 'form-control',
                 'type': 'date'
