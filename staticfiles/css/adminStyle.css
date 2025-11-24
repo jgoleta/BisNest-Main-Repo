@@ -11,7 +11,6 @@
   box-sizing: border-box;
 }
 
-
 h1 {
   margin: 6px 0 4px 0;
   font-size: 20px;
@@ -126,16 +125,14 @@ th {
   display: inline-block;
   padding: 8px 12px;
   border-radius: 8px;
-  background: var(--accent);
-  color: #fff;
+  background: var(--palette-accent);
   border: 0;
   cursor: pointer;
+  color: var(--w-text-clr);
 }
 
-.btn.ghost {
-  background: transparent;
-  color: var(--accent);
-  border: 1px solid #dbe8f7;
+.btn:hover {
+  background: var(--palette-accent-dark);
 }
 
 /* Footer */
@@ -203,15 +200,14 @@ footer {
   font-size: 12px;
   padding: 4px 8px;
   border-radius: 999px;
-  background: #eef6ff;
   color: var(--accent);
   border: 1px solid #dbeffd;
 }
 .manage-btn {
   padding: 6px 8px;
   border-radius: 8px;
-  border: 0;
-  background: #f3f4f6;
+  border: 1px solid var(--border-clr);
+  background: #00000000;
   cursor: pointer;
 }
 .manage-btn:hover {
