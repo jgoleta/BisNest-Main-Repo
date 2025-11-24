@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 from django.utils.timezone import now
 
@@ -101,6 +103,25 @@ class Delivery(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
     scheduled_date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+
+    def save(self, *args, **kwargs):
+        model_cls = self.__class__
+        if not self.delivery_id or (not self.pk and model_cls.objects.filter(delivery_id=self.delivery_id).exists()):
+            self.delivery_id = model_cls.get_next_delivery_id()
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def get_next_delivery_id(cls):
+        prefix = 'DEL'
+        last_delivery = cls.objects.order_by('-id').first()
+        next_number = 1
+
+        if last_delivery and last_delivery.delivery_id:
+            match = re.search(r'(\d+)$', last_delivery.delivery_id)
+            if match:
+                next_number = int(match.group(1)) + 1
+
+        return f'{prefix}{next_number:04d}'
 
     def __str__(self):
         cust = self.customer.name if self.customer else "Unknown"

@@ -12,7 +12,7 @@ def deliveryPage(request):
             form.save()
             return redirect('delivery')
     else:
-        form = DeliveryForm()
+        form = DeliveryForm(initial={'delivery_id': Delivery.get_next_delivery_id()})
 
     deliveries = Delivery.objects.all()
     return render(request, 'delivery.html', {
