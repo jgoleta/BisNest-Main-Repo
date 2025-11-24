@@ -1,20 +1,34 @@
+//reset form
+function resetPaymentForm() {
+  const form = document.querySelector(".payment-form");
+  if (!form) return;
+  form.reset();
+  const editId = form.querySelector('input[name="edit_id"]');
+  if (editId) editId.value = "";
+  const title = document.querySelector(".form-title");
+  if (title) title.textContent = "Add Payment";
+}
+
 // Toggle Payment Form Modal
-function togglePaymentForm() {
+function togglePaymentForm(forceClose = false) {
   const formContainer = document.querySelector(".payment-form-container");
   const overlay = document.getElementById("paymentModalOverlay");
 
-  // If form is visible, close it
-  if (formContainer.classList.contains("active")) {
+  if (!formContainer || !overlay) return;
+
+  //Always close if called with forceClose=true
+  if (forceClose || formContainer.classList.contains("active")) {
     formContainer.classList.remove("active");
     overlay.classList.remove("active");
-    document.body.style.overflow = "auto"; // Allow scrolling again
+    document.body.style.overflow = "auto";
   } else {
-    // Open form modal
+    //open
     formContainer.classList.add("active");
     overlay.classList.add("active");
-    document.body.style.overflow = "hidden"; // Prevent background scroll
+    document.body.style.overflow = "hidden";
   }
 }
+
 
 const params = new URLSearchParams(window.location.search); 
 if (params.get("open_form") === "true") { 
@@ -27,10 +41,23 @@ if (params.get("open_form") === "true") {
   } 
 }
 
-// Close modal when overlay is clicked
+//Close modal then reset pag tigclick
 document.getElementById("paymentModalOverlay").addEventListener("click", () => {
-  togglePaymentForm();
+  resetPaymentForm();
+  togglePaymentForm(true);
 });
+
+//close modal on cancel button click
+const cancelButton = document.querySelector(".cancel-button");
+if (cancelButton) {
+  cancelButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    resetPaymentForm();
+    togglePaymentForm(true); //force close
+  });
+}
+
+
 
 // Live search for Payment Table
 function searchPayment() {
@@ -55,17 +82,29 @@ document.querySelectorAll(".edit-button").forEach((button) => {
     const paymentId = button.getAttribute("data-payment_id");
     const order = button.getAttribute("data-order");
     const amount = button.getAttribute("data-amount");
-    const date = button.getAttribute("data-date");
     const method = button.getAttribute("data-method");
 
-    // Fill form fields with existing data
+    // Fill form fields
     document.querySelector('[name="payment_id"]').value = paymentId;
     document.querySelector('[name="order"]').value = order;
     document.querySelector('[name="amount"]').value = amount;
-    document.querySelector('[name="date"]').value = date;
     document.querySelector('[name="method"]').value = method;
 
-    // Open modal for editing
+    //Add or update hidden edit_id field
+    let editIdInput = document.querySelector('input[name="edit_id"]');
+    if (!editIdInput) {
+      editIdInput = document.createElement("input");
+      editIdInput.type = "hidden";
+      editIdInput.name = "edit_id";
+      document.querySelector(".payment-form").appendChild(editIdInput);
+    }
+    editIdInput.value = button.getAttribute("data-id");
+
+    //Update form title
+    const title = document.querySelector(".form-title");
+    if (title) title.textContent = "Edit Payment";
+
+    //Open modal for editing
     const formContainer = document.querySelector(".payment-form-container");
     const overlay = document.getElementById("paymentModalOverlay");
     formContainer.classList.add("active");

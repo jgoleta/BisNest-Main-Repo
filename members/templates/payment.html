@@ -36,6 +36,7 @@
         <h2 class="form-title">Add Payment</h2>
         <form method="POST" class="table-body payment-form">
           {% csrf_token %}
+          <input type="hidden" name="edit_id" id="edit_id" value="">
           <div class="table-input-row table-row">
             <div class="form-group">
               <label for="{{ form.payment_id.id_for_label }}">
