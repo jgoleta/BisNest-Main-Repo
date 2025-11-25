@@ -432,32 +432,6 @@ main {
   color: var(--w-text-clr);
 }
 
-/*Custom Scroll*/
-.order-form-container::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-.order-form-container::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Track color */
-  border-radius: 10px;
-}
-
-.order-form-container::-webkit-scrollbar-thumb {
-  background: var(--primary-color); /* Thumb color */
-  border-radius: 10px;
-  border: 2px solid #f1f1f1; /* Optional padding around thumb */
-}
-
-.order-form-container::-webkit-scrollbar-thumb:hover {
-  background: #4f46e5; /* Darker on hover */
-}
-
-.order-form-container {
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary-color) #b0b3c1;
-}
-
 /* Pagination styles */
 .pagination-container {
   display: flex;
