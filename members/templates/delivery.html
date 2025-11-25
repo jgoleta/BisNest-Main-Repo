@@ -60,7 +60,7 @@
           </div>
           <div class="form-actions">
             <button type="submit" class="submit-button">Submit</button>
-            <button class="cancel-button" type="button" id="cancelBtn">Cancel</button>
+            <button class="cancel-button" type="button" id="cancelBtn" onclick="resetDeliveryForm()">Cancel</button>
           </div>
         </form>
       </div>
@@ -98,9 +98,15 @@
                   </select>
                 </td>
                 <td>
-                  <button type="button" class="edit-button" data-id="{{ cust.id }}" data-name="{{ cust.name }}"
-                    data-phone="{{ cust.phone }}" data-address="{{ cust.address }}" title="Edit customer"
-                    aria-label="Edit customer" style="margin-right:8px;">
+                  <button type="button" class="edit-button"
+        data-id="{{ d.id }}"
+        data-delivery_id="{{ d.delivery_id }}"
+        data-order="{{ d.order.id }}"
+        data-customer="{{ d.customer }}"
+        data-address="{{ d.address }}"
+        data-scheduled_date="{{ d.scheduled_date|date:'Y-m-d' }}"
+        data-status="{{ d.status }}"
+        title="Edit Delivery" aria-label="Edit Delivery" style="margin-right:8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px"
                       fill="#FFFFFF">
                       <path
