@@ -202,15 +202,4 @@ deleteModalBtn.addEventListener("click", () => {
     });
 });
 
-function showNotification(message, error = false) {
-  const notification = document.getElementById("notification");
-  notification.textContent = message;
-  notification.classList.add("show");
-  if (error) {
-    notification.classList.add("error");
-  }
-  setTimeout(() => {
-    notification.classList.remove("show");
-    notification.classList.remove("error");
-  }, 3000);
-}
+// Notification helper is provided globally by `notify.js` (window.showNotification)

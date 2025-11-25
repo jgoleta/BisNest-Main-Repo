@@ -5,7 +5,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 # import models used by views in this module
-from members.models import Supply
+from django.db.models import Sum
+from django.utils import timezone
+from members.models import Supply, Payment, Order, Customer, Product
 
 def login_view(request):
     if request.method == 'POST':
@@ -42,7 +44,43 @@ def landingPage(request):
     #    return redirect('loginPage') 
 
 def menuPage(request):
-    return render(request, 'menu.html')
+    # Calculate Total Sales (sum of all payment amounts)
+    total_sales = Payment.objects.aggregate(total=Sum('amount'))['total'] or 0
+    
+    # Calculate Total Orders
+    total_orders = Order.objects.count()
+    
+    # Calculate New Customers (last 30 days)
+    thirty_days_ago = timezone.now().date() - timezone.timedelta(days=30)
+    new_customers = Customer.objects.filter(date_added__gte=thirty_days_ago).count()
+    
+    # Calculate Inventory Level (percentage of products with stock > 0)
+    total_products = Product.objects.count()
+    in_stock_products = Product.objects.filter(stock__gt=0).count()
+    inventory_level = int((in_stock_products / total_products) * 100) if total_products > 0 else 0
+    
+    # Calculate Monthly Sales for chart (current year)
+    current_year = timezone.now().year
+    monthly_sales = [0] * 12
+    payments_by_month = (
+        Payment.objects.filter(date__year=current_year)
+        .values('date__month')
+        .annotate(total=Sum('amount'))
+    )
+    for entry in payments_by_month:
+        if entry['date__month']:
+            month_index = entry['date__month'] - 1
+            if 0 <= month_index < 12:
+                monthly_sales[month_index] = float(entry['total'] or 0)
+    
+    context = {
+        'total_sales': total_sales,
+        'total_orders': total_orders,
+        'new_customers': new_customers,
+        'inventory_level': inventory_level,
+        'monthly_sales': monthly_sales,
+    }
+    return render(request, 'menu.html', context)
 
 def signupPage(request):
     return render(request, 'signup.html')
