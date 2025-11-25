@@ -2,11 +2,31 @@
 function resetPaymentForm() {
   const form = document.querySelector(".payment-form");
   if (!form) return;
+
+  //reset form fields
   form.reset();
+
+  //clear
   const editId = form.querySelector('input[name="edit_id"]');
   if (editId) editId.value = "";
+
+  //reset form title
   const title = document.querySelector(".form-title");
   if (title) title.textContent = "Add Payment";
+
+  //restore order dropdown 
+  const orderSelect = document.querySelector('[name="order"]');
+  if (orderSelect) {
+    orderSelect.disabled = false;
+    orderSelect.style.pointerEvents = "auto"; //pde n ulit i click
+    orderSelect.style.color = ""; 
+  }
+
+  const paymentIdField = document.querySelector('[name="payment_id"]');
+  if (paymentIdField) {
+    paymentIdField.readOnly = false;
+    paymentIdField.style.color = ""; 
+  }
 }
 
 // Toggle Payment Form Modal
@@ -91,7 +111,7 @@ function searchPayment() {
   });
 }
 
-// Handle Edit Button Click
+//edit button
 document.querySelectorAll(".edit-button").forEach((button) => {
   button.addEventListener("click", () => {
     const paymentId = button.getAttribute("data-payment_id");
@@ -99,11 +119,18 @@ document.querySelectorAll(".edit-button").forEach((button) => {
     const amount = button.getAttribute("data-amount");
     const method = button.getAttribute("data-method");
 
-    // Fill form fields
-    document.querySelector('[name="payment_id"]').value = paymentId;
-    document.querySelector('[name="order"]').value = order;
-    document.querySelector('[name="amount"]').value = amount;
-    document.querySelector('[name="method"]').value = method;
+    //fill form fields
+    const paymentIdField = document.querySelector('[name="payment_id"]');
+paymentIdField.value = paymentId;
+paymentIdField.readOnly = true;
+
+const orderSelect = document.querySelector('[name="order"]');
+orderSelect.value = order;
+orderSelect.disabled = true;
+orderSelect.style.pointerEvents = "none"; // prevent interaction
+
+document.querySelector('[name="amount"]').value = amount;
+document.querySelector('[name="method"]').value = method;
 
     //Add or update hidden edit_id field
     let editIdInput = document.querySelector('input[name="edit_id"]');
