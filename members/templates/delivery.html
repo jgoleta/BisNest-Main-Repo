@@ -38,10 +38,6 @@
           {% csrf_token %}
           <div class="form-row">
             <div class="form-group">
-              <label for="{{ form.delivery_id.id_for_label }}">Delivery ID:</label>
-              {{ form.delivery_id }}
-            </div>
-            <div class="form-group">
               <label for="{{ form.order.id_for_label }}">Order ID:</label>
               {{ form.order }}
             </div>

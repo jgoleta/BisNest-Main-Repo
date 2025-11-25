@@ -62,6 +62,7 @@
 
 .stat-card,
 .chart-container {
+  background-color: var(--card-bg, #ffffff);
   border-radius: 12px;
   padding: 18px;
   text-align: center;
