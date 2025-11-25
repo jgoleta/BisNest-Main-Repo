@@ -217,3 +217,12 @@
   padding: 8px 4px;
   color: var(--muted-clr);
 }
+
+select.readonly-select {
+  pointer-events: none;       /* prevent interaction */
+  -webkit-appearance: none;   /* Chrome, Safari */
+  -moz-appearance: none;      /* Firefox */
+  appearance: none;           /* standard */
+  background: transparent;    /* remove default background */
+  border: 1px solid #ccc;     /* optional: looks like a text input */
+}

@@ -14,18 +14,18 @@ function resetPaymentForm() {
   const title = document.querySelector(".form-title");
   if (title) title.textContent = "Add Payment";
 
-  //restore order dropdown 
+  //restore order dropdown
   const orderSelect = document.querySelector('[name="order"]');
   if (orderSelect) {
     orderSelect.disabled = false;
     orderSelect.style.pointerEvents = "auto"; //pde n ulit i click
-    orderSelect.style.color = ""; 
+    orderSelect.style.color = "";
   }
 
   const paymentIdField = document.querySelector('[name="payment_id"]');
   if (paymentIdField) {
     paymentIdField.readOnly = false;
-    paymentIdField.style.color = ""; 
+    paymentIdField.style.color = "";
   }
 }
 
@@ -49,16 +49,15 @@ function togglePaymentForm(forceClose = false) {
   }
 }
 
-
-const params = new URLSearchParams(window.location.search); 
-if (params.get("open_form") === "true") { 
-  const formContainer = document.querySelector(".payment-form-container"); 
-  const overlay = document.getElementById("paymentModalOverlay"); 
-  if (formContainer && overlay) { 
-    formContainer.classList.add("active"); 
-    overlay.classList.add("active"); 
-    document.body.style.overflow = "hidden"; 
-  } 
+const params = new URLSearchParams(window.location.search);
+if (params.get("open_form") === "true") {
+  const formContainer = document.querySelector(".payment-form-container");
+  const overlay = document.getElementById("paymentModalOverlay");
+  if (formContainer && overlay) {
+    formContainer.classList.add("active");
+    overlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
 }
 
 //Close modal then reset pag tigclick
@@ -87,12 +86,12 @@ function searchPaymentByCustomer() {
     const customerCell = row.cells[2]; //Customer Name column(3rd column)
     if (customerCell) {
       const customerText = customerCell.textContent || customerCell.innerText;
-      row.style.display = customerText.toLowerCase().includes(filter) ? "" : "none";
+      row.style.display = customerText.toLowerCase().includes(filter)
+        ? ""
+        : "none";
     }
   });
 }
-
-
 
 // Live search for Payment Table
 function searchPayment() {
@@ -121,16 +120,16 @@ document.querySelectorAll(".edit-button").forEach((button) => {
 
     //fill form fields
     const paymentIdField = document.querySelector('[name="payment_id"]');
-paymentIdField.value = paymentId;
-paymentIdField.readOnly = true;
+    paymentIdField.value = paymentId;
+    paymentIdField.readOnly = true;
 
-const orderSelect = document.querySelector('[name="order"]');
-orderSelect.value = order;
-orderSelect.disabled = true;
-orderSelect.style.pointerEvents = "none"; // prevent interaction
+    const orderSelect = document.querySelector('[name="order"]');
+    orderSelect.value = order;
+    orderSelect.disabled = true;
+    orderSelect.style.pointerEvents = "none"; // prevent interaction
 
-document.querySelector('[name="amount"]').value = amount;
-document.querySelector('[name="method"]').value = method;
+    document.querySelector('[name="amount"]').value = amount;
+    document.querySelector('[name="method"]').value = method;
 
     //Add or update hidden edit_id field
     let editIdInput = document.querySelector('input[name="edit_id"]');
@@ -163,38 +162,43 @@ function initPaymentSort() {
   const table = document.getElementById("payment-table");
   if (!sortBtn || !table) return;
 
-  sortBtn.addEventListener("click", function(e) {
+  sortBtn.addEventListener("click", function (e) {
     e.stopPropagation();
     e.preventDefault();
     const tbody = table.querySelector("tbody");
     if (!tbody) return;
 
-    paymentSortAscending = paymentSortAscending === null || paymentSortAscending === false ? true : false;
+    paymentSortAscending =
+      paymentSortAscending === null || paymentSortAscending === false
+        ? true
+        : false;
     const rows = Array.from(tbody.querySelectorAll("tr"));
-    
+
     rows.sort((a, b) => {
       const aId = a.cells[0].textContent.trim();
       const bId = b.cells[0].textContent.trim();
-      
+
       const aNum = parseInt(aId.replace(/^[A-Za-z]/, "")) || 0;
       const bNum = parseInt(bId.replace(/^[A-Za-z]/, "")) || 0;
-      
+
       return paymentSortAscending ? aNum - bNum : bNum - aNum;
     });
 
     tbody.innerHTML = "";
-    rows.forEach(row => tbody.appendChild(row));
+    rows.forEach((row) => tbody.appendChild(row));
 
     //update icon
     const icon = sortBtn.querySelector("i");
     if (icon) {
-      icon.className = paymentSortAscending ? "fas fa-sort-up" : "fas fa-sort-down";
+      icon.className = paymentSortAscending
+        ? "fas fa-sort-up"
+        : "fas fa-sort-down";
     }
   });
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initPaymentSort);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initPaymentSort);
 } else {
   initPaymentSort();
 }
@@ -236,7 +240,6 @@ function initPaymentDateSort() {
         return paymentDateSortAscending ? aTime - bTime : bTime - aTime;
       }
 
-
       return paymentDateSortAscending
         ? aText.localeCompare(bText)
         : bText.localeCompare(aText);
@@ -247,7 +250,9 @@ function initPaymentDateSort() {
 
     const icon = sortBtn.querySelector("i");
     if (icon) {
-      icon.className = paymentDateSortAscending ? "fas fa-sort-up" : "fas fa-sort-down";
+      icon.className = paymentDateSortAscending
+        ? "fas fa-sort-up"
+        : "fas fa-sort-down";
     }
   });
 }
@@ -261,22 +266,22 @@ if (document.readyState === "loading") {
 /* ==============================
    Client-side Pagination for Payment Table
    =============================== */
-(function() {
-  const table = document.getElementById('payment-table');
-  const paginationContainer = document.getElementById('payment-pagination');
+(function () {
+  const table = document.getElementById("payment-table");
+  const paginationContainer = document.getElementById("payment-pagination");
   if (!table || !paginationContainer) return;
 
   let currentPage = 1;
   const rowsPerPage = 10;
 
   function getAllRows() {
-    return Array.from(table.querySelectorAll('tbody tr'));
+    return Array.from(table.querySelectorAll("tbody tr"));
   }
 
   function showPage(page) {
     const allRows = getAllRows();
-    allRows.forEach(r => r.style.display = 'none');
-    
+    allRows.forEach((r) => (r.style.display = "none"));
+
     const total = allRows.length;
     const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
     if (page < 1) page = 1;
@@ -285,21 +290,21 @@ if (document.readyState === "loading") {
 
     const start = (currentPage - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-    allRows.slice(start, end).forEach(r => r.style.display = '');
+    allRows.slice(start, end).forEach((r) => (r.style.display = ""));
 
     renderPaginationControls(totalPages);
   }
 
   function renderPaginationControls(totalPages) {
-    paginationContainer.innerHTML = '';
-    const pager = document.createElement('div');
-    pager.className = 'pagination';
+    paginationContainer.innerHTML = "";
+    const pager = document.createElement("div");
+    pager.className = "pagination";
 
-    const prev = document.createElement('button');
-    prev.className = 'page-prev';
-    prev.textContent = 'Prev';
+    const prev = document.createElement("button");
+    prev.className = "page-prev";
+    prev.textContent = "Prev";
     prev.disabled = currentPage === 1;
-    prev.addEventListener('click', () => showPage(currentPage - 1));
+    prev.addEventListener("click", () => showPage(currentPage - 1));
     pager.appendChild(prev);
 
     const maxButtons = 7;
@@ -312,55 +317,54 @@ if (document.readyState === "loading") {
     }
 
     if (startPage > 1) {
-      const btn = document.createElement('button');
-      btn.textContent = '1';
-      btn.addEventListener('click', () => showPage(1));
+      const btn = document.createElement("button");
+      btn.textContent = "1";
+      btn.addEventListener("click", () => showPage(1));
       pager.appendChild(btn);
       if (startPage > 2) {
-        const ell = document.createElement('span');
-        ell.className = 'ellipsis';
-        ell.textContent = '…';
+        const ell = document.createElement("span");
+        ell.className = "ellipsis";
+        ell.textContent = "…";
         pager.appendChild(ell);
       }
     }
 
     for (let p = startPage; p <= endPage; p++) {
-      const btn = document.createElement('button');
+      const btn = document.createElement("button");
       btn.textContent = String(p);
-      if (p === currentPage) btn.setAttribute('aria-current', 'page');
-      btn.addEventListener('click', () => showPage(p));
+      if (p === currentPage) btn.setAttribute("aria-current", "page");
+      btn.addEventListener("click", () => showPage(p));
       pager.appendChild(btn);
     }
 
     if (endPage < totalPages) {
       if (endPage < totalPages - 1) {
-        const ell = document.createElement('span');
-        ell.className = 'ellipsis';
-        ell.textContent = '…';
+        const ell = document.createElement("span");
+        ell.className = "ellipsis";
+        ell.textContent = "…";
         pager.appendChild(ell);
       }
-      const btn = document.createElement('button');
+      const btn = document.createElement("button");
       btn.textContent = String(totalPages);
-      btn.addEventListener('click', () => showPage(totalPages));
+      btn.addEventListener("click", () => showPage(totalPages));
       pager.appendChild(btn);
     }
 
-    const next = document.createElement('button');
-    next.className = 'page-next';
-    next.textContent = 'Next';
+    const next = document.createElement("button");
+    next.className = "page-next";
+    next.textContent = "Next";
     next.disabled = currentPage === totalPages;
-    next.addEventListener('click', () => showPage(currentPage + 1));
+    next.addEventListener("click", () => showPage(currentPage + 1));
     pager.appendChild(next);
 
     paginationContainer.appendChild(pager);
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     showPage(1);
   });
 
   setTimeout(() => {
-    if (!document.readyState || document.readyState !== 'loading') showPage(1);
+    if (!document.readyState || document.readyState !== "loading") showPage(1);
   }, 50);
-
 })();

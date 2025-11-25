@@ -6,15 +6,29 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 def deliveryPage(request):
+    deliveries = Delivery.objects.all()
+
     if request.method == 'POST':
-        form = DeliveryForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('delivery')
+        edit_id = request.POST.get('edit_id')
+
+        if edit_id:  #edit meron ng delivery
+            delivery = get_object_or_404(Delivery, pk=edit_id)
+            form = DeliveryForm(request.POST, instance=delivery)
+            if form.is_valid():
+                form.save()
+                return redirect('delivery')
+            else:
+                print("INVALID form (edit)", form.errors)
+        else:  #add new delivery
+            form = DeliveryForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('delivery')
+            else:
+                print("INVALID form", form.errors)
     else:
         form = DeliveryForm(initial={'delivery_id': Delivery.get_next_delivery_id()})
 
-    deliveries = Delivery.objects.all()
     return render(request, 'delivery.html', {
         'form': form,
         'deliveries': deliveries
