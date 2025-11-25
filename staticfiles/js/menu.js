@@ -1,19 +1,23 @@
-if (!localStorage.getItem("dashboardData")) {
-  localStorage.setItem(
-    "dashboardData",
-    JSON.stringify({
-      totalSales: 0,
-      orders: [],
-      customers: [],
-      inventory: 0,
-      monthlySales: Array(12).fill(0),
-      activities: [],
-    })
-  );
+// Get monthly sales data from backend
+let monthlySales = Array(12).fill(0);
+const monthlySalesElement = document.getElementById("monthly-sales-data");
+if (monthlySalesElement) {
+  try {
+    const parsed = JSON.parse(monthlySalesElement.textContent);
+    if (Array.isArray(parsed)) {
+      monthlySales = parsed.map(val => Number.isFinite(val) ? val : 0);
+    }
+  } catch (error) {
+    console.error("Failed to parse monthly sales data:", error);
+  }
 }
 
-const ctx = document.getElementById("salesChart").getContext("2d");
-const salesChart = new Chart(ctx, {
+// Initialize chart only if canvas exists
+const ctx = document.getElementById("salesChart");
+if (!ctx) {
+  console.error("Sales chart canvas not found");
+} else {
+  const salesChart = new Chart(ctx.getContext("2d"), {
   type: "line",
   data: {
     labels: [
@@ -30,10 +34,10 @@ const salesChart = new Chart(ctx, {
       "Nov",
       "Dec",
     ],
-    datasets: [
+      datasets: [
       {
         label: "Monthly Sales (₱)",
-        data: Array(12).fill(0),
+        data: monthlySales,
         backgroundColor: "#fff",
         borderColor: "#1e293b",
         borderWidth: 2,
@@ -56,57 +60,21 @@ const salesChart = new Chart(ctx, {
       },
     },
   },
-});
+  });
 
-function loadDashboard() {
-  const data = JSON.parse(localStorage.getItem("dashboardData"));
-
-  document.getElementById("totalSales").textContent =
-    "₱" + data.totalSales.toLocaleString();
-  document.getElementById("totalOrders").textContent = data.orders.length;
-  document.getElementById("newCustomers").textContent = data.customers.length;
-  document.getElementById("inventoryLevel").textContent = data.inventory + "%";
-
-  salesChart.data.datasets[0].data = data.monthlySales;
-  salesChart.update();
-
-  const activityFeed = document.getElementById("activityFeed");
-  activityFeed.innerHTML = "";
-
-  if (data.activities.length === 0) {
-    activityFeed.innerHTML = `
-          <div class="activity-item">
-            <img src="https://i.ibb.co/PZdTmb35/Customer.png" class="activity-icon" alt="activity">
-            <span>Welcome to your dashboard! Activities will appear here.</span>
-          </div>
-        `;
-  } else {
-    data.activities.forEach((activity) => {
-      const item = document.createElement("div");
-      item.className = "activity-item";
-      item.innerHTML = `
-            <img src="https://i.ibb.co/PZdTmb35/Customer.png" class="activity-icon" alt="${activity.type}">
-            <span>${activity.message} <small>(${activity.time})</small></span>
-          `;
-      activityFeed.appendChild(item);
+  // Refresh button - reload page to get fresh data
+  const refreshBtn = document.getElementById("refreshBtn");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", () => {
+      window.location.reload();
     });
   }
 }
 
-document.getElementById("addOrderBtn").addEventListener("click", () => {
-  window.location.href = "{% url 'history' %}";
-});
-
-document.getElementById("generateReportBtn").addEventListener("click", () => {
-  alert("Report generation would be implemented here");
-});
-
-document.getElementById("refreshBtn").addEventListener("click", () => {
-  loadDashboard();
-});
-
-loadDashboard();
-
-window.addEventListener("storage", () => {
-  loadDashboard();
-});
+// Generate Report button
+const generateReportBtn = document.getElementById("generateReportBtn");
+if (generateReportBtn) {
+  generateReportBtn.addEventListener("click", () => {
+    alert("Report generation would be implemented here");
+  });
+}
