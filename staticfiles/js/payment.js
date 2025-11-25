@@ -90,7 +90,7 @@ document.querySelectorAll(".edit-button").forEach((button) => {
     document.querySelector('[name="amount"]').value = amount;
     document.querySelector('[name="method"]').value = method;
 
-    // 🔹 Add or update hidden edit_id field
+    //Add or update hidden edit_id field
     let editIdInput = document.querySelector('input[name="edit_id"]');
     if (!editIdInput) {
       editIdInput = document.createElement("input");
@@ -100,11 +100,11 @@ document.querySelectorAll(".edit-button").forEach((button) => {
     }
     editIdInput.value = button.getAttribute("data-id");
 
-    // 🔹 Update form title
+    //Update form title
     const title = document.querySelector(".form-title");
     if (title) title.textContent = "Edit Payment";
 
-    // 🔹 Open modal for editing
+    //Open modal for editing
     const formContainer = document.querySelector(".payment-form-container");
     const overlay = document.getElementById("paymentModalOverlay");
     formContainer.classList.add("active");
