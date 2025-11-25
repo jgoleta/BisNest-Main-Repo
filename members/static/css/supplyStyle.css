@@ -1,27 +1,20 @@
 .supply-form-container {
+  pointer-events: auto;
   display: none;
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.95);
-  z-index: 1002;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
   background: var(--base-clr);
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-clr);
   width: 750px;
   max-width: 90vw;
   overflow-y: auto;
   max-height: 90vh;
-  opacity: 0;
-  transition: all 0.25s ease;
-}
-
-.supply-form-container.active {
-  display: block;
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
 }
 
 .supply-form-container label {
@@ -33,188 +26,40 @@
 .supply-form-container input,
 .supply-form-container textarea,
 .supply-form-container select {
-  width: 100%;
+  width: -webkit-fill-available;
   margin-top: 6px;
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #bbb;
-  background: #fff;
-  color: var(--text-clr);
+  background: var(--base-clr);
   font-family: inherit;
   font-size: 15px;
   box-sizing: border-box;
-}
-
-/*FORM STYLING*/
-.supply-form-container {
-  background-color: white;
-  border-radius: 10px;
-  padding: 20px;
-  margin-top: 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.supply-form-container input,
-.supply-form-container textarea,
-.supply-form-container select {
-  width: 100%;
-  margin: 6px 0 10px 0;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #bbb;
-  background: #fff;
-  color: #111;
-  font-family: inherit;
-  font-size: 15px;
-  box-sizing: border-box;
-}
-
-.form-row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 15px;
-}
-
-.form-group {
-  flex: 1;
 }
 
 .form-group label {
-  display: block;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
 }
 
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
+.form-group label svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .hidden {
   display: none;
 }
 
-/* Overlay */
-
-.modal-overlay.active {
-  display: block;
-  opacity: 1;
-}
-
-/*Modal Form Container*/
-#supplyForm {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.95);
-  background: #fff;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-  z-index: 1002;
-  width: 700px;
-  max-width: 90vw;
-  max-height: 90vh;
-  overflow-y: auto;
-  transition: all 0.25s ease;
-}
-
-#supplyForm.active {
-  display: block;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-/* Buttons */
-.cancel-button,
-.submit-button {
-  padding: 8px 18px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.cancel-button {
-  background: #ccc;
-  color: #222;
-  margin-right: 10px;
-}
-
-.submit-button {
-  background: var(--accent-clr, #5e63ff);
-  color: #fff;
-}
-
-/* Notification*/
-.notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 15px 25px;
-  background-color: #2ecc71;
-  color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.notification.show {
-  opacity: 1;
-}
-
-.notification.error {
-  background-color: #ff0000;
-}
-
-
-/*SUPPLY FORM MODAL STYLE*/
-.supply-form-container .form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.supply-form-container .submit-button {
-  background: var(--primary-color);
-  color: #fff;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s ease;
-}
-
-.supply-form-container .submit-button:hover {
-  background: var(--primary-dark, #4f46e5);
-}
-
-.supply-form-container .cancel-button {
-  background: #e0e0e0;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  color: #111;
-  transition: 0.2s ease;
-}
-
-.supply-form-container .cancel-button:hover {
-  background: #ccc;
-}
-
 /* Responsiveness */
 
 /* Tablets (up to 1024px) */
 @media (max-width: 1024px) {
-  .customer-supply-form-container {
+  .supply-form-container {
     width: 85vw;
     padding: 20px;
   }
@@ -303,7 +148,7 @@
   padding: 8px 12px;
   border: 1px solid var(--border-clr);
   background: var(--base-clr);
-  color: var(--main-text-color);
+  color: var(--text-clr);
   cursor: pointer;
   border-radius: 6px;
   font-size: 14px;

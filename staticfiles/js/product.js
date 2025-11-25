@@ -2,20 +2,30 @@ const addProductBtn = document.getElementById("add-product-btn");
 const addProductModal = document.getElementById("add-product-modal");
 const closeAddModal = document.querySelector(".close-add-modal");
 const addProductForm = document.getElementById("add-product-form");
+const modalOverlay = document.querySelector(".modal-overlay");
+
+// Helper function to toggle modal and overlay
+function toggleModal(modal, isOpen) {
+  modal.style.display = isOpen ? "block" : "none";
+  if (modalOverlay) {
+    modalOverlay.style.display = isOpen ? "block" : "none";
+  }
+}
 
 addProductBtn.addEventListener("click", () => {
-  addProductModal.style.display = "block";
+  toggleModal(addProductModal, true);
 });
 closeAddModal.addEventListener("click", () => {
-  addProductModal.style.display = "none";
+  toggleModal(addProductModal, false);
   addProductForm.reset();
 });
-window.addEventListener("click", (event) => {
-  if (event.target === addProductModal) {
-    addProductModal.style.display = "none";
+// Close modal when clicking on overlay
+if (modalOverlay) {
+  modalOverlay.addEventListener("click", () => {
+    toggleModal(addProductModal, false);
     addProductForm.reset();
-  }
-});
+  });
+}
 // Attach click handlers to server-rendered product buttons
 document.querySelectorAll(".product-button-style").forEach((btn) => {
   btn.addEventListener("click", function (e) {
@@ -42,23 +52,29 @@ const productIdEl = document.getElementById("modal-product-id");
 const productPriceEl = document.getElementById("modal-product-price");
 const closeEditModalBtn = document.getElementById("close-edit-modal");
 let currentButton = null;
+
 function openEditModal(product, btn) {
   productNameEl.textContent = product.name;
   modalNameInput.value = product.name;
   productIdEl.textContent = product.id;
   modalStockInput.value = btn.dataset.stock || "0";
   productPriceEl.value = product.price;
-  modal.style.display = "block";
+  toggleModal(modal, true);
   currentButton = btn;
 }
+
 closeEditModalBtn.addEventListener("click", () => {
-  modal.style.display = "none";
+  toggleModal(modal, false);
 });
-window.addEventListener("click", (event) => {
-  if (event.target === modal) {
-    modal.style.display = "none";
-  }
-});
+
+// Close modal when clicking on overlay
+if (modalOverlay) {
+  document.addEventListener("click", (event) => {
+    if (event.target === modalOverlay && modal.style.display === "block") {
+      toggleModal(modal, false);
+    }
+  });
+}
 productPriceEl.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     e.preventDefault();
@@ -142,11 +158,11 @@ saveBtn.addEventListener("click", () => {
       } else {
         showNotification("Update failed: " + (data.error || "Unknown"), true);
       }
-      modal.style.display = "none";
+      toggleModal(modal, false);
     })
     .catch((err) => {
       showNotification("Update failed: " + err.message, true);
-      modal.style.display = "none";
+      toggleModal(modal, false);
     });
 });
 
@@ -194,11 +210,11 @@ deleteModalBtn.addEventListener("click", () => {
       } else {
         showNotification("Delete failed: " + (data.error || "Unknown"), true);
       }
-      modal.style.display = "none";
+      toggleModal(modal, false);
     })
     .catch((err) => {
       showNotification("Delete failed: " + err.message, true);
-      modal.style.display = "none";
+      toggleModal(modal, false);
     });
 });
 

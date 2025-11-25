@@ -1,16 +1,10 @@
-/* Order Unique Style */
-.button-container {
-  margin-left: auto;
-}
-
-/* Order Form Container */
 .order-form-container {
   display: none;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1002;
+  z-index: 9999;
   background: var(--base-clr);
   padding: 25px;
   border-radius: 10px;
@@ -21,14 +15,6 @@
   overflow-y: auto;
   max-height: 90vh;
 }
-
-.order-form-container.active {
-  display: block;
-}
-.modal-overlay.active {
-  display: block;
-}
-
 
 /* Labels and Inputs */
 .order-form label {
@@ -53,92 +39,11 @@
   box-sizing: border-box;
 }
 
-/* RESPONSIVENESS */
-
-/* Tablets (up to 1024px) */
-@media (max-width: 1024px) {
-  .order-form-container {
-    width: 85vw;
-    padding: 20px;
-  }
-
-  .table th,
-  .table td {
-    padding: 12px;
-    font-size: 14px;
-  }
-}
-
-/* Small tablets and large phones (up to 800px) */
-@media (max-width: 800px) {
-  .order-form-container {
-    width: 95vw;
-    padding: 15px;
-  }
-
-  .form-title {
-    font-size: 18px;
-  }
-
-  .table-wrapper {
-    max-height: 60vh;
-  }
-
-  .table th,
-  .table td {
-    padding: 10px;
-    font-size: 13px;
-  }
-}
-
-/* Mobile phones (up to 600px) */
-@media (max-width: 600px) {
-  .order-form-container {
-    width: 95vw;
-    padding: 12px;
-    max-height: 85vh;
-  }
-
-  .form-title {
-    font-size: 17px;
-  }
-
-  .order-form input,
-  .order-form textarea,
-  .order-form select {
-    padding: 8px;
-    font-size: 14px;
-  }
-
-  .table th,
-  .table td {
-    padding: 8px;
-    font-size: 12px;
-    word-wrap: break-word;
-  }
-
-  .table-wrapper {
-    max-height: 55vh;
-  }
-
-  .submit-wrapper {
-    text-align: center;
-  }
-}
-
-.form-group label {
-  display: flex;
-  align-items: center;
-  gap: 6px; /* space between icon and text */
-  font-weight: 600;
-}
-
-
-/* Optional: adjust SVG size and position */
-.form-group label svg {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
+/* Form Title */
+.form-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 /* Pagination styles for order table */

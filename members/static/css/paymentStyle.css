@@ -1,20 +1,3 @@
-/* Button container */
-.button-container {
-  margin-left: auto;
-}
-
-/* Overlay for modal */
-.modal-overlay-payment {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 1001;
-  display: none;
-}
-
 /* Payment Form Container */
 .payment-form-container {
   display: none;
@@ -22,7 +5,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1002;
+  z-index: 9999;
   background: var(--base-clr);
   padding: 25px;
   border-radius: 10px;
@@ -32,6 +15,41 @@
   max-width: 90vw;
   overflow-y: auto;
   max-height: 90vh;
+}
+
+.payment-form-container.active {
+  display: block;
+}
+
+/* Payment Modal Overlay */
+#paymentModalOverlay {
+  pointer-events: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1006;
+  background-color: rgba(0, 0, 0, 0.45);
+  animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(3px);
+  display: none;
+}
+
+#paymentModalOverlay.active {
+  display: block;
+  animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(3px);
+  }
 }
 
 /* Payment Form Inputs */
@@ -56,154 +74,13 @@
   box-sizing: border-box;
 }
 
-.submit-wrapper {
-  text-align: right;
-}
-
-/* Table Wrapper */
-.table-wrapper-payment {
-  max-height: 70vh;
-  overflow-y: auto;
-  background: var(--base-clr);
-  margin: 10px 0;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
-}
-
-/* Sticky Header */
-.table-wrapper-payment thead th {
-  position: sticky;
-  top: 0;
-  background: var(--primary-color);
-  color: var(--w-text-clr);
-  z-index: 2;
-}
-
-/* Table Styling */
-.table-payment {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: 15px;
-}
-
-.table-payment th,
-.table-payment td {
-  padding: 14px 16px;
-  text-align: center;
-  border: none;
-}
-
-.table-payment thead th {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.table-payment tr:last-child td {
-  border-bottom: none;
-}
-
-/* Form Title */
-.form-title {
-  font-size: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-/* ===============================
-   RESPONSIVENESS
-================================*/
-
-@media (max-width: 1024px) {
-  .payment-form-container {
-    width: 85vw;
-    padding: 20px;
-  }
-
-  .table-payment th,
-  .table-payment td {
-    padding: 12px;
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 800px) {
-  .payment-form-container {
-    width: 95vw;
-    padding: 15px;
-  }
-
-  .form-title {
-    font-size: 18px;
-  }
-
-  .table-wrapper-payment {
-    max-height: 60vh;
-  }
-
-  .table-payment th,
-  .table-payment td {
-    padding: 10px;
-    font-size: 13px;
-  }
-}
-
-@media (max-width: 600px) {
-  .payment-form-container {
-    width: 95vw;
-    padding: 12px;
-    max-height: 85vh;
-  }
-
-  .form-title {
-    font-size: 17px;
-  }
-
-  .payment-form input,
-  .payment-form select,
-  .payment-form textarea {
-    padding: 8px;
-    font-size: 14px;
-  }
-
-  .table-payment th,
-  .table-payment td {
-    padding: 8px;
-    font-size: 12px;
-    word-wrap: break-word;
-  }
-
-  .table-wrapper-payment {
-    max-height: 55vh;
-  }
-
-  .submit-wrapper {
-    text-align: center;
-  }
-}
-
-.payment-form-container,
-.modal-overlay {
-  display: none;
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-
-.payment-form-container.active,
-.modal-overlay.active {
-  display: block;
-  opacity: 1;
-}
-
 .form-group label {
   display: flex;
   align-items: center;
   gap: 6px;
-  /* space between icon and text */
   font-weight: 600;
 }
 
-
-/* Optional: adjust SVG size and position */
 .form-group label svg {
   width: 20px;
   height: 20px;
@@ -229,9 +106,9 @@
 
 #payment-pagination .pagination button {
   padding: 8px 12px;
-  border: 1px solid #ddd;
-  background: #fff;
-  color: #111;
+  border: 1px solid var(--border-clr);
+  background: var(--base-clr);
+  color: var(--main-text-color);
   cursor: pointer;
   border-radius: 6px;
   font-size: 14px;
@@ -241,13 +118,13 @@
 
 #payment-pagination .pagination button:hover {
   background: var(--primary-color);
-  color: #fff;
+  color: var(--w-text-clr);
   border-color: var(--primary-color);
 }
 
 #payment-pagination .pagination button[aria-current="page"] {
   background: var(--primary-color);
-  color: #fff;
+  color: var(--w-text-clr);
   border-color: var(--primary-color);
   cursor: default;
 }
@@ -259,7 +136,7 @@
 
 #payment-pagination .pagination .ellipsis {
   padding: 8px 4px;
-  color: #999;
+  color: var(--muted-clr);
 }
 
 /* Readonly input style */
