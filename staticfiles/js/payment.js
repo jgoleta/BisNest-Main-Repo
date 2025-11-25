@@ -57,6 +57,21 @@ if (cancelButton) {
   });
 }
 
+//search payment by customer name
+function searchPaymentByCustomer() {
+  const input = document.getElementById("searchInput");
+  const filter = (input.value || "").toLowerCase();
+  const rows = document.querySelectorAll(".table-payment tbody tr");
+
+  rows.forEach((row) => {
+    const customerCell = row.cells[2]; //Customer Name column(3rd column)
+    if (customerCell) {
+      const customerText = customerCell.textContent || customerCell.innerText;
+      row.style.display = customerText.toLowerCase().includes(filter) ? "" : "none";
+    }
+  });
+}
+
 
 
 // Live search for Payment Table
