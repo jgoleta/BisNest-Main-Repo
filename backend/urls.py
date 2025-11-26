@@ -36,20 +36,35 @@ urlpatterns = [
     path('admin-settings/', login_required(index.adminSettingsPage, login_url='/login/'), name='admin_settings'),
 
     # --- crud ---
-    path('employee-info/delete/<int:employee_id>/', employeesController.delete_employee, name='delete_employee'),
+    path('delete-employee/<int:employee_id>/', employeesController.delete_employee, name='delete_employee'),
     path('customer/delete/<int:customer_id>/', customersController.delete_customer, name='delete_customer'),
-    path('delivery/delete/<int:delivery_id>/', deliveryController.delete_delivery, name='delete_delivery'),
+    path('delete-delivery/<int:delivery_id>/', deliveryController.delete_delivery, name='delete_delivery'),
     path('delete-payment/<int:payment_id>/', paymentsController.delete_payment, name='delete_payment'),
     path('delete-order/<int:id>/', orderController.delete_order, name='delete_order'),
     path('delete-supply/<str:supply_id>/', suppliesController.delete_supply, name='delete_supply'),
-    path('delete-sale/<int:sale_id>/', salesreportController.delete_sale, name='delete_sale'),
     path('update_delivery_status/<int:delivery_id>/', deliveryController.update_delivery_status, name='update_delivery_status'),
 
+    # --- customer AJAX endpoints ---
+    path("customer/customers_json/", customersController.customers_json, name="customers_json"),
+
+    # --- employees AJAX endpoints ---
+    path("employeesinfo/employees_json/", employeesController.employees_json, name="employees_json"),
+
     # --- product AJAX endpoints ---
+    path('product/update/', productController.update_product, name='update_product'),
     path('product/update/', productController.update_product, name='update_product'),
     path('product/delete/', productController.delete_product, name='delete_product'),
 
     # --- order AJAX endpoints ---
     path("history/orders_json/", orderController.orders_json, name="orders_json"),
+
+    # --- payment AJAX endpoints ---
+    path("payment/payments_json/", paymentsController.payments_json, name="payments_json"),
+
+    # -- delivery AJAX endpoints ---
+    path("delivery/deliveries_json/", deliveryController.deliveries_json, name="deliveries_json"),
+
+    # -- supply AJAX endpoints ---
+    path("supply/supplies_json/", suppliesController.supplies_json, name="supplies_json"),
 
 ]

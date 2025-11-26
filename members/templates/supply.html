@@ -15,6 +15,7 @@
   <script src="{% static 'js/darkMode.js' %}" defer></script>
   <script src="{% static 'js/sidebar.js' %}" defer></script>
   <script src="{% static 'js/supply.js' %}" defer></script>
+  <script src="{% static 'js/supplyFetch.js' %}" async></script>
 
 </head>
 
@@ -104,42 +105,10 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              {% for s in supplies %}
+            <tbody id="supplies-body">
               <tr>
-                <td>{{ s.supply_id }}</td>
-                <td>{{ s.supplier }}</td>
-                <td>{{ s.product.name }}</td>
-                <td>{{ s.quantity }}</td>
-                <td>{{ s.date }}</td>
-                <td>₱{{ s.price }}</td>
-                <td>
-                  <button type="button" class="edit-button" data-supply_id="{{ s.supply_id }}"
-                    data-supplier="{{ s.supplier }}" data-product="{{ s.product }}" data-quantity="{{ s.quantity }}"
-                    data-date="{{ s.date }}" data-price="{{ s.price }}" title="Edit supply" aria-label="Edit supply"
-                    style="margin-right:8px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
-                      fill="#FFFFFF">
-                      <path
-                        d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
-                    </svg>
-                  </button>
-
-                  {% if s.supply_id %}
-                  <form action="{% url 'delete_supply' s.supply_id %}" method="post" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="delete-button" title="Delete supply">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
-                        fill="#FFFFFF">
-                        <path
-                          d="M312-144q-29.7 0-50.85-21.15Q240-186.3 240-216v-480h-48v-72h192v-48h192v48h192v72h-48v479.57Q720-186 698.85-165T648-144H312Zm72-144h72v-336h-72v336Zm120 0h72v-336h-72v336Z" />
-                      </svg>
-                    </button>
-                  </form>
-                  {% endif %}
-                </td>
+                <td colspan="7" style="text-align:center;">Loading...</td>
               </tr>
-              {% endfor %}
             </tbody>
           </table>
         </div>

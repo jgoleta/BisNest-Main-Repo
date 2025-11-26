@@ -6,8 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 def deliveryPage(request):
-    deliveries = Delivery.objects.all()
-
     if request.method == 'POST':
         edit_id = request.POST.get('edit_id')
 
@@ -31,13 +29,28 @@ def deliveryPage(request):
 
     return render(request, 'delivery.html', {
         'form': form,
-        'deliveries': deliveries
     })
 
+def deliveries_json(request):
+    delivery = Delivery.objects.select_related('order', 'customer').all()
+
+    data = [{
+        "id": d.id,
+        "delivery_id": d.delivery_id,
+        "order": {"order_id": d.order.order_id},
+        "customer": {"id": d.customer.id, "name": d.customer.name, "address": d.customer.address},
+        "scheduled_date": d.scheduled_date.strftime("%Y-%m-%d"),
+        "status": d.status,
+    } for d in delivery]
+
+    return JsonResponse(data, safe=False)
+
 def delete_delivery(request, delivery_id):
-    delivery = get_object_or_404(Delivery, pk=delivery_id)
-    delivery.delete()
-    return redirect('delivery')
+    if request.method == "POST":
+        delivery = get_object_or_404(Delivery, pk=delivery_id)
+        delivery.delete()
+        return JsonResponse({"success": True})
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 @csrf_exempt
 def update_delivery_status(request, delivery_id):
