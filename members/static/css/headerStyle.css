@@ -156,19 +156,26 @@ body {
   align-items: center;
   gap: 10px;
   padding-left: 8px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .menu-item:hover {
   background: rgba(0, 0, 0, 0.04);
 }
 
-.menu-item svg {
-  flex-shrink: 0;
+
+.menu-item span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
 }
 
-.menu-item span svg {
+.form-group span svg {
   width: 18px;
   height: 18px;
+  flex-shrink: 0;
 }
 
 .menu-item.danger {
