@@ -49,5 +49,4 @@ def delete_order(request, id):
         obj = get_object_or_404(Order, pk=id)
         obj.delete()
         return JsonResponse({"success": True})
-
     return JsonResponse({"error": "Invalid request"}, status=400)
