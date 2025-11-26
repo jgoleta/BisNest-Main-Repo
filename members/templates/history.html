@@ -109,44 +109,8 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {% for o in orders %}
-                            <tr>
-                                <td>{{ o.order_id }}</td>
-                                <td>{{ o.customer.name }}</td>
-                                <td>{{ o.employee.name }}</td>
-                                <td>{{ o.product.name }}</td>
-                                <td>₱{{ o.amount }}</td>
-                                <td>{{ o.date }}</td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button type="button" class="edit-button" data-id="{{ o.id }}"
-                                            data-order_id="{{ o.order_id }}" data-customer="{{ o.customer.id }}"
-                                            data-employee="{{ o.employee.id }}" data-product="{{ o.product.id }}"
-                                            data-quantity="{{ o.quantity }}" data-amount="{{ o.amount }}"
-                                            title="Edit Order" aria-label="Edit Order">
-
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                                viewBox="0 -960 960 960" width="20px" fill="#FFFFFF">
-                                                <path
-                                                    d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
-                                            </svg>
-                                        </button>
-
-                                        <form method="POST" action="{% url 'delete_order' o.id %}">
-                                            {% csrf_token %}
-                                            <button type="submit" class="delete-button" aria-label="Delete order">
-                                                <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                                    viewBox="0 -960 960 960" width="20px" fill="#FFFFFF">
-                                                    <path
-                                                        d="M312-144q-29.7 0-50.85-21.15Q240-186.3 240-216v-480h-48v-72h192v-48h192v48h192v72h-48v479.57Q720-186 698.85-165T648-144H312Zm72-144h72v-336h-72v336Zm120 0h72v-336h-72v336Z" />
-                                                </svg>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
+                        <tbody id="orders-body">
+                            <tr><td colspan="7" style="text-align:center;">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -156,5 +120,5 @@
     </main>
 
 </body>
-
+<script src="{% static 'js/orderFetch.js' %}" async></script>
 </html>
