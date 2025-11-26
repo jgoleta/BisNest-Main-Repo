@@ -74,14 +74,12 @@
         </div>
     </nav>
 
-    <!-- Login Modal -->
     <div id="loginModal" class="login-modal">
         <div class="login-modal-overlay" onclick="closeLoginModal()"></div>
         <div class="login-modal-content">
             <span class="close-button" id="closeLoginBtn" onclick="closeLoginModal()">&times;</span>
             
             <div class="modal-container">
-                <!-- Login Form -->
                 <div class="form-box login-form-box">
                     <form method="POST" action="{% url 'login_view' %}">
                         {% csrf_token %}
@@ -107,7 +105,6 @@
                     </form>
                 </div>
 
-                <!-- Register Form -->
                 <div class="form-box register-form-box">
                     <form method="POST" action="{% url 'register_view' %}">
                         {% csrf_token %}
@@ -140,7 +137,6 @@
                     </form>
                 </div>
 
-                <!-- Toggle Panel -->
                 <div class="toggle-box">
                     <div class="toggle-box-inner">
                         <div class="toggle-panel toggle-left">

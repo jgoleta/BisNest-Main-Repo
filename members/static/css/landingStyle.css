@@ -1,19 +1,13 @@
 :root {
-  --palette-navbar: #1e293b;
-  --palette-sidebar: #414957;
-  --palette-header: #ffffff;
+  --primary-color: #1e293b;
   --palette-text-light: #ffffff;
   --palette-accent: #6366f1;
   --palette-accent-dark: #4f46e5;
   --palette-bg-light: #f8fafc;
-  --page-bg: #ffffff;
   --palette-text: #111827;
   --elev-1: 0 10px 30px rgba(16, 24, 40, 0.06);
   --elev-2: 0 18px 40px rgba(16, 24, 40, 0.09);
   --muted: rgba(17, 24, 39, 0.45);
-  --success: #16a34a;
-  --warning: #f59e0b;
-  --danger: #ef4444;
 }
 
 * {
@@ -32,7 +26,7 @@ body {
 
 /* Navbar */
 .navigation-top {
-  background-color: var(--palette-navbar);
+  background-color: var(--primary-color);
   color: #fff;
   padding: 1rem 0;
   box-shadow: var(--elev-1);
@@ -102,6 +96,8 @@ body {
     var(--palette-accent-dark),
     var(--palette-accent)
   );
+  box-shadow: 0 8px 20px rgba(30, 41, 59, 0.3);
+  transform: translateY(-2px);
 }
 
 /* Hero */
@@ -494,8 +490,8 @@ body {
 
 /* Footer */
 footer {
-  background-color: var(--palette-navbar);
-  color: var(--palette-header);
+  background-color: var(--primary-color);
+  color: var(--palette-text-light);
   padding: 60px 0 20px;
   text-align: center;
   box-shadow: var(--elev-1);
@@ -518,11 +514,11 @@ footer {
 .footer-section.contact p {
   margin: 0;
   font-size: 15px;
-  color: var(--palette-header);
+  color: var(--palette-text-light);
 }
 
 .footer-section.contact a {
-  color: var(--palette-header);
+  color: var(--palette-text-light);
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -545,8 +541,8 @@ footer {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background-color: var(--palette-sidebar);
-  color: var(--palette-header);
+  background: var(--primary-color);
+  color: var(--palette-text-light);
   transition: all 0.3s ease;
 }
 
@@ -556,7 +552,7 @@ footer {
 }
 
 .social-icons svg {
-  fill: var(--palette-header);
+  fill: var(--palette-text-light);
   width: 18px;
   height: 18px;
 }
@@ -781,7 +777,7 @@ footer {
 .form-box h2 {
   font-size: 32px;
   margin: 10px 0 20px 0;
-  color: #111;
+  color: var(--primary-color);
   font-weight: 700;
 }
 
@@ -850,14 +846,13 @@ footer {
 }
 
 .forgot-link {
-  margin: 10px 0 20px 0;
-  text-align: left;
+  text-align: center;
   width: 100%;
   max-width: 300px;
 }
 
 .forgot-link a {
-  font-size: 13px;
+  font-size: 15px;
   color: #1e293b;
   text-decoration: none;
   transition: color 0.3s ease;
