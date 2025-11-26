@@ -33,6 +33,7 @@
       <div id="paymentModalOverlay" class="modal-overlay-payment"></div>
 
       <div class="payment-form-container">
+        <span class="close-button" id="closeBtn">&times;</span>
         <h2 class="form-title">Add Payment</h2>
         <form method="POST" class="table-body payment-form">
           {% csrf_token %}
@@ -73,7 +74,6 @@
             </div>
             <div class="submit-wrapper">
               <button type="submit" class="submit-button">Submit</button>
-              <button type="button" class="cancel-button" onclick="togglePaymentForm()">Cancel</button>
             </div>
           </div>
         </form>

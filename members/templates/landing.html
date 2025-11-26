@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BisNEST | Smart Business Management Platform</title>
     <link rel="stylesheet" href="{% static 'css/landingStyle.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
@@ -27,7 +28,18 @@
                         <span class="title">Home</span>
                     </a>
                 </li>
-
+                <li>
+                    <a class="icon-button" href="#pricing">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff"
+                                class="bi bi-credit-card" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z" />
+                            </svg>
+                        </span>
+                        <span class="title">Pricing</span>
+                    </a>
+                </li>
                 <li>
                     <a class="icon-button" href="#features">
                         <span class="icon">
@@ -57,33 +69,95 @@
                         <span class="title">About</span>
                     </a>
                 </li>
-
-                <li>
-                    <a class="icon-button" href="#contact">
-                        <span class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff"
-                                class="bi bi-telephone-fill" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 
-                    2.61.163L6.29 2.98c.329.423.445.974.315 
-                    1.494l-.547 2.19a.68.68 0 0 0 
-                    .178.643l2.457 2.457a.68.68 0 0 0 
-                    .644.178l2.189-.547a1.75 1.75 0 0 1 
-                    1.494.315l2.306 
-                    1.794c.829.645.905 1.87.163 
-                    2.611l-1.034 
-                    1.034c-.74.74-1.846 1.065-2.877.702a18.6 
-                    18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 
-                    1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
-                            </svg>
-                        </span>
-                        <span class="title">Contact</span>
-                    </a>
-                </li>
-
             </ul>
-            <a href="{% url 'login_view' %}" class="btn-primary">Get Started</a>
+            <a href="#" onclick="openLoginModal(event)" class="btn-primary">Get Started</a>
         </div>
     </nav>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-modal-overlay" onclick="closeLoginModal()"></div>
+        <div class="login-modal-content">
+            <span class="close-button" id="closeLoginBtn" onclick="closeLoginModal()">&times;</span>
+            
+            <div class="modal-container">
+                <!-- Login Form -->
+                <div class="form-box login-form-box">
+                    <form method="POST" action="{% url 'login_view' %}">
+                        {% csrf_token %}
+                        <h2>Login</h2>
+                        <div class="input-box">
+                            <div class="indicator">Email Address:</div>
+                            <input type="text" name="email" placeholder="Email" required />
+                            <i class='bx bxs-user'></i>
+                        </div>
+                        <div class="input-box">
+                            <div class="indicator">Password:</div>
+                            <input type="password" name="password" placeholder="Password" required />
+                            <i class='bx bxs-lock-alt'></i>
+                        </div>
+                        <div class="forgot-link">
+                            <a href="#">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn">Login</button>
+                        <p>or login with</p>
+                        <div class="social-icons">
+                            <a href="#"><i class='bx bxl-google'></i></a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Register Form -->
+                <div class="form-box register-form-box">
+                    <form method="POST" action="{% url 'register_view' %}">
+                        {% csrf_token %}
+                        <h2>Registration</h2>
+                        <div class="input-box">
+                            <div class="indicator">Username:</div>
+                            <input type="text" name="username" placeholder="Username" required />
+                            <i class='bx bxs-user'></i>
+                        </div>
+                        <div class="input-box">
+                            <div class="indicator">Email Address:</div>
+                            <input type="email" name="email" placeholder="Email" required />
+                            <i class='bx bxs-envelope'></i>
+                        </div>
+                        <div class="input-box">
+                            <div class="indicator">Password:</div>
+                            <input type="password" name="password1" placeholder="Password" required />
+                            <i class='bx bxs-lock-alt'></i>
+                        </div>
+                        <div class="input-box">
+                            <div class="indicator">Confirm Password:</div>
+                            <input type="password" name="password2" placeholder="Confirm Password" required />
+                            <i class='bx bxs-lock-alt'></i>
+                        </div>
+                        <button type="submit" class="btn">Register</button>
+                        <p>or register with</p>
+                        <div class="social-icons">
+                            <a href="#"><i class='bx bxl-google'></i></a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Toggle Panel -->
+                <div class="toggle-box">
+                    <div class="toggle-box-inner">
+                        <div class="toggle-panel toggle-left">
+                            <h3>Hello, Welcome!</h3>
+                            <p>Don't have an account?</p>
+                            <button class="btn register-btn" onclick="switchToRegister(event)">Register</button>
+                        </div>
+                        <div class="toggle-panel toggle-right">
+                            <h3>Welcome Back!</h3>
+                            <p>Already have an account? </p>
+                            <button class="btn login-btn" onclick="switchToLogin(event)">Login</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <section class="hero" id="hero">
         <div class="container hero-content">
@@ -92,7 +166,7 @@
                 <p>Manage sales, track customers, and store business data securely — all in one easy-to-use platform
                     built for modern entrepreneurs.</p>
                 <div class="hero-buttons">
-                    <a href="{% url 'login_view' %}" class="btn-accent">Get Started</a>
+                    <a href="#" onclick="openLoginModal(event)" class="btn-accent">Get Started</a>
                     <a href="#features" class="btn-outline">Learn More</a>
                 </div>
             </div>
@@ -107,12 +181,77 @@
 
     <section class="join-now fade-in">
         <div class="container join-content">
-            <h2>Join BisNEST Today</h2>
-            <p>Sign up to get early access, updates, and tips to make your business thrive.</p>
+            <h2>Start Your Free Trial</h2>
+            <p>Experience the full power of BisNEST. No credit card required.</p>
             <form class="join-form">
                 <input type="email" placeholder="Enter your email" required />
-                <button type="submit">Join Now</button>
+                <button type="submit">Start Free Trial</button>
             </form>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="fade-in">Simple, Transparent Pricing</h2>
+            <p class="pricing-subtitle fade-in">Choose the plan that fits your business needs</p>
+            <div class="pricing-grid">
+                <div class="pricing-card fade-in">
+                    <div class="pricing-badge">Popular</div>
+                    <h3>Starter</h3>
+                    <div class="price">
+                        <span class="currency">₱</span>
+                        <span class="amount">0</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <p class="pricing-description">Perfect for getting started</p>
+                    <ul class="pricing-features">
+                        <li>✓ Up to 100 customers</li>
+                        <li>✓ Basic reporting</li>
+                        <li>✓ Email support</li>
+                        <li>✗ Advanced analytics</li>
+                        <li>✗ Priority support</li>
+                    </ul>
+                    <button class="btn-outline pricing-btn" onclick="openLoginModal(event)">Get Started</button>
+                </div>
+
+                <div class="pricing-card featured fade-in">
+                    <div class="pricing-badge highlight">Best Value</div>
+                    <h3>Professional</h3>
+                    <div class="price">
+                        <span class="currency">₱</span>
+                        <span class="amount">999</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <p class="pricing-description">For growing businesses</p>
+                    <ul class="pricing-features">
+                        <li>✓ Unlimited customers</li>
+                        <li>✓ Advanced reporting</li>
+                        <li>✓ Priority email support</li>
+                        <li>✓ Advanced analytics</li>
+                        <li>✗ Custom integrations</li>
+                    </ul>
+                    <button class="btn-accent pricing-btn" onclick="openLoginModal(event)">Subscribe Now</button>
+                </div>
+
+                <div class="pricing-card fade-in">
+                    <div class="pricing-badge">Enterprise</div>
+                    <h3>Enterprise</h3>
+                    <div class="price">
+                        <span class="currency">₱</span>
+                        <span class="amount">Custom</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <p class="pricing-description">For large organizations</p>
+                    <ul class="pricing-features">
+                        <li>✓ Unlimited everything</li>
+                        <li>✓ Custom reporting</li>
+                        <li>✓ 24/7 phone support</li>
+                        <li>✓ Advanced analytics</li>
+                        <li>✓ Custom integrations</li>
+                    </ul>
+                    <button class="btn-outline pricing-btn">Contact Sales</button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -194,6 +333,44 @@
     </footer>
 
     <script>
+        // Login Modal Functions
+        function openLoginModal(e) {
+            if (e) {
+                e.preventDefault();
+            }
+            const modal = document.getElementById('loginModal');
+            modal.style.display = 'flex';
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('loginModal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        function switchToRegister(e) {
+            e.preventDefault();
+            const container = document.querySelector('.modal-container');
+            container.classList.add('active');
+        }
+
+        function switchToLogin(e) {
+            e.preventDefault();
+            const container = document.querySelector('.modal-container');
+            container.classList.remove('active');
+        }
+
+        // Close modal when pressing Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLoginModal();
+            }
+        });
         const elements = document.querySelectorAll('.fade-in, .slide-up');
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
@@ -206,6 +383,7 @@
 
         elements.forEach(el => observer.observe(el));
 
+        // Section visibility animation
         const sections = document.querySelectorAll("section");
 
         const revealSection = () => {
@@ -220,6 +398,62 @@
 
         window.addEventListener("scroll", revealSection);
         window.addEventListener("load", revealSection);
+
+        // Smooth scroll for anchor links with active state
+        const navLinks = document.querySelectorAll('a[href^="#"]');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+
+                    const target = document.querySelector(href);
+                    const offsetTop = target.offsetTop - 80; // Account for sticky navbar
+
+                    // Smooth scroll with animation
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+
+                    // Add active state to navigation
+                    navLinks.forEach(l => l.parentElement.classList.remove('active'));
+                    this.parentElement.classList.add('active');
+                }
+            });
+        });
+
+        // Update active nav link on scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.parentElement.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.parentElement.classList.add('active');
+                }
+            });
+        });
+
+        // Add scroll progress indicator
+        const progressBar = document.createElement('div');
+        progressBar.className = 'scroll-progress';
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            progressBar.style.width = scrollPercent + '%';
+        });
     </script>
 </body>
 

@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const addBtn = document.getElementById("addNewDeliveryBtn");
   const formContainer = document.getElementById("deliveryForm");
   const modalOverlay = document.getElementById("modalOverlay");
-  const cancelBtn = document.getElementById("cancelBtn");
+  const closeBtn = document.getElementById("closeBtn");
   const deliveryTableBody = document.getElementById("deliveryTableBody");
 
   function toggleForm() {
@@ -58,8 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     modalOverlay.style.display = isHidden ? "block" : "none";
   }
   addBtn.addEventListener("click", toggleForm);
-  modalOverlay.addEventListener("click", toggleForm);
-  cancelBtn.addEventListener("click", toggleForm);
+  closeBtn.addEventListener("click", toggleForm);
 
   // sort by scheduled date
   let deliveryDateAscending = null;

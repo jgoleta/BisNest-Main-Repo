@@ -32,6 +32,7 @@
       </div>
 
       <div class="employee-form-container" id="formContainer">
+        <span class="close-button" id="closeBtn">&times;</span>
         <h2 class="form-title" id="formTitle">Employee Information</h2>
         <form class="employee-form" method="POST">
           {% csrf_token %}
@@ -72,7 +73,6 @@
           </div>
           <div class="submit-wrapper">
             <button type="submit" class="submit-button">Submit</button>
-            <button type="button" class="cancel-button">Cancel</button>
           </div>
         </form>
       </div>

@@ -33,30 +33,46 @@
 
       <div class="modal-overlay" id="modalOverlay"></div>
       <div class="delivery-form-container" id="deliveryForm">
+        <span class="close-button" id="closeBtn">&times;</span>
         <h2 class="form-title" id="formTitle">Add New Delivery</h2>
         <form class="delivery-form" method="POST">
           {% csrf_token %}
           <div class="form-row">
             <div class="form-group">
-              <label for="{{ form.order.id_for_label }}">Order ID:</label>
+              <label for="{{ form.order.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg" height="20px"
+                  viewBox="0 -960 960 960" width="20px" fill="#8C1AF6">
+                  <path
+                    d="M192-192v-480l-76-161 65-31 91 192h416l91-192 65 30-76 162v480H192Zm228-264h120q15.3 0 25.65-10.29Q576-476.58 576-491.79t-10.35-25.71Q555.3-528 540-528H420q-15.3 0-25.65 10.29Q384-507.42 384-492.21t10.35 25.71Q404.7-456 420-456Z" />
+                </svg> Order ID:</label>
               {{ form.order }}
             </div>
             <div class="form-group">
-              <label for="{{ form.customer.id_for_label }}">Customer Name:</label>
+              <label for="{{ form.customer.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg" height="20px"
+                  viewBox="0 -960 960 960" width="20px" fill="#5985E1">
+                  <path
+                    d="M480-480q-60 0-102-42t-42-102q0-60 42-102t102-42q60 0 102 42t42 102q0 60-42 102t-102 42ZM192-192v-96q0-23 12.5-43.5T239-366q55-32 116.5-49T480-432q63 0 124.5 17T721-366q22 13 34.5 34t12.5 44v96H192Z" />
+                </svg> Customer Name:</label>
               {{ form.customer }}
             </div>
             <div class="form-group">
-              <label for="{{ form.scheduled_date.id_for_label }}">Scheduled Date:</label>
+              <label for="{{ form.scheduled_date.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                  viewBox="0 -960 960 960" width="24px" fill="#A96424">
+                  <path
+                    d="M480-400q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Z" />
+                </svg> Scheduled Date:</label>
               {{ form.scheduled_date }}
             </div>
             <div class="form-group">
-              <label for="{{ form.status.id_for_label }}">Status:</label>
+              <label for="{{ form.status.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                  viewBox="0 -960 960 960" width="24px" fill="#B89230">
+                  <path
+                    d="M100-160v-80h60v-100q0-42 18-78t50-62q-32-26-50-62t-18-78v-100h-60v-80h480v80h-60v100q0 42-18 78t-50 62q32 26 50 62t18 78v100h60v80H100Zm680 0L640-300l57-56 43 43v-487h80v488l44-44 56 56-140 140Z" />
+                </svg> Status:</label>
               {{ form.status }}
             </div>
           </div>
           <div class="form-actions">
             <button type="submit" class="submit-button">Submit</button>
-            <button class="cancel-button" type="button" id="cancelBtn" onclick="resetDeliveryForm()">Cancel</button>
           </div>
         </form>
       </div>
@@ -94,15 +110,10 @@
                   </select>
                 </td>
                 <td>
-                  <button type="button" class="edit-button"
-        data-id="{{ d.id }}"
-        data-delivery_id="{{ d.delivery_id }}"
-        data-order="{{ d.order.id }}"
-        data-customer="{{ d.customer }}"
-        data-address="{{ d.address }}"
-        data-scheduled_date="{{ d.scheduled_date|date:'Y-m-d' }}"
-        data-status="{{ d.status }}"
-        title="Edit Delivery" aria-label="Edit Delivery" style="margin-right:8px;">
+                  <button type="button" class="edit-button" data-id="{{ d.id }}" data-delivery_id="{{ d.delivery_id }}"
+                    data-order="{{ d.order.id }}" data-customer="{{ d.customer }}" data-address="{{ d.address }}"
+                    data-scheduled_date="{{ d.scheduled_date|date:'Y-m-d' }}" data-status="{{ d.status }}"
+                    title="Edit Delivery" aria-label="Edit Delivery" style="margin-right:8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px"
                       fill="#FFFFFF">
                       <path

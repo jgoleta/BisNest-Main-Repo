@@ -19,13 +19,6 @@ closeAddModal.addEventListener("click", () => {
   toggleModal(addProductModal, false);
   addProductForm.reset();
 });
-// Close modal when clicking on overlay
-if (modalOverlay) {
-  modalOverlay.addEventListener("click", () => {
-    toggleModal(addProductModal, false);
-    addProductForm.reset();
-  });
-}
 // Attach click handlers to server-rendered product buttons
 document.querySelectorAll(".product-button-style").forEach((btn) => {
   btn.addEventListener("click", function (e) {

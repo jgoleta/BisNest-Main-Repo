@@ -1,6 +1,7 @@
 const employeeForm = document.querySelector(".employee-form");
 const formContainer = document.getElementById("formContainer");
 const modalOverlay = document.getElementById("modalOverlay");
+const closeBtn = document.getElementById("closeBtn");
 
 
 function resetEmployeeForm() {
@@ -39,9 +40,8 @@ function toggleForm() {
 
 
 
-const cancelButton = document.querySelector(".cancel-button");
-if (cancelButton) {
-  cancelButton.addEventListener("click", () => {
+if (closeBtn) {
+  closeBtn.addEventListener("click", () => {
     formContainer.style.display = "none";
     modalOverlay.style.display = "none";
     resetEmployeeForm();
