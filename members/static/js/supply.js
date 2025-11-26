@@ -3,6 +3,7 @@ const supplyTableBody = document.querySelector("#supply-table tbody");
 const deleteButton = document.querySelector(".delete-button");
 const formContainer = document.querySelector(".supply-form-container");
 const modalOverlay = document.getElementById("modalOverlay");
+const closeBtn = document.getElementById("closeBtn");
 
 let supplyData = [];
 let freedIds = [];
@@ -33,6 +34,10 @@ function toggleForm() {
   if (isHidden) resetSupplyForm();
   formContainer.style.display = isHidden ? "block" : "none";
   modalOverlay.style.display = isHidden ? "block" : "none";
+}
+
+if (closeBtn) {
+  closeBtn.addEventListener("click", toggleForm);
 }
 
 function openSupplyForm() {

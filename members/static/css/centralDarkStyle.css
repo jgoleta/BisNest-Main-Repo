@@ -113,6 +113,15 @@
   background: #b91c1c !important;
 }
 
+.darkmode .close-button {
+  color: #fff !important;
+}
+
+.darkmode .close-button:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+}
+
 /* Scrollbar */
 .darkmode ::-webkit-scrollbar-thumb {
   background: var(--primary-color) !important;
@@ -153,4 +162,104 @@
   cursor: default !important;
   outline: none !important;
   box-shadow: none !important;
+}
+
+/* Dark Mode - Login Modal */
+.darkmode .login-modal-content {
+  background: var(--surface) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .modal-container {
+  background: var(--surface) !important;
+}
+
+.darkmode .form-box {
+  background: var(--surface) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .form-box h2 {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .form-box p {
+  color: var(--seconday-text-clr) !important;
+}
+
+.darkmode .input-box input {
+  background: #0f172a !important;
+  border: 1px solid var(--card-border) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .input-box input:focus {
+  border-color: var(--accent-clr) !important;
+}
+
+.darkmode .input-box input::placeholder {
+  color: #94a3b8 !important;
+}
+
+.darkmode .input-box i {
+  color: #64748b !important;
+}
+
+.darkmode .indicator {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .forgot-link a {
+  color: var(--accent-clr) !important;
+}
+
+.darkmode .forgot-link a:hover {
+  color: #a5b4fc !important;
+}
+
+.darkmode .btn {
+  background: var(--accent-clr) !important;
+  color: #fff !important;
+  border: 1px solid var(--accent-clr) !important;
+}
+
+.darkmode .btn:hover {
+  background: transparent !important;
+  color: var(--accent-clr) !important;
+  border: 2px solid var(--accent-clr) !important;
+}
+
+.darkmode .toggle-panel {
+  background: #1e293b !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .toggle-panel h3 {
+  color: #fff !important;
+}
+
+.darkmode .toggle-panel p {
+  color: var(--seconday-text-clr) !important;
+}
+
+.darkmode .toggle-panel .btn {
+  background: transparent !important;
+  border: 2px solid var(--text-clr) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .toggle-panel .btn:hover {
+  background: var(--text-clr) !important;
+  color: #1e293b !important;
+  border-color: var(--text-clr) !important;
+}
+
+.darkmode .social-icons a {
+  border: 2px solid var(--card-border) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .social-icons a:hover {
+  border-color: var(--accent-clr) !important;
+  color: var(--accent-clr) !important;
 }

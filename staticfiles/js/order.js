@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const formContainer = document.querySelector(".order-form-container");
   const modalOverlay = document.getElementById("modalOverlay");
   const orderForm = document.querySelector(".order-form");
-  const cancelBtn = document.querySelector(".cancel-button");
+  const closeBtn = document.getElementById("closeBtn");
   const newBtn = document.querySelector(".toggle-form-button");
   const sortBtn = document.getElementById("orderIdSortBtn");
   const orderTableBody = document.querySelector("#order-table tbody");
@@ -62,16 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //cancel button
-  if (cancelBtn) {
-    cancelBtn.addEventListener("click", (e) => {
+  if (closeBtn) {
+    closeBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      closeModal();
-      resetOrderForm();
-    });
-  }
-
-  if (modalOverlay) {
-    modalOverlay.addEventListener("click", () => {
       closeModal();
       resetOrderForm();
     });

@@ -36,6 +36,7 @@
 
             <div class="modal-overlay" id="modalOverlay" style="display:none;"></div>
             <div class="customer-form-container" id="formContainer">
+                <span class="close-button" id="closeBtn">&times;</span>
                 <h2 class="form-title" id="formTitle">Customer Information</h2>
                 <form class="customer-form" method="POST">
                     {% csrf_token %}
@@ -72,7 +73,6 @@
 
                     <div class="submit-wrapper">
                         <button type="submit" class="submit-button">Submit</button>
-                        <button type="button" class="cancel-button" onclick="toggleForm()">Cancel</button>
                     </div>
                 </form>
 

@@ -3,6 +3,7 @@ const customerTableBody = document.querySelector("#customer-table tbody");
 const deleteButton = document.querySelector(".delete-button");
 const formContainer = document.querySelector(".customer-form-container");
 const modalOverlay = document.getElementById("modalOverlay");
+const closeBtn = document.getElementById("closeBtn");
 
 let customerData = [];
 let freedIds = [];
@@ -27,6 +28,10 @@ function toggleForm() {
   if (isHidden) resetCustomerForm();
   formContainer.style.display = isHidden ? "block" : "none";
   modalOverlay.style.display = isHidden ? "block" : "none";
+}
+
+if (closeBtn) {
+  closeBtn.addEventListener("click", toggleForm);
 }
 
 function getNextCustomerId() {

@@ -310,7 +310,6 @@ main {
 .delete-button:hover,
 .delete-modal-btn:hover,
 .delete-btn:hover,
-.cancel-button:hover,
 .remove-button:hover {
   background: #c41d1d;
   box-shadow: 0 8px 20px rgba(30, 41, 59, 0.3);
@@ -336,8 +335,7 @@ main {
 .toggle-form-button,
 .add-button,
 .remove-button,
-.submit-button,
-.cancel-button {
+.submit-button {
   padding: 11px 28px;
   font-size: 0.95rem;
   font-weight: 600;
@@ -373,7 +371,6 @@ main {
   margin-left: auto;
 }
 
-.cancel-button,
 .submit-button {
   padding: 8px 18px;
   border: none;
@@ -382,14 +379,47 @@ main {
   cursor: pointer;
 }
 
-.cancel-button {
-  background: #ccc;
-  color: #222;
-  margin-right: 10px;
-}
-
 .submit-button {
   background: var(--palette-accent, #5e63ff) !important;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  background: transparent;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  z-index: 2;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.close-button:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.75);
+  transform: scale(1.1);
+}
+
+.close-button:active {
+  transform: scale(0.95);
+}
+
+.close-button:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .button-container {

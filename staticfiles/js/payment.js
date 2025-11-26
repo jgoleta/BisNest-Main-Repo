@@ -60,16 +60,11 @@ if (params.get("open_form") === "true") {
   }
 }
 
-//Close modal then reset pag tigclick
-document.getElementById("paymentModalOverlay").addEventListener("click", () => {
-  resetPaymentForm();
-  togglePaymentForm(true);
-});
-
-//close modal on cancel button click
+//close modal on close button click
 const cancelButton = document.querySelector(".cancel-button");
-if (cancelButton) {
-  cancelButton.addEventListener("click", (e) => {
+const closeBtn = document.getElementById("closeBtn");
+if (closeBtn) {
+  closeBtn.addEventListener("click", (e) => {
     e.preventDefault();
     resetPaymentForm();
     togglePaymentForm(true); //force close
