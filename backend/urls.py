@@ -40,7 +40,7 @@ urlpatterns = [
     path('customer/delete/<int:customer_id>/', customersController.delete_customer, name='delete_customer'),
     path('delivery/delete/<int:delivery_id>/', deliveryController.delete_delivery, name='delete_delivery'),
     path('delete-payment/<int:payment_id>/', paymentsController.delete_payment, name='delete_payment'),
-    path('delete-order/<int:order_id>/', orderController.delete_order, name='delete_order'),
+    path('delete-order/<int:id>/', orderController.delete_order, name='delete_order'),
     path('delete-supply/<str:supply_id>/', suppliesController.delete_supply, name='delete_supply'),
     path('delete-sale/<int:sale_id>/', salesreportController.delete_sale, name='delete_sale'),
     path('update_delivery_status/<int:delivery_id>/', deliveryController.update_delivery_status, name='update_delivery_status'),
@@ -48,4 +48,8 @@ urlpatterns = [
     # --- product AJAX endpoints ---
     path('product/update/', productController.update_product, name='update_product'),
     path('product/delete/', productController.delete_product, name='delete_product'),
+
+    # --- order AJAX endpoints ---
+    path("history/orders_json/", orderController.orders_json, name="orders_json"),
+
 ]
