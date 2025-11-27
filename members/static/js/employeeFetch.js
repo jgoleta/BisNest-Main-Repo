@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
             orders.forEach(e => {
                 tbody.innerHTML += `
                 <tr id="employee-${e.id}">
+                    <td>${ e.id }</td>
                     <td>${ e.name }</td>
                     <td>${ e.position }</td>
                     <td>${ e.schedule }</td>
