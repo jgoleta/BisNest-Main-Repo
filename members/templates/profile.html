@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="{% static 'css/profileStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
+    <script src="{% static 'js/darkMode.js' %}" defer></script>
+</head>
+
+<body>
+    {% include 'sidebar.html' %}
+    <main class="main-content">
+        {% include 'header.html' with page="User Profile" %}
+        <div class="profile-container">
+
+            <div class="profile-header">
+                <img src="https://via.placeholder.com/120" class="profile-img" alt="Profile Photo">
+                <div>
+                    <h1 class="profile-name">Lance Tuazon</h1>
+                    <p class="profile-role">Registered User</p>
+                    <p class="member-since">Member since: January 2024</p>
+                </div>
+            </div>
+
+            <div class="profile-content">
+
+                <div class="profile-card">
+
+                    <h2 class="section-title">Personal Information</h2>
+
+                    <div class="field">
+                        <label>Full Name</label>
+                        <input type="text" value="Lance Tuazon">
+                    </div>
+
+                    <div class="field">
+                        <label>Email</label>
+                        <input type="email" value="lance@example.com">
+                    </div>
+
+                    <div class="field">
+                        <label>Phone</label>
+                        <input type="text" value="+63 912 345 6789">
+                    </div>
+
+                    <div class="field">
+                        <label>Address</label>
+                        <input type="text" value="Naga City, Philippines">
+                    </div>
+
+                    <div class="field">
+                        <label>Birthday</label>
+                        <input type="date" value="2003-05-14">
+                    </div>
+
+                    <hr class="divider">
+
+                    <h2 class="section-title">Account Security</h2>
+
+                    <button class="secondary-btn">Change Password</button>
+                    <button class="secondary-btn">Manage Backup Codes</button>
+
+                    <div class="settings mt-15">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <span class="setting-label">Two-Factor Authentication</span>
+                    </div>
+
+                </div>
+
+                <div class="profile-card">
+
+                    <h2 class="section-title">About Me</h2>
+                    <textarea class="about-text">Write something about yourself here...</textarea>
+
+                    <hr class="divider">
+
+                    <h2 class="section-title">Membership Details</h2>
+                    <p class="detail-row"><strong>Status:</strong> Active</p>
+                    <p class="detail-row"><strong>Plan:</strong> Standard Member</p>
+                    <p class="detail-row"><strong>Renewal Date:</strong> December 31, 2025</p>
+                    <button class="secondary-btn">Upgrade Plan</button>
+
+                    <hr class="divider">
+
+                    <h2 class="section-title">Preferences</h2>
+
+                    <div class="settings">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <span class="setting-label">Email Notifications</span>
+                    </div>
+
+                    <div class="settings">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="setting-label">SMS Alerts</span>
+                    </div>
+
+
+                    <button class="save-btn mt-20">Save Changes</button>
+
+                </div>
+            </div>
+
+            <div class="full-row">
+
+                <div class="profile-card full">
+                    <h2 class="section-title">Recent Activity</h2>
+
+                    <ul class="activity-list">
+                        <li>You updated your profile information (Nov 27, 2025)</li>
+                        <li>Logged in from Windows Chrome (Nov 26, 2025)</li>
+                        <li>Password changed (Oct 30, 2025)</li>
+                        <li>Enabled two-factor authentication (Oct 20, 2025)</li>
+                    </ul>
+                </div>
+
+                <div class="profile-card full">
+                    <h2 class="section-title">Login History</h2>
+
+                    <table class="login-table">
+                        <tr>
+                            <th>Date</th>
+                            <th>Device</th>
+                            <th>Location</th>
+                        </tr>
+                        <tr>
+                            <td>Nov 27, 2025</td>
+                            <td>Windows / Chrome</td>
+                            <td>Naga City</td>
+                        </tr>
+                        <tr>
+                            <td>Nov 26, 2025</td>
+                            <td>Android / Chrome</td>
+                            <td>Naga City</td>
+                        </tr>
+                        <tr>
+                            <td>Nov 25, 2025</td>
+                            <td>Windows / Firefox</td>
+                            <td>Naga City</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="profile-card full danger-zone">
+                    <h2 class="section-title danger">Danger Zone</h2>
+                    <p class="warning-text">Deleting your account is permanent and cannot be undone.</p>
+                    <button class="delete-acc-btn">Delete Account</button>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+</body>
+
+</html>

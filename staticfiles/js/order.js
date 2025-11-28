@@ -227,21 +227,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function searchCustomer() {
   const input = document.getElementById("searchInput");
-  const filter = (input.value || "").toLowerCase();
+  const productFilter = document.getElementById("productFilter");
+  const customerFilter = (input.value || "").toLowerCase();
+  const productValue = (productFilter && productFilter.value) || "";
   const table = document.querySelector(".table tbody");
   if (!table) return;
   const rows = table.getElementsByTagName("tr");
 
   for (let i = 0; i < rows.length; i++) {
-    const nameCell = rows[i].getElementsByTagName("td")[1];
-    if (nameCell) {
-      const nameText = nameCell.textContent || nameCell.innerText;
-      if (nameText.toLowerCase().indexOf(filter) > -1) {
-        rows[i].style.display = "";
-      } else {
-        rows[i].style.display = "none";
-      }
+    const customerCell = rows[i].getElementsByTagName("td")[1];
+    const productCell = rows[i].getElementsByTagName("td")[3];
+    
+    let matchesCustomer = true;
+    let matchesProduct = true;
+    
+    if (customerCell && customerFilter) {
+      const customerText = customerCell.textContent || customerCell.innerText;
+      matchesCustomer = customerText.toLowerCase().indexOf(customerFilter) > -1;
     }
+    
+    if (productCell && productValue) {
+      const productText = productCell.textContent || productCell.innerText;
+      matchesProduct = productText.trim() === productValue;
+    }
+    
+    rows[i].style.display = (matchesCustomer && matchesProduct) ? "" : "none";
   }
 }
 
@@ -258,11 +268,39 @@ function searchCustomer() {
     return Array.from(table.querySelectorAll('tbody tr'));
   }
 
+  function getFilteredRows() {
+    const input = document.getElementById('searchInput');
+    const productFilter = document.getElementById('productFilter');
+    const customerFilter = (input && input.value || '').toLowerCase().trim();
+    const productValue = (productFilter && productFilter.value) || '';
+    
+    return getAllRows().filter(r => {
+      const customerCell = r.querySelectorAll('td')[1];
+      const productCell = r.querySelectorAll('td')[3];
+      
+      let matchesCustomer = true;
+      let matchesProduct = true;
+      
+      if (customerCell && customerFilter) {
+        const txt = (customerCell.textContent || customerCell.innerText || '').toLowerCase();
+        matchesCustomer = txt.indexOf(customerFilter) > -1;
+      }
+      
+      if (productCell && productValue) {
+        const productText = (productCell.textContent || productCell.innerText || '').trim();
+        matchesProduct = productText === productValue;
+      }
+      
+      return matchesCustomer && matchesProduct;
+    });
+  }
+
   function showPage(page) {
     const allRows = getAllRows();
+    const visibleRows = getFilteredRows();
     allRows.forEach(r => r.style.display = 'none');
     
-    const total = allRows.length;
+    const total = visibleRows.length;
     const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
     if (page < 1) page = 1;
     if (page > totalPages) page = totalPages;
@@ -270,7 +308,7 @@ function searchCustomer() {
 
     const start = (currentPage - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-    allRows.slice(start, end).forEach(r => r.style.display = '');
+    visibleRows.slice(start, end).forEach(r => r.style.display = '');
 
     renderPaginationControls(totalPages);
   }
@@ -339,6 +377,20 @@ function searchCustomer() {
 
     paginationContainer.appendChild(pager);
   }
+
+  function recalcAndShowFirstOrCurrent() {
+    const total = getFilteredRows().length;
+    const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
+    if (currentPage > totalPages) currentPage = totalPages;
+    showPage(currentPage);
+  }
+
+  // Hook to searchCustomer
+  const originalSearch = window.searchCustomer;
+  window.searchCustomer = function() {
+    try { if (typeof originalSearch === 'function') originalSearch(); }
+    finally { recalcAndShowFirstOrCurrent(); }
+  };
 
   document.addEventListener('DOMContentLoaded', () => {
     showPage(1);

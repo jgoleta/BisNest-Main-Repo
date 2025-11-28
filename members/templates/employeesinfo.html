@@ -27,6 +27,12 @@
     <div class="container">
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search Employee Name:" onkeyup="searchEmployee()">
+        <select class="filter-select" id="positionFilter" onchange="searchEmployee()">
+          <option value="">All Positions</option>
+          {% for position in positions %}
+          <option value="{{ position }}">{{ position }}</option>
+          {% endfor %}
+        </select>
         <div class="button-container">
           <button class="toggle-form-button" onclick="toggleForm()">+ New</button>
         </div>
@@ -78,6 +84,48 @@
         </form>
       </div>
       <div class="modal-overlay" id="modalOverlay" style="display: none;"></div>
+      
+      <div class="modal-overlay" id="profileModalOverlay" style="display:none;"></div>
+      <div class="employee-profile-container" id="profileContainer">
+        <span class="close-button" id="profileCloseBtn">&times;</span>
+        <h2 class="form-title">Employee Profile</h2>
+        <div class="employee-profile-content">
+          <div class="profile-info">
+            <div class="profile-field">
+              <label>Employee ID:</label>
+              <span id="profile-id"></span>
+            </div>
+            <div class="profile-field">
+              <label>Name:</label>
+              <span id="profile-name"></span>
+            </div>
+            <div class="profile-field">
+              <label>Position:</label>
+              <span id="profile-position"></span>
+            </div>
+            <div class="profile-field">
+              <label>Schedule:</label>
+              <span id="profile-schedule"></span>
+            </div>
+            <div class="profile-field">
+              <label>Daily Salary:</label>
+              <span id="profile-salary"></span>
+            </div>
+            <div class="profile-field">
+              <label>Join Date:</label>
+              <span id="profile-join-date"></span>
+            </div>
+          </div>
+          <div class="profile-actions">
+            <button type="button" class="edit-profile-button" id="editProfileBtn">Edit</button>
+            <form id="deleteProfileForm" method="POST" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="delete-profile-button">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <div class="table-wrapper">
         <table class="table" id="employee-table">
           <thead>
@@ -90,12 +138,20 @@
               <th>Daily Salary</th>
               <th>Join Date <button id="employeeJoinDateSortBtn" class="sort-btn" title="Sort by join date"><i
                     class="fas fa-sort"></i></button></th>
-              <th>Action</th>
             </tr>
           </thead>
-          <tbody id="employees-body">
-            <tr>
-              <td colspan="6" style="text-align:center;">Loading...</td>
+          <tbody>
+
+            {% for emp in employees %}
+            <tr class="employee-row" data-id="{{ emp.id }}" data-name="{{ emp.name }}"
+              data-position="{{ emp.position }}" data-schedule="{{ emp.schedule }}" 
+              data-salary="{{ emp.salary }}" data-join-date="{{ emp.join_date }}" style="cursor: pointer;">
+              <td>{{ emp.id }}</td>
+              <td>{{ emp.name }}</td>
+              <td>{{ emp.position }}</td>
+              <td>{{ emp.schedule }}</td>
+              <td>{{ emp.salary }}</td>
+              <td>{{ emp.join_date }}</td>
             </tr>
           </tbody>
         </table>
