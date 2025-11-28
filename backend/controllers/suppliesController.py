@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from members.models import Supply, Product
 from members.forms import SupplyForm
+from django.http import JsonResponse
 
 def supplyPage(request):
     if request.method == 'POST':
@@ -39,7 +40,24 @@ def supplyPage(request):
         'products': products
     })
 
+def supplies_json(request):
+    supplies = Supply.objects.select_related('product').all()
+
+    data = [{
+        "id": s.id,
+        "supply_id": s.supply_id,
+        "supplier": s.supplier,
+        "product": {"id": s.product.id, "name": s.product.name},
+        "quantity": s.quantity,
+        "date": s.date.strftime("%Y-%m-%d"),
+        "price": s.price,
+    } for s in supplies]
+
+    return JsonResponse(data, safe=False)
+
 def delete_supply(request, supply_id):
-    supply = get_object_or_404(Supply, supply_id=supply_id)
-    supply.delete()
-    return redirect('supply')
+    if request.method == "POST":
+        supply = get_object_or_404(Supply, supply_id=supply_id)
+        supply.delete()
+        return JsonResponse({"success": True})
+    return JsonResponse({"error": "Invalid request"}, status=400)

@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from members.models import Payment
 from members.forms import PaymentForm
+from django.http import JsonResponse
 
 def paymentPage(request):
-    payments = Payment.objects.all()
-
     if request.method == 'POST':
         edit_id = request.POST.get('edit_id')
 
@@ -35,10 +34,27 @@ def paymentPage(request):
 
     return render(request, 'payment.html', {
         'form': form,
-        'payments': payments
     })
 
+def payments_json(request):
+    payments = Payment.objects.select_related('order').all()
+
+    data = [{
+        "id": p.id,
+        "payment_id": p.payment_id,
+        "order": {"id": p.order.id, "order_id": p.order.order_id},
+        "customer": {"id": p.order.customer.id, "name": p.order.customer.name},
+        "amount": p.amount,
+        "date": p.date,
+        "method": p.method,
+    } for p in payments]
+
+    return JsonResponse(data, safe=False)
+
 def delete_payment(request, payment_id):
-    payment = get_object_or_404(Payment, pk=payment_id)
-    payment.delete()
-    return redirect('payment')
+    if request.method == "POST":
+        payment = get_object_or_404(Payment, pk=payment_id)
+        payment.delete()
+        return JsonResponse({"success": True})
+    
+    return JsonResponse({"error": "Invalid request"}, status=400)

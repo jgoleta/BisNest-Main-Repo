@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from members.models import Employee
 from members.forms import EmployeeForm
-
+from django.http import JsonResponse
 
 def employeesInfoPage(request):
     if request.method == 'POST':
@@ -34,7 +34,24 @@ def employeesInfoPage(request):
         'positions': positions
     })
 
+def employees_json(request):
+    employees = Employee.objects.select_related().all()
+
+    data = [{
+        "id": e.id,
+        "employee_id": e.employee_id,
+        "name": e.name,
+        "position": e.position,
+        "schedule": e.schedule,
+        "salary": e.salary,
+        "join_date": e.join_date.strftime("%Y-%m-%d"),
+    } for e in employees]
+
+    return JsonResponse(data, safe=False)
+
 def delete_employee(request, employee_id):
-    employee = get_object_or_404(Employee, pk=employee_id)
-    employee.delete()
-    return redirect('employeesinfo')
+    if request.method == "POST":
+        employee = get_object_or_404(Employee, pk=employee_id)
+        employee.delete()
+        return JsonResponse({"success": True})
+    return JsonResponse({"error": "Invalid request"}, status=400)
