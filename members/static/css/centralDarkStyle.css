@@ -371,6 +371,8 @@
 /* Pagination */
 .darkmode .pagination-container {
   color: var(--text-clr) !important;
+  background: transparent !important;
+  border: none;
 }
 
 .darkmode .pagination button {
@@ -403,7 +405,11 @@
 .darkmode #customer-pagination .pagination button,
 .darkmode #employee-pagination .pagination button,
 .darkmode #order-pagination .pagination button,
-.darkmode #supply-pagination .pagination button {
+.darkmode #supply-pagination .pagination button,
+.darkmode #payment-pagination .pagination button,
+.darkmode #delivery-pagination .pagination button,
+.darkmode #detailed-pagination .pagination button,
+.darkmode #daily-pagination .pagination button {
   background: var(--card-bg) !important;
   border: 1px solid var(--card-border) !important;
   color: var(--text-clr) !important;
@@ -412,7 +418,11 @@
 .darkmode #customer-pagination .pagination button:hover,
 .darkmode #employee-pagination .pagination button:hover,
 .darkmode #order-pagination .pagination button:hover,
-.darkmode #supply-pagination .pagination button:hover {
+.darkmode #supply-pagination .pagination button:hover,
+.darkmode #payment-pagination .pagination button:hover,
+.darkmode #delivery-pagination .pagination button:hover,
+.darkmode #detailed-pagination .pagination button:hover,
+.darkmode #daily-pagination .pagination button:hover {
   background: var(--primary-color) !important;
   color: var(--text-clr) !important;
   border-color: var(--primary-color) !important;
@@ -421,7 +431,11 @@
 .darkmode #customer-pagination .pagination button[aria-current="page"],
 .darkmode #employee-pagination .pagination button[aria-current="page"],
 .darkmode #order-pagination .pagination button[aria-current="page"],
-.darkmode #supply-pagination .pagination button[aria-current="page"] {
+.darkmode #supply-pagination .pagination button[aria-current="page"],
+.darkmode #payment-pagination .pagination button[aria-current="page"],
+.darkmode #delivery-pagination .pagination button[aria-current="page"],
+.darkmode #detailed-pagination .pagination button[aria-current="page"],
+.darkmode #daily-pagination .pagination button[aria-current="page"] {
   background: var(--primary-color) !important;
   color: var(--w-text-clr) !important;
   border-color: var(--primary-color) !important;

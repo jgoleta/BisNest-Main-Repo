@@ -26,7 +26,8 @@
         <div class="container">
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Search Customer Name:" onkeyup="searchCustomer()">
-                <select id="productFilter" onchange="searchCustomer()" style="padding: 10px 14px; border: 1px solid #bbb; border-radius: 8px; font-size: 15px; background: #fff; color: #111; cursor: pointer;">
+                <select id="productFilter" onchange="searchCustomer()"
+                    style="padding: 10px 14px; border: 1px solid #bbb; border-radius: 8px; font-size: 15px; background: #fff; color: #111; cursor: pointer;">
                     <option value="">All Products</option>
                     {% for product in products %}
                     <option value="{{ product }}">{{ product }}</option>
@@ -36,7 +37,7 @@
                     <button type="button" class="toggle-form-button">+ New</button>
                 </div>
             </div>
-            
+
             <div class="modal-overlay" id="modalOverlay" style="display:none;"></div>
             <div class="order-form-container">
                 <span class="close-button" id="closeBtn">&times;</span>
@@ -116,15 +117,18 @@
                             </tr>
                         </thead>
                         <tbody id="orders-body">
-                            <tr><td colspan="7" style="text-align:center;">Loading...</td></tr>
+                            <tr>
+                                <td colspan="7" style="text-align:center;">Loading...</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <div id="order-pagination"></div>
             </div>
+            <div class="pagination-container" id="order-pagination" aria-label="Order table pagination"></div>
         </div>
     </main>
 
 </body>
 <script src="{% static 'js/orderFetch.js' %}" async></script>
+
 </html>

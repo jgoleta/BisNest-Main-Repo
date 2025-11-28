@@ -884,6 +884,8 @@ main {
   align-items: center;
   gap: 8px;
   margin-top: 14px;
+  background: transparent !important;
+  border: none;
 }
 .pagination {
   display: flex;

@@ -132,8 +132,8 @@
                         <tbody>
 
                             {% for cust in customers %}
-                            <tr class="customer-row" data-id="{{ cust.id }}" data-name="{{ cust.name }}" 
-                                data-phone="{{ cust.phone }}" data-address="{{ cust.address }}" 
+                            <tr class="customer-row" data-id="{{ cust.id }}" data-name="{{ cust.name }}"
+                                data-phone="{{ cust.phone }}" data-address="{{ cust.address }}"
                                 data-date="{{ cust.date_added }}" style="cursor: pointer;">
                                 <td>{{ cust.id }}</td>
                                 <td>{{ cust.name }}</td>
@@ -145,8 +145,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="pagination-container" id="customer-pagination" aria-label="Customer table pagination"></div>
             </div>
+            <div class="pagination-container" id="customer-pagination" aria-label="Customer table pagination"></div>
         </div>
     </main>
 
