@@ -284,7 +284,7 @@ if (deleteProfileForm) {
   if (!table || !paginationContainer) return;
 
   let currentPage = 1;
-  const rowsPerPage = 10; 
+  const rowsPerPage = 15; 
 
   function getAllRows() {
     return Array.from(table.querySelectorAll('tbody tr'));
