@@ -55,8 +55,31 @@
    RESPONSIVENESS
 ================================*/
 
-/* Tablets (up to 1024px) */
-@media (max-width: 1024px) {
+/* Large Desktop (1400px - 1919px) */
+@media (max-width: 1919px) and (min-width: 1400px) {
+  .customer-form-container {
+    width: 700px;
+  }
+}
+
+/* Desktop (1200px - 1399px) */
+@media (max-width: 1399px) and (min-width: 1200px) {
+  .customer-form-container {
+    width: 650px;
+  }
+}
+
+/* Laptop (992px - 1199px) */
+@media (max-width: 1199px) and (min-width: 992px) {
+  .customer-form-container {
+    width: 90vw;
+    max-width: 600px;
+    padding: 22px;
+  }
+}
+
+/* Tablets (768px - 991px) */
+@media (max-width: 991px) and (min-width: 768px) {
   .customer-form-container {
     width: 85vw;
     padding: 20px;
@@ -67,12 +90,18 @@
     padding: 12px;
     font-size: 14px;
   }
+
+  .form-row {
+    flex-direction: column;
+  }
 }
 
-@media (max-width: 800px) {
+/* Mobile (480px - 767px) */
+@media (max-width: 767px) and (min-width: 480px) {
   .customer-form-container {
     width: 95vw;
-    padding: 15px;
+    padding: 18px;
+    max-height: 90vh;
   }
 
   .form-title {
@@ -81,24 +110,39 @@
 
   .table-wrapper {
     max-height: 60vh;
+    overflow-x: auto;
   }
 
   .table th,
   .table td {
-    padding: 10px;
+    padding: 10px 8px;
     font-size: 13px;
+  }
+
+  .customer-form input,
+  .customer-form textarea {
+    padding: 9px;
+    font-size: 14px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
   }
 }
 
-@media (max-width: 600px) {
+/* Small Mobile (≤ 479px) */
+@media (max-width: 479px) {
   .customer-form-container {
-    width: 95vw;
-    padding: 12px;
-    max-height: 85vh;
+    width: 100vw;
+    padding: 15px;
+    max-height: 100vh;
+    border-radius: 0;
   }
 
   .form-title {
-    font-size: 17px;
+    font-size: 16px;
+    margin-bottom: 15px;
   }
 
   .customer-form input,
@@ -109,17 +153,23 @@
 
   .table th,
   .table td {
-    padding: 8px;
+    padding: 8px 6px;
     font-size: 12px;
     word-wrap: break-word;
   }
 
   .table-wrapper {
     max-height: 55vh;
+    overflow-x: auto;
   }
 
   .submit-wrapper {
     text-align: center;
+  }
+
+  .submit-button {
+    width: 100%;
+    padding: 10px;
   }
 }
 
@@ -275,7 +325,25 @@
   transition: background-color 0.2s ease;
 }
 
-@media (max-width: 600px) {
+/* Responsive Profile Popup */
+@media (max-width: 991px) {
+  .customer-profile-container {
+    width: 90vw;
+    padding: 25px;
+  }
+
+  .profile-field {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .profile-field label {
+    margin-bottom: 5px;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 767px) {
   .customer-profile-container {
     width: 95vw;
     padding: 20px;
@@ -283,18 +351,62 @@
 
   .profile-field {
     flex-direction: column;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
   }
 
   .profile-field label {
     margin-bottom: 5px;
+    font-size: 14px;
+  }
+
+  .profile-field span {
+    font-size: 14px;
   }
 
   .profile-actions {
     flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
   }
 
   .edit-profile-button,
   .delete-profile-button {
     width: 100%;
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 479px) {
+  .customer-profile-container {
+    width: 100vw;
+    padding: 15px;
+    border-radius: 0;
+    max-height: 100vh;
+  }
+
+  .profile-field {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+
+  .profile-field label {
+    font-size: 13px;
+  }
+
+  .profile-field span {
+    font-size: 13px;
+  }
+
+  .profile-actions {
+    margin-top: 15px;
+    padding-top: 15px;
+  }
+
+  .edit-profile-button,
+  .delete-profile-button {
+    padding: 10px;
+    font-size: 13px;
   }
 }
