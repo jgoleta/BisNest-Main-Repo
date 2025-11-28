@@ -388,9 +388,8 @@
 }
 
 .darkmode .pagination button[aria-current="page"] {
+  background: var(--accent-clr) !important;
   color: #fff !important;
-  background: transparent !important;
-  border: none;
   border-color: var(--accent-clr) !important;
 }
 
@@ -980,10 +979,6 @@
   color: var(--text-clr) !important;
 }
 
-.darkmode .form-group svg {
-  fill: var(--accent-clr) !important;
-}
-
 /* All Headings */
 .darkmode h1,
 .darkmode h2,
@@ -992,15 +987,6 @@
 .darkmode h5,
 .darkmode h6 {
   color: var(--text-clr) !important;
-}
-
-/* Links */
-.darkmode a {
-  color: var(--accent-clr) !important;
-}
-
-.darkmode a:hover {
-  color: #a5b4fc !important;
 }
 
 /* Borders */

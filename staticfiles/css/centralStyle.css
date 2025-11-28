@@ -663,8 +663,7 @@ main {
   align-items: center;
 }
 
-.search-bar input,
-.search-bar select {
+.search-bar input {
   padding: 10px 14px;
   border: 1px solid #bbb;
   border-radius: 8px;
@@ -696,6 +695,16 @@ main {
   }
 }
 /*End Search Bar*/
+
+.filter-select {
+  padding: 10px 14px;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  font-size: 15px;
+  background: #fff;
+  cursor: pointer;
+  max-width: 250px;
+}
 
 /* Action buttons wrapper to align edit/delete */
 .action-buttons {

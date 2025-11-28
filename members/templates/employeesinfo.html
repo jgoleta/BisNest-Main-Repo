@@ -26,7 +26,7 @@
     <div class="container">
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search Employee Name:" onkeyup="searchEmployee()">
-        <select id="positionFilter" onchange="searchEmployee()" style="padding: 10px 14px; border: 1px solid #bbb; border-radius: 8px; font-size: 15px; background: #fff; color: #111; cursor: pointer;">
+        <select class="filter-select" id="positionFilter" onchange="searchEmployee()">
           <option value="">All Positions</option>
           {% for position in positions %}
           <option value="{{ position }}">{{ position }}</option>
@@ -84,7 +84,6 @@
       </div>
       <div class="modal-overlay" id="modalOverlay" style="display: none;"></div>
       
-      <!-- Employee Profile Popup Modal -->
       <div class="modal-overlay" id="profileModalOverlay" style="display:none;"></div>
       <div class="employee-profile-container" id="profileContainer">
         <span class="close-button" id="profileCloseBtn">&times;</span>

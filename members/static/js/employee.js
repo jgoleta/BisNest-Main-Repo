@@ -230,7 +230,7 @@ function searchEmployee() {
   if (!table || !paginationContainer) return;
 
   let currentPage = 1;
-  const rowsPerPage = 15;
+  const rowsPerPage = 12;
 
   function getAllRows() {
     return Array.from(table.querySelectorAll('tbody tr'));
