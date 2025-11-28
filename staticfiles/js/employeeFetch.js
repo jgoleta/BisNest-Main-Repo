@@ -39,8 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("click", async (e) => {
-    if (e.target.closest(".delete-button")) {
-        const btn = e.target.closest(".delete-button");
+    if (e.target.closest(".delete-profile-button")) {
+        const btn = e.target.closest(".delete-profile-button");
         const employeeId = btn.dataset.id;
 
         if (!confirm("Delete this employee?")) return;
@@ -53,7 +53,6 @@ document.addEventListener("click", async (e) => {
         });
 
         if (response.ok) {
-            // Remove row from table
             const row = document.getElementById(`employee-${employeeId}`);
             if (row) row.remove();
         } else {
