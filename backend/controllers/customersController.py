@@ -32,6 +32,7 @@ def customers_json(request):
 
     data = [{
         "id": c.id,
+        "customer_id": c.customer_id,
         "name": c.name,
         "phone": c.phone,
         "address": c.address,

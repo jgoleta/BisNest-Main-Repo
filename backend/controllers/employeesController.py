@@ -34,6 +34,7 @@ def employees_json(request):
 
     data = [{
         "id": e.id,
+        "employee_id": e.employee_id,
         "name": e.name,
         "position": e.position,
         "schedule": e.schedule,

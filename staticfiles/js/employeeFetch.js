@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
             employees.forEach(e => {
                 tbody.innerHTML += `
                 <tr id="employee-${e.id}">
-                    <td>${ e.employee_id || "N/A" }</td>   
+                    <td>${ e.employee_id || "N/A" }</td>   <!-- use employee_id -->
                     <td>${ e.name }</td>
                     <td>${ e.position }</td>
                     <td>${ e.schedule }</td>
