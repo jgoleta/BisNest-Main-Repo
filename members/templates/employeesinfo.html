@@ -140,18 +140,9 @@
                     class="fas fa-sort"></i></button></th>
             </tr>
           </thead>
-          <tbody>
-
-            {% for emp in employees %}
-            <tr class="employee-row" data-id="{{ emp.id }}" data-name="{{ emp.name }}"
-              data-position="{{ emp.position }}" data-schedule="{{ emp.schedule }}" 
-              data-salary="{{ emp.salary }}" data-join-date="{{ emp.join_date }}" style="cursor: pointer;">
-              <td>{{ emp.id }}</td>
-              <td>{{ emp.name }}</td>
-              <td>{{ emp.position }}</td>
-              <td>{{ emp.schedule }}</td>
-              <td>{{ emp.salary }}</td>
-              <td>{{ emp.join_date }}</td>
+          <tbody id="employees-body">
+            <tr>
+              <td colspan="7" style="text-align:center;">Loading...</td>
             </tr>
           </tbody>
         </table>

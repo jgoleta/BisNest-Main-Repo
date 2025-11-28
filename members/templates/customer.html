@@ -130,17 +130,9 @@
                                             class="fas fa-sort"></i></button></th>
                             </tr>
                         </thead>
-                        <tbody>
-
-                            {% for cust in customers %}
-                            <tr class="customer-row" data-id="{{ cust.id }}" data-name="{{ cust.name }}"
-                                data-phone="{{ cust.phone }}" data-address="{{ cust.address }}"
-                                data-date="{{ cust.date_added }}" style="cursor: pointer;">
-                                <td>{{ cust.id }}</td>
-                                <td>{{ cust.name }}</td>
-                                <td>{{ cust.phone }}</td>
-                                <td>{{ cust.address }}</td>
-                                <td>{{ cust.date_added }}</td>
+                        <tbody id="customers-body">
+                            <tr>
+                                <td colspan="6" style="text-align:center;">Loading...</td>
                             </tr>
                         </tbody>
                     </table>

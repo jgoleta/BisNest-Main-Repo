@@ -39,7 +39,8 @@ urlpatterns = [
 
     # --- crud ---
     path('delete-employee/<int:employee_id>/', employeesController.delete_employee, name='delete_employee'),
-    path('customer/delete/<int:customer_id>/', customersController.delete_customer, name='delete_customer'),
+    path('delete-customer/<int:customer_id>/', customersController.delete_customer, name='delete_customer'),
+    path('customer/delete/<int:customer_id>/', customersController.delete_customer),  # backward compatibility
     path('delete-delivery/<int:delivery_id>/', deliveryController.delete_delivery, name='delete_delivery'),
     path('delete-payment/<int:payment_id>/', paymentsController.delete_payment, name='delete_payment'),
     path('delete-order/<int:id>/', orderController.delete_order, name='delete_order'),
