@@ -279,6 +279,8 @@ function searchEmployee() {
 
     renderPaginationControls(totalPages);
   }
+    window.showEmployeePage = showPage;
+
 
   function renderPaginationControls(totalPages) {
     paginationContainer.innerHTML = '';
@@ -404,3 +406,5 @@ function searchEmployee() {
     }
   });
 })();
+
+// AJAX FETCH

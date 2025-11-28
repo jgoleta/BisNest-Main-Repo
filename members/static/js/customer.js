@@ -373,6 +373,8 @@ if (deleteProfileForm) {
 
     renderPaginationControls(totalPages);
   }
+  
+  window.showEmployeePage = showPage;
 
   function renderPaginationControls(totalPages) {
     paginationContainer.innerHTML = '';
@@ -445,3 +447,5 @@ if (deleteProfileForm) {
   setTimeout(() => { if (!document.readyState || document.readyState !== 'loading') showPage(1); }, 50);
 
 })();
+
+// Ajax for customer fetch and delete
