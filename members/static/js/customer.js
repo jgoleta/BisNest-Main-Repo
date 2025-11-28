@@ -94,36 +94,103 @@ function searchCustomer() {
   }
 }
 
+// Customer Profile Popup
+const profileContainer = document.getElementById("profileContainer");
+const profileModalOverlay = document.getElementById("profileModalOverlay");
+const profileCloseBtn = document.getElementById("profileCloseBtn");
+const editProfileBtn = document.getElementById("editProfileBtn");
+const deleteProfileForm = document.getElementById("deleteProfileForm");
+
+function openProfilePopup(customerRow) {
+  const id = customerRow.getAttribute("data-id");
+  const name = customerRow.getAttribute("data-name");
+  const phone = customerRow.getAttribute("data-phone");
+  const address = customerRow.getAttribute("data-address");
+  const date = customerRow.getAttribute("data-date");
+
+  // Populate profile fields
+  document.getElementById("profile-id").textContent = id;
+  document.getElementById("profile-name").textContent = name;
+  document.getElementById("profile-phone").textContent = phone;
+  document.getElementById("profile-address").textContent = address;
+  document.getElementById("profile-date").textContent = date;
+
+  // Set delete form action
+  deleteProfileForm.action = `/delete-customer/${id}/`;
+
+  // Show popup
+  profileContainer.style.display = "block";
+  profileModalOverlay.style.display = "block";
+}
+
+function closeProfilePopup() {
+  profileContainer.style.display = "none";
+  profileModalOverlay.style.display = "none";
+}
+
+// Handle row clicks to open profile
 document.addEventListener("click", function (e) {
-  const editBtn = e.target.closest(".edit-button");
-  if (!editBtn) return;
-  const id = editBtn.getAttribute("data-id");
-  const name = editBtn.getAttribute("data-name");
-  const phone = editBtn.getAttribute("data-phone");
-  const address = editBtn.getAttribute("data-address");
-
-  formContainer.style.display = "block";
-  modalOverlay.style.display = "block";
-
-  document.getElementById("formTitle").textContent = "Edit Customer";
-  const nameInput = document.querySelector('.customer-form input[name="name"]');
-  const phoneInput = document.querySelector('.customer-form input[name="phone"]');
-  const addressInput = document.querySelector('.customer-form input[name="address"]');
-  if (nameInput) nameInput.value = name || "";
-  if (phoneInput) phoneInput.value = phone || "";
-  if (addressInput) addressInput.value = address || "";
-
-  let editIdInput = document.querySelector('.customer-form input[name="edit_id"]');
-  if (!editIdInput) {
-    editIdInput = document.createElement("input");
-    editIdInput.type = "hidden";
-    editIdInput.name = "edit_id";
-    document.querySelector(".customer-form").appendChild(editIdInput);
+  const customerRow = e.target.closest(".customer-row");
+  if (customerRow && !e.target.closest("button") && !e.target.closest("form")) {
+    openProfilePopup(customerRow);
   }
-  editIdInput.value = id;
-
-  formContainer.scrollIntoView({ behavior: "smooth", block: "center" });
 });
+
+// Close profile popup
+if (profileCloseBtn) {
+  profileCloseBtn.addEventListener("click", closeProfilePopup);
+}
+
+if (profileModalOverlay) {
+  profileModalOverlay.addEventListener("click", closeProfilePopup);
+}
+
+// Handle edit button in profile
+if (editProfileBtn) {
+  editProfileBtn.addEventListener("click", function() {
+    const id = document.getElementById("profile-id").textContent;
+    const name = document.getElementById("profile-name").textContent;
+    const phone = document.getElementById("profile-phone").textContent;
+    const address = document.getElementById("profile-address").textContent;
+
+    // Close profile popup
+    closeProfilePopup();
+
+    // Open edit form
+    formContainer.style.display = "block";
+    modalOverlay.style.display = "block";
+
+    document.getElementById("formTitle").textContent = "Edit Customer";
+    const nameInput = document.querySelector('.customer-form input[name="name"]');
+    const phoneInput = document.querySelector('.customer-form input[name="phone"]');
+    const addressInput = document.querySelector('.customer-form input[name="address"]');
+    if (nameInput) nameInput.value = name || "";
+    if (phoneInput) phoneInput.value = phone || "";
+    if (addressInput) addressInput.value = address || "";
+
+    let editIdInput = document.querySelector('.customer-form input[name="edit_id"]');
+    if (!editIdInput) {
+      editIdInput = document.createElement("input");
+      editIdInput.type = "hidden";
+      editIdInput.name = "edit_id";
+      document.querySelector(".customer-form").appendChild(editIdInput);
+    }
+    editIdInput.value = id;
+
+    formContainer.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+}
+
+// Handle delete button in profile with confirmation
+if (deleteProfileForm) {
+  deleteProfileForm.addEventListener("submit", function(e) {
+    const customerName = document.getElementById("profile-name").textContent;
+    if (!confirm(`Are you sure you want to delete customer "${customerName}"? This action cannot be undone.`)) {
+      e.preventDefault();
+      return false;
+    }
+  });
+}
 
 // Sort customer by name
 (function() {

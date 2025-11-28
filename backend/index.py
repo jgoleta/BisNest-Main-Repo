@@ -130,3 +130,9 @@ def register_view(request):
 
     return redirect('login_view')
 
+
+def feedbackPage(request):
+    return render(request, 'feedback.html')
+
+def profilePage(request):
+    return render(request, 'profile.html')

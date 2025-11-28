@@ -26,6 +26,12 @@
     <div class="container">
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search Employee Name:" onkeyup="searchEmployee()">
+        <select id="positionFilter" onchange="searchEmployee()" style="padding: 10px 14px; border: 1px solid #bbb; border-radius: 8px; font-size: 15px; background: #fff; color: #111; cursor: pointer;">
+          <option value="">All Positions</option>
+          {% for position in positions %}
+          <option value="{{ position }}">{{ position }}</option>
+          {% endfor %}
+        </select>
         <div class="button-container">
           <button class="toggle-form-button" onclick="toggleForm()">+ New</button>
         </div>
@@ -77,6 +83,49 @@
         </form>
       </div>
       <div class="modal-overlay" id="modalOverlay" style="display: none;"></div>
+      
+      <!-- Employee Profile Popup Modal -->
+      <div class="modal-overlay" id="profileModalOverlay" style="display:none;"></div>
+      <div class="employee-profile-container" id="profileContainer">
+        <span class="close-button" id="profileCloseBtn">&times;</span>
+        <h2 class="form-title">Employee Profile</h2>
+        <div class="employee-profile-content">
+          <div class="profile-info">
+            <div class="profile-field">
+              <label>Employee ID:</label>
+              <span id="profile-id"></span>
+            </div>
+            <div class="profile-field">
+              <label>Name:</label>
+              <span id="profile-name"></span>
+            </div>
+            <div class="profile-field">
+              <label>Position:</label>
+              <span id="profile-position"></span>
+            </div>
+            <div class="profile-field">
+              <label>Schedule:</label>
+              <span id="profile-schedule"></span>
+            </div>
+            <div class="profile-field">
+              <label>Daily Salary:</label>
+              <span id="profile-salary"></span>
+            </div>
+            <div class="profile-field">
+              <label>Join Date:</label>
+              <span id="profile-join-date"></span>
+            </div>
+          </div>
+          <div class="profile-actions">
+            <button type="button" class="edit-profile-button" id="editProfileBtn">Edit</button>
+            <form id="deleteProfileForm" method="POST" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="delete-profile-button">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <div class="table-wrapper">
         <table class="table" id="employee-table">
           <thead>
@@ -89,41 +138,20 @@
               <th>Daily Salary</th>
               <th>Join Date <button id="employeeJoinDateSortBtn" class="sort-btn" title="Sort by join date"><i
                     class="fas fa-sort"></i></button></th>
-              <th>Action</th>
             </tr>
           </thead>
           <tbody>
 
             {% for emp in employees %}
-            <tr>
+            <tr class="employee-row" data-id="{{ emp.id }}" data-name="{{ emp.name }}"
+              data-position="{{ emp.position }}" data-schedule="{{ emp.schedule }}" 
+              data-salary="{{ emp.salary }}" data-join-date="{{ emp.join_date }}" style="cursor: pointer;">
               <td>{{ emp.id }}</td>
               <td>{{ emp.name }}</td>
               <td>{{ emp.position }}</td>
               <td>{{ emp.schedule }}</td>
               <td>{{ emp.salary }}</td>
               <td>{{ emp.join_date }}</td>
-              <td>
-                <button type="button" class="edit-button" data-id="{{ emp.id }}" data-name="{{ emp.name }}"
-                  data-position="{{ emp.position }}" data-schedule="{{ emp.schedule }}" data-salary="{{ emp.salary }}"
-                  title="Edit employee" aria-label="Edit employee" style="margin-right:8px;">
-
-                  <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
-                    fill="#FFFFFF">
-                    <path
-                      d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
-                  </svg>
-                </button>
-                <form action="{% url 'delete_employee' emp.id %}" method="post" style="display:inline;">
-                  {% csrf_token %}
-                  <button type="submit" class="delete-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
-                      fill="#FFFFFF">
-                      <path
-                        d="M312-144q-29.7 0-50.85-21.15Q240-186.3 240-216v-480h-48v-72h192v-48h192v48h192v72h-48v479.57Q720-186 698.85-165T648-144H312Zm72-144h72v-336h-72v336Zm120 0h72v-336h-72v336Z" />
-                    </svg>
-                  </button>
-                </form>
-              </td>
             </tr>
             {% endfor %}
           </tbody>

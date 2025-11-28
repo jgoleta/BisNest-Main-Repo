@@ -34,6 +34,8 @@ urlpatterns = [
     path('sales/', login_required(salesreportController.salesPage, login_url='/login/'), name='sales'),
     path('about/', login_required(index.aboutPage, login_url='/login/'), name='about'),
     path('admin-settings/', login_required(index.adminSettingsPage, login_url='/login/'), name='admin_settings'),
+    path('feedback/', login_required(index.feedbackPage, login_url='/login/'), name='feedback'),
+    path('profile/', login_required(index.profilePage, login_url='/login/'), name='profile'),
 
     # --- crud ---
     path('employee-info/delete/<int:employee_id>/', employeesController.delete_employee, name='delete_employee'),

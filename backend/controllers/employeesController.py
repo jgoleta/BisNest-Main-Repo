@@ -25,10 +25,13 @@ def employeesInfoPage(request):
     else:
         form = EmployeeForm()
 
-    employees = Employee.objects.all() 
+    employees = Employee.objects.all()
+    positions = Employee.objects.values_list('position', flat=True).distinct().order_by('position')
+    
     return render(request, 'employeesinfo.html', {
         'form': form,
-        'employees': employees
+        'employees': employees,
+        'positions': positions
     })
 
 def delete_employee(request, employee_id):
