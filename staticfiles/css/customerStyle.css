@@ -320,9 +320,13 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.customer-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
 .customer-row:hover {
   background-color: rgba(0, 0, 0, 0.05);
-  transition: background-color 0.2s ease;
 }
 
 /* Responsive Profile Popup */
