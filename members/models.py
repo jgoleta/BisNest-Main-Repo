@@ -29,7 +29,7 @@ class Employee(models.Model):
             else:
                 new_number = 1
 
-            self.employee_id = f'EMP{new_number:03d}'  #EMP001,EMP002
+            self.employee_id = f'EMP{str(new_number).zfill(5)}'
 
         super().save(*args, **kwargs)
 
@@ -56,13 +56,15 @@ class Customer(models.Model):
             last_customer = Customer.objects.order_by('-id').first()
             if last_customer and last_customer.customer_id:
                 try:
-                    last_number = int(last_customer.customer_id.replace('CUST', ''))
+                    last_number = int(last_customer.customer_id.replace('CUS', ''))
                 except ValueError:
                     last_number = 0
                 new_number = last_number + 1
             else:
                 new_number = 1
-            self.customer_id = f'CUST{new_number:03d}'
+
+            self.customer_id = f'CUS{str(new_number).zfill(4)}'
+
         super().save(*args, **kwargs)
 
     def __str__(self):
