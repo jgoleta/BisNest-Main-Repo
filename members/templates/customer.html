@@ -13,7 +13,6 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=dashboard" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="{% static 'js/darkMode.js' %}" defer></script>
-    <script src="{% static 'js/sidebar.js' %}" defer></script>
     <script src="{% static 'js/customer.js' %}" defer></script>
     <script src="{% static 'js/customerFetch.js' %}" async></script>
 
@@ -79,6 +78,44 @@
 
             </div>
 
+            <!-- Customer Profile Popup Modal -->
+            <div class="modal-overlay" id="profileModalOverlay" style="display:none;"></div>
+            <div class="customer-profile-container" id="profileContainer">
+                <span class="close-button" id="profileCloseBtn">&times;</span>
+                <h2 class="form-title">Customer Profile</h2>
+                <div class="customer-profile-content">
+                    <div class="profile-info">
+                        <div class="profile-field">
+                            <label>Customer ID:</label>
+                            <span id="profile-id"></span>
+                        </div>
+                        <div class="profile-field">
+                            <label>Name:</label>
+                            <span id="profile-name"></span>
+                        </div>
+                        <div class="profile-field">
+                            <label>Phone:</label>
+                            <span id="profile-phone"></span>
+                        </div>
+                        <div class="profile-field">
+                            <label>Address:</label>
+                            <span id="profile-address"></span>
+                        </div>
+                        <div class="profile-field">
+                            <label>Date Added:</label>
+                            <span id="profile-date"></span>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <button type="button" class="edit-profile-button" id="editProfileBtn">Edit</button>
+                        <form id="deleteProfileForm" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-profile-button">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div class="customer-table-container">
                 <div class="table-wrapper">
                     <table class="table" id="customer-table">
@@ -91,7 +128,6 @@
                                 <th>Address</th>
                                 <th>Date Added <button id="customerDateSortBtn" class="sort-btn" title="Sort by date"><i
                                             class="fas fa-sort"></i></button></th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="customers-body">
@@ -101,8 +137,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="pagination-container" id="customer-pagination" aria-label="Customer table pagination"></div>
             </div>
+            <div class="pagination-container" id="customer-pagination" aria-label="Customer table pagination"></div>
         </div>
     </main>
 

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from members.models import Supply
+from members.models import Supply, Product
 from members.forms import SupplyForm
 from django.http import JsonResponse
 
@@ -28,8 +28,16 @@ def supplyPage(request):
             'supply_id': f"SUP{count:04d}"
         })
 
+    supplies = Supply.objects.exclude(supply_id='').all()
+    # Get unique suppliers and products for the filter dropdowns
+    suppliers = Supply.objects.values_list('supplier', flat=True).distinct().order_by('supplier')
+    products = Product.objects.values_list('name', flat=True).distinct().order_by('name')
+    
     return render(request, 'supply.html', {
         'form': form,
+        'supplies': supplies,
+        'suppliers': suppliers,
+        'products': products
     })
 
 def supplies_json(request):

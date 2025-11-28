@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from members.models import Order
+from members.models import Order, Product
 from members.forms import OrderForm
 from django.http import JsonResponse
 
@@ -24,8 +24,12 @@ def orderHistoryPage(request):
                 print("❌ INVALID form")
                 print(form.errors)
 
+    # Get unique product names for the filter dropdown
+    products = Product.objects.values_list('name', flat=True).distinct().order_by('name')
+    
     return render(request, 'history.html', {
         'form': form,
+        'products': products,
     })
 
 def orders_json(request):

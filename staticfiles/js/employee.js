@@ -49,65 +49,140 @@ if (closeBtn) {
 }
 
 
+// Employee Profile Popup
+const profileContainer = document.getElementById("profileContainer");
+const profileModalOverlay = document.getElementById("profileModalOverlay");
+const profileCloseBtn = document.getElementById("profileCloseBtn");
+const editProfileBtn = document.getElementById("editProfileBtn");
+const deleteProfileForm = document.getElementById("deleteProfileForm");
+
+function openProfilePopup(employeeRow) {
+  const id = employeeRow.getAttribute("data-id");
+  const name = employeeRow.getAttribute("data-name");
+  const position = employeeRow.getAttribute("data-position");
+  const schedule = employeeRow.getAttribute("data-schedule");
+  const salary = employeeRow.getAttribute("data-salary");
+  const joinDate = employeeRow.getAttribute("data-join-date");
+
+  // Populate profile fields
+  document.getElementById("profile-id").textContent = id;
+  document.getElementById("profile-name").textContent = name;
+  document.getElementById("profile-position").textContent = position;
+  document.getElementById("profile-schedule").textContent = schedule;
+  document.getElementById("profile-salary").textContent = salary;
+  document.getElementById("profile-join-date").textContent = joinDate;
+
+  // Set delete form action
+  deleteProfileForm.action = `/employee-info/delete/${id}/`;
+
+  // Show popup
+  profileContainer.style.display = "block";
+  profileModalOverlay.style.display = "block";
+}
+
+function closeProfilePopup() {
+  profileContainer.style.display = "none";
+  profileModalOverlay.style.display = "none";
+}
+
+// Handle row clicks to open profile
 document.addEventListener("click", function (e) {
-  const editBtn = e.target.closest(".edit-button");
-  if (!editBtn) return;
-
-  const id = editBtn.getAttribute("data-id");
-  const name = editBtn.getAttribute("data-name");
-  const position = editBtn.getAttribute("data-position");
-  const schedule = editBtn.getAttribute("data-schedule");
-  const salary = editBtn.getAttribute("data-salary");
-
-
-  formContainer.style.display = "block";
-  modalOverlay.style.display = "block";
-
-  
-  const nameInput = document.querySelector('.employee-form input[name="name"]');
-  const positionInput = document.querySelector('.employee-form input[name="position"]');
-  const scheduleInput = document.querySelector('.employee-form input[name="schedule"]');
-  const salaryInput = document.querySelector('.employee-form input[name="salary"]');
-
-  if (nameInput) nameInput.value = name || "";
-  if (positionInput) positionInput.value = position || "";
-  if (scheduleInput) scheduleInput.value = schedule || "";
-  if (salaryInput) salaryInput.value = salary || "";
-
-  
-  let editIdInput = document.querySelector('.employee-form input[name="edit_id"]');
-  if (!editIdInput) {
-    editIdInput = document.createElement("input");
-    editIdInput.type = "hidden";
-    editIdInput.name = "edit_id";
-    employeeForm.appendChild(editIdInput);
+  const employeeRow = e.target.closest(".employee-row");
+  if (employeeRow && !e.target.closest("button") && !e.target.closest("form")) {
+    openProfilePopup(employeeRow);
   }
-  editIdInput.value = id;
-
- 
-  const formTitle = document.getElementById("formTitle");
-  if (formTitle) formTitle.textContent = "Edit Employee";
-
-
-  formContainer.scrollIntoView({ behavior: "smooth", block: "center" });
 });
+
+// Close profile popup
+if (profileCloseBtn) {
+  profileCloseBtn.addEventListener("click", closeProfilePopup);
+}
+
+if (profileModalOverlay) {
+  profileModalOverlay.addEventListener("click", closeProfilePopup);
+}
+
+// Handle edit button in profile
+if (editProfileBtn) {
+  editProfileBtn.addEventListener("click", function() {
+    const id = document.getElementById("profile-id").textContent;
+    const name = document.getElementById("profile-name").textContent;
+    const position = document.getElementById("profile-position").textContent;
+    const schedule = document.getElementById("profile-schedule").textContent;
+    const salary = document.getElementById("profile-salary").textContent;
+
+    // Close profile popup
+    closeProfilePopup();
+
+    // Open edit form
+    formContainer.style.display = "block";
+    modalOverlay.style.display = "block";
+
+    const formTitle = document.getElementById("formTitle");
+    if (formTitle) formTitle.textContent = "Edit Employee";
+
+    const nameInput = document.querySelector('.employee-form input[name="name"]');
+    const positionInput = document.querySelector('.employee-form input[name="position"]');
+    const scheduleInput = document.querySelector('.employee-form input[name="schedule"]');
+    const salaryInput = document.querySelector('.employee-form input[name="salary"]');
+
+    if (nameInput) nameInput.value = name || "";
+    if (positionInput) positionInput.value = position || "";
+    if (scheduleInput) scheduleInput.value = schedule || "";
+    if (salaryInput) salaryInput.value = salary || "";
+
+    let editIdInput = document.querySelector('.employee-form input[name="edit_id"]');
+    if (!editIdInput) {
+      editIdInput = document.createElement("input");
+      editIdInput.type = "hidden";
+      editIdInput.name = "edit_id";
+      employeeForm.appendChild(editIdInput);
+    }
+    editIdInput.value = id;
+
+    formContainer.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+}
+
+// Handle delete button in profile with confirmation
+if (deleteProfileForm) {
+  deleteProfileForm.addEventListener("submit", function(e) {
+    const employeeName = document.getElementById("profile-name").textContent;
+    if (!confirm(`Are you sure you want to delete employee "${employeeName}"? This action cannot be undone.`)) {
+      e.preventDefault();
+      return false;
+    }
+  });
+}
 
 
 function searchEmployee() {
   const input = document.getElementById("searchInput");
-  const filter = (input.value || "").toLowerCase();
+  const positionFilter = document.getElementById("positionFilter");
+  const nameFilter = (input.value || "").toLowerCase();
+  const positionValue = (positionFilter && positionFilter.value) || "";
   const table = document.querySelector(".table tbody");
   if (!table) return;
   const rows = table.getElementsByTagName("tr");
 
   for (let i = 0; i < rows.length; i++) {
     const nameCell = rows[i].getElementsByTagName("td")[1];
-    if (nameCell) {
+    const positionCell = rows[i].getElementsByTagName("td")[2];
+    
+    let matchesName = true;
+    let matchesPosition = true;
+    
+    if (nameCell && nameFilter) {
       const nameText = nameCell.textContent || nameCell.innerText;
-      rows[i].style.display = nameText.toLowerCase().includes(filter)
-        ? ""
-        : "none";
+      matchesName = nameText.toLowerCase().includes(nameFilter);
     }
+    
+    if (positionCell && positionValue) {
+      const positionText = positionCell.textContent || positionCell.innerText;
+      matchesPosition = positionText.trim() === positionValue;
+    }
+    
+    rows[i].style.display = (matchesName && matchesPosition) ? "" : "none";
   }
 }
 
@@ -155,7 +230,7 @@ function searchEmployee() {
   if (!table || !paginationContainer) return;
 
   let currentPage = 1;
-  const rowsPerPage = 10;
+  const rowsPerPage = 12;
 
   function getAllRows() {
     return Array.from(table.querySelectorAll('tbody tr'));
@@ -163,13 +238,28 @@ function searchEmployee() {
 
   function getFilteredRows() {
     const input = document.getElementById('searchInput');
-    const filter = (input && input.value || '').toLowerCase().trim();
-    if (!filter) return getAllRows();
+    const positionFilter = document.getElementById('positionFilter');
+    const nameFilter = (input && input.value || '').toLowerCase().trim();
+    const positionValue = (positionFilter && positionFilter.value) || '';
+    
     return getAllRows().filter(r => {
       const nameCell = r.querySelectorAll('td')[1];
-      if (!nameCell) return false;
-      const txt = (nameCell.textContent || nameCell.innerText || '').toLowerCase();
-      return txt.indexOf(filter) > -1;
+      const positionCell = r.querySelectorAll('td')[2];
+      
+      let matchesName = true;
+      let matchesPosition = true;
+      
+      if (nameCell && nameFilter) {
+        const txt = (nameCell.textContent || nameCell.innerText || '').toLowerCase();
+        matchesName = txt.indexOf(nameFilter) > -1;
+      }
+      
+      if (positionCell && positionValue) {
+        const positionText = (positionCell.textContent || positionCell.innerText || '').trim();
+        matchesPosition = positionText === positionValue;
+      }
+      
+      return matchesName && matchesPosition;
     });
   }
 

@@ -30,6 +30,18 @@
     <div class="container">
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search Supply:" onkeyup="searchSupply()">
+        <select id="supplierFilter" onchange="searchSupply()" style="padding: 10px 14px; border: 1px solid #bbb; border-radius: 8px; font-size: 15px; background: #fff; color: #111; cursor: pointer;">
+          <option value="">All Suppliers</option>
+          {% for supplier in suppliers %}
+          <option value="{{ supplier }}">{{ supplier }}</option>
+          {% endfor %}
+        </select>
+        <select id="productFilter" onchange="searchSupply()" style="padding: 10px 14px; border: 1px solid #bbb; border-radius: 8px; font-size: 15px; background: #fff; color: #111; cursor: pointer;">
+          <option value="">All Products</option>
+          {% for product in products %}
+          <option value="{{ product }}">{{ product }}</option>
+          {% endfor %}
+        </select>
         <div class="button-container">
           <button class="toggle-form-button" onclick="toggleForm()">+ New</button>
         </div>
@@ -112,8 +124,8 @@
             </tbody>
           </table>
         </div>
-        <div class="pagination-container" id="supply-pagination" aria-label="Customer table pagination"></div>
       </div>
+      <div class="pagination-container" id="supply-pagination" aria-label="Supply table pagination"></div>
     </div>
   </main>
 

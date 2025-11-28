@@ -136,21 +136,13 @@
   border-bottom-color: var(--accent-clr);
 }
 
-#theme-switch {
-  background-color: var(--palette-header);
-  align-items: center;
+/* Theme Switch - handled in headerStyle.css */
+.theme-switch-container {
+  color: var(--text-clr) !important;
 }
 
-#theme-switch svg:last-child {
-  display: none;
-}
-
-.darkmode #theme-switch svg:first-child {
-  display: none;
-}
-
-.darkmode #theme-switch svg:last-child {
-  display: block;
+.darkmode .theme-switch-container {
+  color: var(--text-clr) !important;
 }
 
 .darkmode .payment-form input[readonly],
@@ -262,4 +254,765 @@
 .darkmode .social-icons a:hover {
   border-color: var(--accent-clr) !important;
   color: var(--accent-clr) !important;
+}
+
+/* Header Container */
+.darkmode .header-container {
+  background-color: var(--primary-color) !important;
+  color: var(--text-clr) !important;
+  border-bottom: 1px solid var(--line-clr) !important;
+}
+
+.darkmode .app-header {
+  background: var(--primary-color) !important;
+  border-bottom: 1px solid var(--line-clr) !important;
+  color: var(--text-clr) !important;
+}
+
+/* Table Wrapper */
+.darkmode .table-wrapper {
+  background: var(--surface) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid var(--card-border) !important;
+}
+
+.darkmode .table-wrapper thead th {
+  background: var(--primary-color) !important;
+  color: var(--text-clr) !important;
+  border-bottom: 1px solid var(--line-clr) !important;
+}
+
+.darkmode .table tbody tr {
+  border-bottom: 1px solid var(--card-border) !important;
+}
+
+.darkmode .table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.darkmode .customer-row:hover,
+.darkmode .employee-row:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Search Bar */
+.darkmode .search-bar input,
+.darkmode .search-bar select {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .search-bar input::placeholder {
+  color: #94a3b8 !important;
+}
+
+.darkmode .search-bar input:focus,
+.darkmode .search-bar select:focus {
+  border-color: var(--accent-clr) !important;
+  outline: 2px solid var(--accent-clr) !important;
+  outline-offset: 2px;
+}
+
+/* Form Labels */
+.darkmode .form-group label,
+.darkmode .form-label,
+.darkmode label {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .form-title {
+  color: var(--text-clr) !important;
+}
+
+/* Profile Popups */
+.darkmode .customer-profile-container,
+.darkmode .employee-profile-container {
+  background: var(--surface) !important;
+  color: var(--text-clr) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4) !important;
+}
+
+.darkmode .profile-field {
+  border-bottom: 1px solid var(--card-border) !important;
+}
+
+.darkmode .profile-field label {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .profile-field span {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .profile-actions {
+  border-top: 1px solid var(--card-border) !important;
+}
+
+.darkmode .edit-profile-button {
+  background: var(--accent-clr) !important;
+  color: #fff !important;
+}
+
+.darkmode .edit-profile-button:hover {
+  background: #6d7af0 !important;
+}
+
+.darkmode .delete-profile-button {
+  background: #b91c1c !important;
+  color: #fff !important;
+}
+
+.darkmode .delete-profile-button:hover {
+  background: #991b1b !important;
+}
+
+/* Pagination */
+.darkmode .pagination-container {
+  color: var(--text-clr) !important;
+  background: transparent !important;
+  border: none;
+}
+
+.darkmode .pagination button {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .pagination button:hover {
+  background: var(--primary-color) !important;
+  border-color: var(--accent-clr) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .pagination button[aria-current="page"] {
+  background: var(--accent-clr) !important;
+  color: #fff !important;
+  border-color: var(--accent-clr) !important;
+}
+
+.darkmode .pagination button:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+.darkmode .pagination .ellipsis {
+  color: var(--seconday-text-clr) !important;
+}
+
+.darkmode #customer-pagination .pagination button,
+.darkmode #employee-pagination .pagination button,
+.darkmode #order-pagination .pagination button,
+.darkmode #supply-pagination .pagination button,
+.darkmode #payment-pagination .pagination button,
+.darkmode #delivery-pagination .pagination button,
+.darkmode #detailed-pagination .pagination button,
+.darkmode #daily-pagination .pagination button {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode #customer-pagination .pagination button:hover,
+.darkmode #employee-pagination .pagination button:hover,
+.darkmode #order-pagination .pagination button:hover,
+.darkmode #supply-pagination .pagination button:hover,
+.darkmode #payment-pagination .pagination button:hover,
+.darkmode #delivery-pagination .pagination button:hover,
+.darkmode #detailed-pagination .pagination button:hover,
+.darkmode #daily-pagination .pagination button:hover {
+  background: var(--primary-color) !important;
+  color: var(--text-clr) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.darkmode #customer-pagination .pagination button[aria-current="page"],
+.darkmode #employee-pagination .pagination button[aria-current="page"],
+.darkmode #order-pagination .pagination button[aria-current="page"],
+.darkmode #supply-pagination .pagination button[aria-current="page"],
+.darkmode #payment-pagination .pagination button[aria-current="page"],
+.darkmode #delivery-pagination .pagination button[aria-current="page"],
+.darkmode #detailed-pagination .pagination button[aria-current="page"],
+.darkmode #daily-pagination .pagination button[aria-current="page"] {
+  background: var(--primary-color) !important;
+  color: var(--w-text-clr) !important;
+  border-color: var(--primary-color) !important;
+}
+
+/* Toggle Form Button */
+.darkmode .toggle-form-button {
+  background: var(--accent-clr) !important;
+  color: #fff !important;
+}
+
+.darkmode .toggle-form-button:hover {
+  background: #6d7af0 !important;
+  box-shadow: 0 8px 20px rgba(129, 140, 248, 0.3) !important;
+}
+
+/* Container */
+.darkmode .container {
+  color: var(--text-clr) !important;
+}
+
+/* Modal Overlay */
+.darkmode .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Form Inputs in Modals */
+.darkmode .customer-form input,
+.darkmode .employee-form input,
+.darkmode .order-form input,
+.darkmode .supply-form input,
+.darkmode .delivery-form input,
+.darkmode .payment-form input {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .customer-form input:focus,
+.darkmode .employee-form input:focus,
+.darkmode .order-form input:focus,
+.darkmode .supply-form input:focus,
+.darkmode .delivery-form input:focus,
+.darkmode .payment-form input:focus {
+  border-color: var(--accent-clr) !important;
+  outline: 2px solid var(--accent-clr) !important;
+}
+
+.darkmode .customer-form select,
+.darkmode .employee-form select,
+.darkmode .order-form select,
+.darkmode .supply-form select,
+.darkmode .delivery-form select,
+.darkmode .payment-form select {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .customer-form textarea,
+.darkmode .employee-form textarea,
+.darkmode .order-form textarea,
+.darkmode .supply-form textarea {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+/* Sort Buttons */
+.darkmode .sort-btn {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .sort-btn i {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .sort-btn:hover {
+  color: var(--accent-clr) !important;
+}
+
+.darkmode .sort-btn:hover i {
+  color: var(--accent-clr) !important;
+}
+
+/* User Dropdown Menu */
+.darkmode .user-menu {
+  background: var(--surface) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+.darkmode .menu-item {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .menu-item:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.darkmode .user-info {
+  color: var(--text-clr) !important;
+  border-bottom: 1px solid var(--card-border) !important;
+}
+
+.darkmode .user-info-name {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .user-info-email {
+  color: var(--seconday-text-clr) !important;
+}
+
+.darkmode .user-button {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .menu-item.danger {
+  color: #ef4444 !important;
+}
+
+.darkmode .menu-item.danger:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Product Page */
+.darkmode .product-button-style {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .product-button-style:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  border-color: var(--accent-clr) !important;
+}
+
+.darkmode .product-price-label {
+  color: var(--text-clr) !important;
+}
+
+/* Order Page */
+.darkmode .order-form-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--card-border) !important;
+}
+
+.darkmode .order-table-container {
+  background: var(--surface) !important;
+}
+
+/* Payment Page */
+.darkmode .payment-form-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--card-border) !important;
+}
+
+.darkmode #paymentModalOverlay {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Delivery Page */
+.darkmode .delivery-form-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--card-border) !important;
+}
+
+/* Supply Page */
+.darkmode .supply-form-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--card-border) !important;
+}
+
+.darkmode .supply-table-container {
+  background: var(--surface) !important;
+}
+
+/* Sales Page */
+.darkmode .sales-container,
+.darkmode .sales-table-container {
+  background: var(--surface) !important;
+  color: var(--text-clr) !important;
+}
+
+/* Admin Page */
+.darkmode .main-grid,
+.darkmode .dashboard-container,
+.darkmode .stat-card {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .stat-card h3,
+.darkmode .stat-card p {
+  color: var(--text-clr) !important;
+}
+
+/* Menu Page */
+.darkmode .menu-container {
+  background: var(--surface) !important;
+  color: var(--text-clr) !important;
+}
+
+/* Profile Page */
+.darkmode .profile-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--card-border) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .profile-field {
+  border-bottom: 1px solid var(--card-border) !important;
+}
+
+/* Feedback Page */
+.darkmode .feedback-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--card-border) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .feedback-form {
+  background: var(--card-bg) !important;
+}
+
+/* Form Row */
+.darkmode .form-row {
+  color: var(--text-clr) !important;
+}
+
+/* Submit Wrapper */
+.darkmode .submit-wrapper {
+  color: var(--text-clr) !important;
+}
+
+/* Button Container */
+.darkmode .button-container {
+  color: var(--text-clr) !important;
+}
+
+/* Muted Text */
+.darkmode .muted {
+  color: var(--seconday-text-clr) !important;
+}
+
+/* Border Colors */
+.darkmode .table th,
+.darkmode .table td {
+  border-bottom: 1px solid var(--card-border) !important;
+}
+
+/* Scrollbar */
+.darkmode ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.darkmode ::-webkit-scrollbar-track {
+  background: var(--base-clr) !important;
+}
+
+.darkmode ::-webkit-scrollbar-thumb {
+  background: var(--primary-color) !important;
+  border-radius: 5px;
+}
+
+.darkmode ::-webkit-scrollbar-thumb:hover {
+  background: var(--hover-clr) !important;
+}
+
+/* Notification */
+.darkmode .notification {
+  background-color: #10b981 !important;
+  color: #fff !important;
+  border-left-color: #059669 !important;
+}
+
+.darkmode .notification.error {
+  background-color: #ef4444 !important;
+  border-left-color: #dc2626 !important;
+}
+
+.darkmode .notification.warning {
+  background-color: #f59e0b !important;
+  border-left-color: #d97706 !important;
+}
+
+.darkmode .notification.info {
+  background-color: #3b82f6 !important;
+  border-left-color: #1d4ed8 !important;
+}
+
+/* Delivery Page Specific */
+.darkmode .delivery-form input,
+.darkmode .delivery-form select {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .status-select,
+.darkmode .status-select-form {
+  background-color: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .delivery-table-container {
+  background: var(--surface) !important;
+}
+
+/* Supply Page Specific */
+.darkmode .supply-form input,
+.darkmode .supply-form textarea,
+.darkmode .supply-form select {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+/* Sales Page Specific */
+.darkmode .grand-total-row {
+  background: var(--card-bg) !important;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+.darkmode .grand-total-row td {
+  background: var(--card-bg) !important;
+  border-top: 2px solid var(--card-border) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .sales-container .form input,
+.darkmode .sales-container .form select {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+/* Admin Page Specific */
+.darkmode .admin-container {
+  background: var(--base-clr) !important;
+  color: var(--text-clr) !important;
+}
+
+/* Menu Page Specific */
+.darkmode .menu-form-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--card-border) !important;
+}
+
+.darkmode .menu-form input,
+.darkmode .menu-form select,
+.darkmode .menu-form textarea {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+/* Product Page Specific */
+.darkmode .product-form-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--card-border) !important;
+}
+
+.darkmode .product-form input,
+.darkmode .product-form select,
+.darkmode .product-form textarea {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+/* Profile Page Specific */
+.darkmode .profile-form input,
+.darkmode .profile-form select,
+.darkmode .profile-form textarea {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+/* Feedback Page Specific */
+.darkmode .feedback-form input,
+.darkmode .feedback-form textarea,
+.darkmode .feedback-form select {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+/* All Form Containers - Additional Overrides */
+.darkmode .form-container,
+.darkmode .customer-form-container,
+.darkmode .employee-form-container,
+.darkmode .order-form-container,
+.darkmode .payment-form-container,
+.darkmode .supply-form-container,
+.darkmode .delivery-form-container,
+.darkmode .product-form-container,
+.darkmode .menu-form-container,
+.darkmode .profile-form-container,
+.darkmode .feedback-form-container {
+  background: var(--surface) !important;
+  color: var(--text-clr) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* All Input Placeholders */
+.darkmode input::placeholder,
+.darkmode textarea::placeholder {
+  color: #94a3b8 !important;
+  opacity: 0.7;
+}
+
+/* User Avatar */
+.darkmode .user-avatar {
+  background: linear-gradient(180deg, var(--card-bg), var(--hover-clr)) !important;
+  color: var(--text-clr) !important;
+}
+
+/* All Select Dropdowns */
+.darkmode select option {
+  background: #0f172a !important;
+  color: var(--text-clr) !important;
+}
+
+/* Table Container Specific */
+.darkmode .customer-table-container,
+.darkmode .employee-table-container,
+.darkmode .order-table-container,
+.darkmode .delivery-table-container,
+.darkmode .supply-table-container,
+.darkmode .product-table-container,
+.darkmode .payment-table-container,
+.darkmode .sales-table-container {
+  background: var(--surface) !important;
+  color: var(--text-clr) !important;
+}
+
+/* Profile Page Specific Styles */
+.darkmode .profile-header {
+  background: var(--card-bg) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .profile-name {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .profile-role {
+  color: var(--seconday-text-clr) !important;
+}
+
+.darkmode .profile-section {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .profile-section h2 {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .profile-field-label {
+  color: var(--seconday-text-clr) !important;
+}
+
+.darkmode .profile-field-value {
+  color: var(--text-clr) !important;
+}
+
+/* Feedback Page Specific Styles */
+.darkmode .feedback-container {
+  background: var(--card-bg) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .feedback-container h1 {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .subtitle {
+  color: var(--seconday-text-clr) !important;
+}
+
+.darkmode .section-label {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .rating-stars {
+  color: var(--text-clr) !important;
+}
+
+/* Admin Page Specific Styles */
+.darkmode .stat-card {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3) !important;
+}
+
+.darkmode .stat-card h3 {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .stat-card p {
+  color: var(--seconday-text-clr) !important;
+}
+
+.darkmode .card {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3) !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .dashboard-button {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  color: var(--text-clr) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3) !important;
+}
+
+.darkmode .dashboard-button:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Menu Page Specific Styles */
+.darkmode .menu-form-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--card-border) !important;
+}
+
+/* Additional Form Styles */
+.darkmode .form-group {
+  color: var(--text-clr) !important;
+}
+
+/* All Headings */
+.darkmode h1,
+.darkmode h2,
+.darkmode h3,
+.darkmode h4,
+.darkmode h5,
+.darkmode h6 {
+  color: var(--text-clr) !important;
+}
+
+/* Borders */
+.darkmode * {
+  border-color: var(--card-border) !important;
+}
+
+/* Override any remaining white backgrounds */
+.darkmode [style*="background: #fff"],
+.darkmode [style*="background:#fff"],
+.darkmode [style*="background: white"],
+.darkmode [style*="background:white"],
+.darkmode [style*="background-color: #fff"],
+.darkmode [style*="background-color:#fff"],
+.darkmode [style*="background-color: white"],
+.darkmode [style*="background-color:white"] {
+  background: var(--card-bg) !important;
+  background-color: var(--card-bg) !important;
+}
+
+/* Override any remaining black/dark text */
+.darkmode [style*="color: #000"],
+.darkmode [style*="color:#000"],
+.darkmode [style*="color: #111"],
+.darkmode [style*="color:#111"],
+.darkmode [style*="color: black"],
+.darkmode [style*="color:black"] {
+  color: var(--text-clr) !important;
 }

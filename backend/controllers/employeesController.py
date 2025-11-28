@@ -25,8 +25,13 @@ def employeesInfoPage(request):
     else:
         form = EmployeeForm()
 
+    employees = Employee.objects.all()
+    positions = Employee.objects.values_list('position', flat=True).distinct().order_by('position')
+    
     return render(request, 'employeesinfo.html', {
         'form': form,
+        'employees': employees,
+        'positions': positions
     })
 
 def employees_json(request):
@@ -34,6 +39,7 @@ def employees_json(request):
 
     data = [{
         "id": e.id,
+        "employee_id": e.employee_id,
         "name": e.name,
         "position": e.position,
         "schedule": e.schedule,

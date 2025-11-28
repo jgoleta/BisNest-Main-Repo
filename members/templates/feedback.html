@@ -1,0 +1,106 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Website Feedback</title>
+    <link rel="stylesheet" href="{% static 'css/feedbackStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
+    <script src="{% static 'js/darkMode.js' %}" defer></script>
+
+</head>
+
+<body>
+    {% include 'sidebar.html' %}
+    <main class="main-content">
+        {% include 'header.html' with page="Feedback" %}
+
+        <div class="feedback-container">
+            <h1>We Value Your Feedback</h1>
+            <p class="subtitle">Your response helps us improve your experience.</p>
+
+            <form class="feedback-form">
+
+                <div class="section">
+                    <label class="section-label">How likely are you to recommend us?</label>
+                    <div class="nps-scale">
+                        <span>0</span>
+                        <div class="nps-buttons">
+                        </div>
+                        <span>10</span>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <label class="section-label">Overall satisfaction with our service</label>
+                    <div class="satisfaction">
+                        <button type="button" class="emoji" data-value="1">😞</button>
+                        <button type="button" class="emoji" data-value="2">😐</button>
+                        <button type="button" class="emoji" data-value="3">🙂</button>
+                        <button type="button" class="emoji" data-value="4">😊</button>
+                        <button type="button" class="emoji" data-value="5">🤩</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <label class="section-label">Tell us more (optional)</label>
+                    <textarea placeholder="Your message..."></textarea>
+                </div>
+
+                <div class="section">
+                    <label class="section-label">I am a...</label>
+                    <select>
+                        <option>New Customer</option>
+                        <option>Returning Customer</option>
+                        <option>Business Client</option>
+                        <option>Student</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Feedback</button>
+
+                <p class="footer-note">Your response is confidential and helps us improve.</p>
+
+            </form>
+
+            <div class="success-msg" id="successMsg">
+                🎉 Thank you for your feedback!
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const npsContainer = document.querySelector(".nps-buttons");
+
+        for (let i = 0; i <= 10; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i;
+            btn.dataset.value = i;
+
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".nps-buttons button").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+            });
+
+            npsContainer.appendChild(btn);
+        }
+
+        document.querySelectorAll(".emoji").forEach(emoji => {
+            emoji.addEventListener("click", () => {
+                document.querySelectorAll(".emoji").forEach(e => e.classList.remove("active"));
+                emoji.classList.add("active");
+            });
+        });
+
+        document.querySelector(".feedback-form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            document.getElementById("successMsg").style.display = "block";
+        });
+
+    </script>
+</body>
+
+</html>
