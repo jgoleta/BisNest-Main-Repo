@@ -34,10 +34,13 @@ urlpatterns = [
     path('sales/', login_required(salesreportController.salesPage, login_url='/login/'), name='sales'),
     path('about/', login_required(index.aboutPage, login_url='/login/'), name='about'),
     path('admin-settings/', login_required(index.adminSettingsPage, login_url='/login/'), name='admin_settings'),
+    path('feedback/', login_required(index.feedbackPage, login_url='/login/'), name='feedback'),
+    path('profile/', login_required(index.profilePage, login_url='/login/'), name='profile'),
 
     # --- crud ---
     path('delete-employee/<int:employee_id>/', employeesController.delete_employee, name='delete_employee'),
-    path('customer/delete/<int:customer_id>/', customersController.delete_customer, name='delete_customer'),
+    path('delete-customer/<int:customer_id>/', customersController.delete_customer, name='delete_customer'),
+    path('customer/delete/<int:customer_id>/', customersController.delete_customer),  # backward compatibility
     path('delete-delivery/<int:delivery_id>/', deliveryController.delete_delivery, name='delete_delivery'),
     path('delete-payment/<int:payment_id>/', paymentsController.delete_payment, name='delete_payment'),
     path('delete-order/<int:id>/', orderController.delete_order, name='delete_order'),
@@ -48,7 +51,7 @@ urlpatterns = [
     path("customer/customers_json/", customersController.customers_json, name="customers_json"),
 
     # --- employees AJAX endpoints ---
-    path("employeesinfo/employees_json/", employeesController.employees_json, name="employees_json"),
+    path("employees_json/", employeesController.employees_json, name="employees_json"),
 
     # --- product AJAX endpoints ---
     path('product/update/', productController.update_product, name='update_product'),

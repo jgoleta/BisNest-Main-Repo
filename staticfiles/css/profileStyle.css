@@ -1,0 +1,237 @@
+/* COLOR PALETTE */
+:root {
+  --base-clr: #ffffff;
+  --text-clr: #111111;
+  --w-text-clr: #ffffff;
+  --muted-clr: #6b7280;
+  --primary-color: #1e293b;
+  --border-clr: #e6e9ee;
+  --hover-clr: #222533;
+  --palette-accent: #6366f1;
+  --palette-accent-dark: #4a4df0;
+  --seconday-text-clr: #b0b3c1;
+  --line-clr: #42434a;
+}
+
+
+.profile-container {
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* HEADER */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 25px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  margin-bottom: 30px;
+}
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.profile-role {
+  margin: 3px 0;
+  color: var(--muted-clr);
+}
+
+.member-since {
+  color: var(--seconday-text-clr);
+  font-size: 14px;
+}
+
+/* CONTENT GRID */
+.profile-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+/* CARDS */
+.profile-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.full-row {
+  margin-top: 30px;
+}
+
+.full {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.divider {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid var(--border-clr);
+}
+
+/* FIELDS */
+.field {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: block;
+  color: var(--primary-color);
+}
+
+input, textarea {
+  width: -webkit-fill-available;
+  padding: 12px;
+  border: 1px solid var(--border-clr);
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+textarea {
+  height: 120px;
+}
+
+.mt-15 { margin-top: 15px; }
+.mt-20 { margin-top: 20px; }
+
+/* BUTTONS */
+.secondary-btn {
+  padding: 10px 15px;
+  background: var(--primary-color);
+  color: var(--w-text-clr);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.save-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--palette-accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background: var(--palette-accent-dark);
+}
+
+/* SWITCHES */
+.settings {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.setting-label {
+  font-size: 15px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+}
+
+.switch input { display: none; }
+
+.slider {
+  position: absolute;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background: #aaa;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+input:checked + .slider {
+  background: var(--palette-accent);
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* Activity List */
+.activity-list {
+  padding-left: 20px;
+  line-height: 1.8;
+  color: var(--text-clr);
+}
+
+/* Login Table */
+.login-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.login-table th, .login-table td {
+  border-bottom: 1px solid var(--border-clr);
+  padding: 10px 0;
+  text-align: left;
+}
+
+/* Danger Zone */
+.danger-zone {
+  border-left: 5px solid red;
+}
+
+.danger {
+  color: #b80000;
+}
+
+.warning-text {
+  color: #444;
+  margin-bottom: 15px;
+}
+
+.delete-acc-btn {
+  padding: 12px 15px;
+  width: 200px;
+  background: #c0392b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

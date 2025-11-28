@@ -247,15 +247,40 @@ document.addEventListener("click", function (e) {
   }
 
   function getFilteredRows() {
-
     const input = document.getElementById('searchInput');
-    const filter = (input && input.value || '').toLowerCase().trim();
-    if (!filter) return getAllRows();
+    const supplierFilter = document.getElementById('supplierFilter');
+    const productFilter = document.getElementById('productFilter');
+    const searchFilter = (input && input.value || '').toLowerCase().trim();
+    const supplierValue = (supplierFilter && supplierFilter.value) || '';
+    const productValue = (productFilter && productFilter.value) || '';
+    
     return getAllRows().filter(r => {
-      const nameCell = r.querySelectorAll('td')[1];
-      if (!nameCell) return false;
-      const txt = (nameCell.textContent || nameCell.innerText || '').toLowerCase();
-      return txt.indexOf(filter) > -1;
+      const supplierCell = r.querySelectorAll('td')[1];
+      const productCell = r.querySelectorAll('td')[2];
+      
+      let matchesSearch = true;
+      let matchesSupplier = true;
+      let matchesProduct = true;
+      
+      // Search filter (searches in supplier column by default)
+      if (supplierCell && searchFilter) {
+        const txt = (supplierCell.textContent || supplierCell.innerText || '').toLowerCase();
+        matchesSearch = txt.indexOf(searchFilter) > -1;
+      }
+      
+      // Supplier filter
+      if (supplierCell && supplierValue) {
+        const supplierText = (supplierCell.textContent || supplierCell.innerText || '').trim();
+        matchesSupplier = supplierText === supplierValue;
+      }
+      
+      // Product filter
+      if (productCell && productValue) {
+        const productText = (productCell.textContent || productCell.innerText || '').trim();
+        matchesProduct = productText === productValue;
+      }
+      
+      return matchesSearch && matchesSupplier && matchesProduct;
     });
   }
 

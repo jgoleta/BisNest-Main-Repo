@@ -1,0 +1,152 @@
+:root {
+  --base-clr: #ffffff;
+  --text-clr: #111111;
+  --w-text-clr: #ffffff;
+  --muted-clr: #6b7280;
+  --primary-color: #1e293b;
+  --border-clr: #e6e9ee;
+  --hover-clr: #222533;
+  --palette-accent: #6366f1;
+  --palette-accent-dark: #4a4df0;
+  --seconday-text-clr: #b0b3c1;
+  --line-clr: #42434a;
+}
+
+/* Layout */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--base-clr);
+  color: var(--text-clr);
+}
+
+.feedback-container {
+  max-width: 650px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.subtitle {
+  color: var(--muted-clr);
+  margin-top: 5px;
+  margin-bottom: 25px;
+}
+
+/* Section */
+.section {
+  margin-bottom: 25px;
+}
+
+.section-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+/* NPS Scale */
+.nps-scale {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nps-buttons {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 6px;
+  flex-grow: 1;
+}
+
+.nps-buttons button {
+  padding: 10px 0;
+  border: 1px solid var(--border-clr);
+  background: #f8f9ff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s ease;
+}
+
+.nps-buttons button:hover {
+  background: var(--palette-accent);
+  color: white;
+}
+
+/* Emojis */
+.satisfaction {
+  display: flex;
+  gap: 15px;
+}
+
+.emoji {
+  font-size: 28px;
+  background: #f2f2f8;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.emoji:hover {
+  border-color: var(--palette-accent);
+  transform: scale(1.1);
+}
+
+/* Textarea & Select */
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-clr);
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--palette-accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.submit-btn:hover {
+  background: var(--palette-accent-dark);
+}
+
+/* Success Message */
+.success-msg {
+  display: none;
+  margin-top: 20px;
+  padding: 15px;
+  text-align: center;
+  background: #dfffe1;
+  color: #107324;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Footer Note */
+.footer-note {
+  margin-top: 15px;
+  font-size: 13px;
+  color: var(--muted-clr);
+}

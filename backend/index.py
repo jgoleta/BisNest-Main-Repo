@@ -29,7 +29,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, 'login.html')
+    return redirect("landingPage")
 
 def loginPage(request):
     return render(request, 'login.html')
@@ -130,3 +130,9 @@ def register_view(request):
 
     return redirect('login_view')
 
+
+def feedbackPage(request):
+    return render(request, 'feedback.html')
+
+def profilePage(request):
+    return render(request, 'profile.html')

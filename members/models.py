@@ -10,11 +10,28 @@ STATUS_CHOICES = [
 ]
 
 class Employee(models.Model):
+    employee_id = models.CharField(max_length=10, unique=True, blank=True, null=True)
     name = models.CharField(max_length=255)
     position = models.CharField(max_length=100, default="Staff")
     schedule = models.CharField(max_length=100, default="9AM-5PM")
     salary = models.DecimalField(max_digits=10, decimal_places=2, default=500.00)
     join_date = models.DateField(default=now)
+
+    def save(self, *args, **kwargs):
+        if not self.employee_id:
+            last_employee = Employee.objects.order_by('-id').first()
+            if last_employee and last_employee.employee_id:
+                try:
+                    last_number = int(last_employee.employee_id.replace('EMP', ''))
+                except ValueError:
+                    last_number = 0
+                new_number = last_number + 1
+            else:
+                new_number = 1
+
+            self.employee_id = f'EMP{str(new_number).zfill(5)}'
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -25,6 +42,7 @@ class Employee(models.Model):
         ordering = ['id']
 
 class Customer(models.Model):
+    customer_id = models.CharField(max_length=10, unique=True, blank=True, null=True)
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
     address = models.TextField()
@@ -32,6 +50,22 @@ class Customer(models.Model):
 
     class Meta:
         ordering = ['id']
+
+    def save(self, *args, **kwargs):
+        if not self.customer_id:
+            last_customer = Customer.objects.order_by('-id').first()
+            if last_customer and last_customer.customer_id:
+                try:
+                    last_number = int(last_customer.customer_id.replace('CUS', ''))
+                except ValueError:
+                    last_number = 0
+                new_number = last_number + 1
+            else:
+                new_number = 1
+
+            self.customer_id = f'CUS{str(new_number).zfill(4)}'
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -65,7 +99,7 @@ class Order(models.Model):
                 new_number = 1
             self.order_id = f'O{new_number:02d}'
 
-        # Auto-compute Function
+        #compute function
         if self.product and self.quantity:
             self.amount = self.product.price * self.quantity
 
