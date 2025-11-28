@@ -4,6 +4,11 @@ const deleteButton = document.querySelector(".delete-button");
 const formContainer = document.querySelector(".customer-form-container");
 const modalOverlay = document.getElementById("modalOverlay");
 const closeBtn = document.getElementById("closeBtn");
+const profileContainer = document.getElementById("profileContainer");
+const profileModalOverlay = document.getElementById("profileModalOverlay");
+const profileCloseBtn = document.getElementById("profileCloseBtn");
+const editProfileBtn = document.getElementById("editProfileBtn");
+const deleteProfileForm = document.getElementById("deleteProfileForm");
 
 let customerData = [];
 let freedIds = [];
@@ -94,38 +99,38 @@ function searchCustomer() {
   }
 }
 
-// Customer Profile Popup
-const profileContainer = document.getElementById("profileContainer");
-const profileModalOverlay = document.getElementById("profileModalOverlay");
-const profileCloseBtn = document.getElementById("profileCloseBtn");
-const editProfileBtn = document.getElementById("editProfileBtn");
-const deleteProfileForm = document.getElementById("deleteProfileForm");
-
 function openProfilePopup(customerRow) {
-  const id = customerRow.getAttribute("data-id");
+  if (!customerRow || !profileContainer) return;
+
+  const recordId = customerRow.getAttribute("data-record-id");
+  const customerId = customerRow.getAttribute("data-customer-id") || recordId;
   const name = customerRow.getAttribute("data-name");
   const phone = customerRow.getAttribute("data-phone");
   const address = customerRow.getAttribute("data-address");
   const date = customerRow.getAttribute("data-date");
 
-  // Populate profile fields
-  document.getElementById("profile-id").textContent = id;
-  document.getElementById("profile-name").textContent = name;
-  document.getElementById("profile-phone").textContent = phone;
-  document.getElementById("profile-address").textContent = address;
-  document.getElementById("profile-date").textContent = date;
+  const profileId = document.getElementById("profile-id");
+  if (profileId) profileId.textContent = customerId || "";
+  document.getElementById("profile-name").textContent = name || "";
+  document.getElementById("profile-phone").textContent = phone || "";
+  document.getElementById("profile-address").textContent = address || "";
+  document.getElementById("profile-date").textContent = date || "";
 
-  // Set delete form action
-  deleteProfileForm.action = `/delete-customer/${id}/`;
+  profileContainer.dataset.recordId = recordId || "";
+  profileContainer.dataset.customerId = customerId || "";
 
-  // Show popup
-  profileContainer.style.display = "block";
-  profileModalOverlay.style.display = "block";
+  if (deleteProfileForm && recordId) {
+    deleteProfileForm.dataset.recordId = recordId;
+    deleteProfileForm.action = `/delete-customer/${recordId}/`;
+  }
+
+  if (profileContainer) profileContainer.style.display = "block";
+  if (profileModalOverlay) profileModalOverlay.style.display = "block";
 }
 
 function closeProfilePopup() {
-  profileContainer.style.display = "none";
-  profileModalOverlay.style.display = "none";
+  if (profileContainer) profileContainer.style.display = "none";
+  if (profileModalOverlay) profileModalOverlay.style.display = "none";
 }
 
 // Handle row clicks to open profile
@@ -148,7 +153,7 @@ if (profileModalOverlay) {
 // Handle edit button in profile
 if (editProfileBtn) {
   editProfileBtn.addEventListener("click", function() {
-    const id = document.getElementById("profile-id").textContent;
+    const recordId = profileContainer?.dataset?.recordId;
     const name = document.getElementById("profile-name").textContent;
     const phone = document.getElementById("profile-phone").textContent;
     const address = document.getElementById("profile-address").textContent;
@@ -175,19 +180,68 @@ if (editProfileBtn) {
       editIdInput.name = "edit_id";
       document.querySelector(".customer-form").appendChild(editIdInput);
     }
-    editIdInput.value = id;
+    editIdInput.value = recordId || "";
 
     formContainer.scrollIntoView({ behavior: "smooth", block: "center" });
   });
 }
 
-// Handle delete button in profile with confirmation
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+function getCsrfToken(form) {
+  const tokenInput = form?.querySelector('input[name="csrfmiddlewaretoken"]');
+  if (tokenInput) {
+    return tokenInput.value;
+  }
+  return getCookie("csrftoken");
+}
+
 if (deleteProfileForm) {
-  deleteProfileForm.addEventListener("submit", function(e) {
+  deleteProfileForm.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
     const customerName = document.getElementById("profile-name").textContent;
     if (!confirm(`Are you sure you want to delete customer "${customerName}"? This action cannot be undone.`)) {
-      e.preventDefault();
       return false;
+    }
+
+    const actionUrl = deleteProfileForm.action;
+    const csrfToken = getCsrfToken(deleteProfileForm);
+
+    try {
+      const response = await fetch(actionUrl, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken || "",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Delete failed");
+      }
+
+      const recordId = profileContainer?.dataset?.recordId;
+      if (recordId) {
+        const row = document.getElementById(`customer-${recordId}`);
+        if (row) row.remove();
+      }
+
+      closeProfilePopup();
+    } catch (error) {
+      alert("Failed to delete customer. Please try again.");
     }
   });
 }
