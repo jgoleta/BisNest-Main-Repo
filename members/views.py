@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import ProductForm
 from .models import Product, Customer, Employee
-
+from django.http import JsonResponse
 
 # Public
 def members(request):
@@ -53,6 +53,12 @@ def employees_view(request):
     employees = Employee.objects.all().order_by('id')
     return render(request, "employeesinfo.html", {"user": request.user, "employees": employees})
 
+@login_required(login_url='/login/')
+def employees_json(request):
+    employees = Employee.objects.all().order_by('id').values(
+        'id', 'employee_id', 'name', 'position', 'schedule', 'salary', 'join_date'
+    )
+    return JsonResponse(list(employees), safe=False)
 
 @login_required(login_url='/login/')
 def history_view(request):

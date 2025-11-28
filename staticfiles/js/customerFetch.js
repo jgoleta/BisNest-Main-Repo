@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("/customer/customers_json/")
+    fetch("customer/customers_json/")
         .then(response => response.json())
         .then(orders => {
             const tbody = document.getElementById("customers-body");
@@ -25,12 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${c.address}</td>
                     <td>${c.date_added}</td>
                     <td>
-                        <button type="button" class="edit-button" 
-                            data-id="${ c.customer_id }"
-                            data-name="${ c.name }" 
-                            data-phone="${ c.phone }"
-                            data-address="${ c.address }" 
-                            title="Edit customer"
+                        <button type="button" class="edit-button" data-id="${ c.customer_id }"
+                            data-name="${ c.name }" data-phone="${ c.phone }"
+                            data-address="${ c.address }" title="Edit customer"
                             aria-label="Edit customer" style="margin-right:8px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
                                     width="20px" fill="#FFFFFF">

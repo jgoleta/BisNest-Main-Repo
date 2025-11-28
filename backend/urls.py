@@ -48,7 +48,7 @@ urlpatterns = [
     path("customer/customers_json/", customersController.customers_json, name="customers_json"),
 
     # --- employees AJAX endpoints ---
-    path("employeesinfo/employees_json/", employeesController.employees_json, name="employees_json"),
+    path("employees_json/", employeesController.employees_json, name="employees_json"),
 
     # --- product AJAX endpoints ---
     path('product/update/', productController.update_product, name='update_product'),

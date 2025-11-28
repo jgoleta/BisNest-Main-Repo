@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("/employees_json/")
+    fetch("payments_json/")
         .then(response => response.json())
-        .then(employees => {
-            const tbody = document.getElementById("employees-body");
+        .then(orders => {
+            const tbody = document.getElementById("payments-body");
             tbody.innerHTML = ""; // clear loading row
 
-            if (employees.length === 0) {
+            if (orders.length === 0) {
                 tbody.innerHTML += `
                     <tr>
                         <td colspan="10" style="text-align:center; padding:20px;">
@@ -15,40 +15,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
                 return;
             }
-
-            employees.forEach(e => {
+            
+            orders.forEach(p => {
                 tbody.innerHTML += `
-                <tr id="employee-${e.id}">
-                    <td>${ e.employee_id || "N/A" }</td>   
-                    <td>${ e.name }</td>
-                    <td>${ e.position }</td>
-                    <td>${ e.schedule }</td>
-                    <td>${ e.salary }</td>
-                    <td>${ e.join_date }</td>
+                <tr id="payment-${p.id}">
+                    <td>${ p.payment_id }</td>
+                    <td>${ p.order.order_id }</td>
+                    <td>${ p.customer.name }</td>
+                    <td>₱${ p.amount }</td>
+                    <td>${ p.date }</td>
+                    <td>${ p.method }</td>
                     <td>
-                        <button type="button" class="edit-button" 
-                            data-id="${ e.id }"
-                            data-employee_id="${ e.employee_id }"
-                            data-name="${ e.name }"
-                            data-position="${ e.position }"
-                            data-schedule="${ e.schedule }"
-                            data-salary="${ e.salary }"
-                            title="Edit employee" aria-label="Edit employee" style="margin-right:8px;">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
-                                fill="#FFFFFF">
-                                <path
-                                d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
-                            </svg>
+                        <button type="button" class="edit-button" data-id="${ p.id }" data-payment_id="${ p.payment_id }"
+                        data-order="${ p.order.id }" data-amount="${ p.amount }" data-date="${ p.date }"
+                        data-method="${ p.method }" title="Edit Payment" aria-label="Edit Payment" style="margin-right:8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px"
+                            fill="#FFFFFF">
+                            <path
+                            d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
+                        </svg>
                         </button>
 
-                        <button type="submit" class="delete-button" data-id="${ e.id }">
+                        <button type="submit" class="delete-button" data-id="${p.id}" aria-label="Delete Payment">
                             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
                             fill="#FFFFFF">
                             <path
                                 d="M312-144q-29.7 0-50.85-21.15Q240-186.3 240-216v-480h-48v-72h192v-48h192v48h192v72h-48v479.57Q720-186 698.85-165T648-144H312Zm72-144h72v-336h-72v336Zm120 0h72v-336h-72v336Z" />
                             </svg>
                         </button>
+                        </form>
                     </td>
                 </tr>`;
             });
@@ -58,11 +53,11 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("click", async (e) => {
     if (e.target.closest(".delete-button")) {
         const btn = e.target.closest(".delete-button");
-        const employeeId = btn.dataset.id;
+        const paymentId = btn.dataset.id;
 
-        if (!confirm("Delete this employee?")) return;
+        if (!confirm("Delete this payment?")) return;
 
-        const response = await fetch(`/delete-employee/${employeeId}/`, {
+        const response = await fetch(`/delete-payment/${paymentId}/`, {
             method: "POST",
             headers: {
                 "X-CSRFToken": csrfToken,
@@ -71,7 +66,7 @@ document.addEventListener("click", async (e) => {
 
         if (response.ok) {
             // Remove row from table
-            const row = document.getElementById(`employee-${employeeId}`);
+            const row = document.getElementById(`payment-${paymentId}`);
             if (row) row.remove();
         } else {
             alert("Failed to delete.");
