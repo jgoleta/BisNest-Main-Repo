@@ -67,6 +67,10 @@
   color: var(--text-clr) !important;
 }
 
+.darkmode .chart-container h2 {
+  color: var(--text-clr, #f8fafc) !important;
+}
+
 /* Tables */
 .darkmode table,
 .darkmode .table,

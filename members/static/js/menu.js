@@ -1,33 +1,24 @@
-// Wait for DOM and Chart.js to be ready
+// Initialize chart when DOM is ready
 function initializeChart() {
   // Check if Chart.js is loaded
   if (typeof Chart === 'undefined') {
-    console.error("Chart.js library not loaded");
-    // Retry after a short delay
+    console.error("Chart.js is not loaded");
     setTimeout(initializeChart, 100);
     return;
   }
+
   // Get monthly sales data from backend
   let monthlySales = Array(12).fill(0);
   const monthlySalesElement = document.getElementById("monthly-sales-data");
   if (monthlySalesElement) {
     try {
-      const rawData = monthlySalesElement.textContent.trim();
-      console.log("Raw monthly sales data:", rawData);
-      const parsed = JSON.parse(rawData);
-      console.log("Parsed monthly sales data:", parsed);
+      const parsed = JSON.parse(monthlySalesElement.textContent);
       if (Array.isArray(parsed)) {
         monthlySales = parsed.map(val => Number.isFinite(val) ? val : 0);
-        console.log("Processed monthly sales:", monthlySales);
-      } else {
-        console.warn("Monthly sales data is not an array:", parsed);
       }
     } catch (error) {
       console.error("Failed to parse monthly sales data:", error);
-      console.error("Element content:", monthlySalesElement.textContent);
     }
-  } else {
-    console.warn("Monthly sales data element not found, using default zeros");
   }
 
   // Initialize chart only if canvas exists
@@ -38,104 +29,156 @@ function initializeChart() {
   }
 
   // Check if dark mode is active
-  const isDarkMode = document.body.classList.contains('darkmode');
+  const isDark = document.body.classList.contains('darkmode');
   
-  // Chart colors based on theme
-  const chartColors = {
-    background: isDarkMode ? 'rgba(99, 102, 241, 0.1)' : 'rgba(99, 102, 241, 0.05)',
-    border: isDarkMode ? 'rgba(99, 102, 241, 0.8)' : 'rgba(99, 102, 241, 1)',
-    pointBackground: isDarkMode ? 'rgba(99, 102, 241, 1)' : 'rgba(99, 102, 241, 1)',
-    pointBorder: isDarkMode ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 1)',
-    gridColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-    textColor: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)',
-  };
-
-  console.log("Initializing chart with data:", monthlySales);
+  // Use website's accent color (#6366f1) with gradient
+  const accentColor = '#6366f1';
+  const accentDark = '#4a4df0';
+  
+  // Create gradient for bars
+  const gradient = ctx.getContext("2d").createLinearGradient(0, 0, 0, 400);
+  if (isDark) {
+    gradient.addColorStop(0, 'rgba(99, 102, 241, 0.8)');
+    gradient.addColorStop(1, 'rgba(99, 102, 241, 0.4)');
+  } else {
+    gradient.addColorStop(0, 'rgba(99, 102, 241, 0.9)');
+    gradient.addColorStop(1, 'rgba(99, 102, 241, 0.6)');
+  }
   
   const salesChart = new Chart(ctx.getContext("2d"), {
     type: "bar",
     data: {
       labels: [
-        "January",
-        "February",
-        "March",
-        "April",
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
         "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
       ],
       datasets: [
         {
           label: "Monthly Sales",
           data: monthlySales,
-          backgroundColor: isDarkMode 
-            ? 'rgba(99, 102, 241, 0.6)' 
-            : 'rgba(99, 102, 241, 0.7)',
-          borderColor: chartColors.border,
+          backgroundColor: gradient,
+          borderColor: accentColor,
           borderWidth: 2,
           borderRadius: 8,
           borderSkipped: false,
-          barThickness: 'flex',
-          maxBarThickness: 60,
         },
       ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: {
+        padding: {
+          top: 10,
+          bottom: 10,
+          left: 10,
+          right: 10,
+        },
+      },
       plugins: {
         legend: {
           display: true,
           position: 'top',
+          align: 'end',
           labels: {
-            color: chartColors.textColor,
+            color: isDark ? "#e2e8f0" : "#1e293b",
             font: {
-              size: 14,
-              weight: '600',
+              family: "'Inter', 'Segoe UI', sans-serif",
+              size: 13,
+              weight: 500,
             },
-            padding: 20,
+            padding: 15,
+            usePointStyle: true,
+            pointStyle: 'circle',
           },
         },
         tooltip: {
-          backgroundColor: isDarkMode ? 'rgba(30, 41, 59, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-          titleColor: chartColors.textColor,
-          bodyColor: chartColors.textColor,
-          borderColor: chartColors.border,
+          backgroundColor: isDark ? 'rgba(30, 41, 59, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+          titleColor: isDark ? "#e2e8f0" : "#1e293b",
+          bodyColor: isDark ? "#cbd5e1" : "#475569",
+          borderColor: accentColor,
           borderWidth: 1,
           padding: 12,
+          cornerRadius: 8,
           displayColors: true,
-          callbacks: {
-            label: function(context) {
-              return `Sales: ₱${context.parsed.y.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            }
+          titleFont: {
+            family: "'Inter', 'Segoe UI', sans-serif",
+            size: 13,
+            weight: 600,
           },
-          boxPadding: 6,
+          bodyFont: {
+            family: "'Inter', 'Segoe UI', sans-serif",
+            size: 13,
+            weight: 500,
+          },
+          callbacks: {
+            title: function(context) {
+              return context[0].label;
+            },
+            label: function(context) {
+              return "₱" + context.parsed.y.toLocaleString('en-US', { 
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2 
+              });
+            },
+          },
         },
       },
       scales: {
-        y: {
-          beginAtZero: true,
-          grid: {
-            color: chartColors.gridColor,
-            lineWidth: 1,
-          },
+        x: {
           ticks: {
-            color: chartColors.textColor,
+            color: isDark ? "#94a3b8" : "#64748b",
             font: {
+              family: "'Inter', 'Segoe UI', sans-serif",
               size: 12,
+              weight: 500,
             },
-            callback: function (value) {
-              return "₱" + value.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
-            },
-            padding: 10,
+            padding: 8,
+          },
+          grid: {
+            display: false,
+            drawBorder: false,
           },
           border: {
-            color: chartColors.gridColor,
+            color: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)",
+          },
+        },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: isDark ? "#94a3b8" : "#64748b",
+            font: {
+              family: "'Inter', 'Segoe UI', sans-serif",
+              size: 12,
+              weight: 500,
+            },
+            padding: 10,
+            callback: function (value) {
+              if (value >= 1000000) {
+                return "₱" + (value / 1000000).toFixed(1) + "M";
+              } else if (value >= 1000) {
+                return "₱" + (value / 1000).toFixed(0) + "K";
+              }
+              return "₱" + value.toLocaleString();
+            },
+          },
+          grid: {
+            color: isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.06)",
+            drawBorder: false,
+            lineWidth: 1,
+          },
+          border: {
+            color: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)",
           },
         },
         x: {
@@ -172,50 +215,68 @@ function initializeChart() {
     },
   });
 
-  // Update chart colors when dark mode toggles
-  const darkModeObserver = new MutationObserver(() => {
-    const isDark = document.body.classList.contains('darkmode');
-    const newColors = {
-      background: isDark ? 'rgba(99, 102, 241, 0.1)' : 'rgba(99, 102, 241, 0.05)',
-      border: isDark ? 'rgba(99, 102, 241, 0.8)' : 'rgba(99, 102, 241, 1)',
-      gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-      textColor: isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)',
-    };
-    
-    salesChart.data.datasets[0].backgroundColor = isDark 
-      ? 'rgba(99, 102, 241, 0.6)' 
-      : 'rgba(99, 102, 241, 0.7)';
-    salesChart.data.datasets[0].borderColor = newColors.border;
-    salesChart.options.scales.y.grid.color = newColors.gridColor;
-    salesChart.options.scales.y.ticks.color = newColors.textColor;
-    salesChart.options.scales.x.ticks.color = newColors.textColor;
-    salesChart.options.plugins.legend.labels.color = newColors.textColor;
-    salesChart.options.plugins.tooltip.backgroundColor = isDark ? 'rgba(30, 41, 59, 0.95)' : 'rgba(255, 255, 255, 0.95)';
-    salesChart.options.plugins.tooltip.titleColor = newColors.textColor;
-    salesChart.options.plugins.tooltip.bodyColor = newColors.textColor;
-    salesChart.update();
+  // Update chart colors when dark mode changes
+  let currentIsDark = isDark;
+  const observer = new MutationObserver(() => {
+    const newIsDark = document.body.classList.contains('darkmode');
+    if (newIsDark !== currentIsDark) {
+      currentIsDark = newIsDark;
+      
+      // Update gradient
+      const newGradient = ctx.getContext("2d").createLinearGradient(0, 0, 0, 400);
+      if (newIsDark) {
+        newGradient.addColorStop(0, 'rgba(99, 102, 241, 0.8)');
+        newGradient.addColorStop(1, 'rgba(99, 102, 241, 0.4)');
+      } else {
+        newGradient.addColorStop(0, 'rgba(99, 102, 241, 0.9)');
+        newGradient.addColorStop(1, 'rgba(99, 102, 241, 0.6)');
+      }
+      
+      salesChart.data.datasets[0].backgroundColor = newGradient;
+      salesChart.options.plugins.legend.labels.color = newIsDark ? "#e2e8f0" : "#1e293b";
+      salesChart.options.plugins.tooltip.backgroundColor = newIsDark ? 'rgba(30, 41, 59, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+      salesChart.options.plugins.tooltip.titleColor = newIsDark ? "#e2e8f0" : "#1e293b";
+      salesChart.options.plugins.tooltip.bodyColor = newIsDark ? "#cbd5e1" : "#475569";
+      salesChart.options.scales.x.ticks.color = newIsDark ? "#94a3b8" : "#64748b";
+      salesChart.options.scales.y.ticks.color = newIsDark ? "#94a3b8" : "#64748b";
+      salesChart.options.scales.x.grid.color = newIsDark ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.06)";
+      salesChart.options.scales.y.grid.color = newIsDark ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.06)";
+      salesChart.options.scales.x.border.color = newIsDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)";
+      salesChart.options.scales.y.border.color = newIsDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)";
+      salesChart.update();
+    }
   });
 
-  darkModeObserver.observe(document.body, {
+  observer.observe(document.body, {
     attributes: true,
     attributeFilter: ['class'],
   });
+}
 
-  // Refresh button - reload page to get fresh data
-  const refreshBtn = document.getElementById("refreshBtn");
-  if (refreshBtn) {
-    refreshBtn.addEventListener("click", () => {
-      window.location.reload();
-    });
+// Wait for DOM and Chart.js to be ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    // Wait a bit for Chart.js to load if it's still loading
+    if (typeof Chart !== 'undefined') {
+      initializeChart();
+    } else {
+      setTimeout(initializeChart, 100);
+    }
+  });
+} else {
+  if (typeof Chart !== 'undefined') {
+    initializeChart();
+  } else {
+    setTimeout(initializeChart, 100);
   }
 }
 
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeChart);
-} else {
-  // DOM is already ready
-  initializeChart();
+// Refresh button - reload page to get fresh data
+const refreshBtn = document.getElementById("refreshBtn");
+if (refreshBtn) {
+  refreshBtn.addEventListener("click", () => {
+    window.location.reload();
+  });
 }
 
 // Generate Report button
