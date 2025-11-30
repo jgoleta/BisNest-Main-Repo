@@ -103,7 +103,7 @@
     0 4px 12px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.95);
   transform: translateY(-6px) scale(1.02);
-  border-color: var(--palette-accent);
+  border-color: 2px solid var(--palette-accent);
   background: linear-gradient(135deg, var(--base-clr) 0%, rgba(255, 255, 255, 1) 100%);
 }
 
