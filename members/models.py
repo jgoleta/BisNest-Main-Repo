@@ -91,13 +91,15 @@ class Order(models.Model):
             last_order = Order.objects.order_by('-id').first()
             if last_order and last_order.order_id:
                 try:
-                    last_number = int(last_order.order_id[1:])  
+                    # Extract number from order_id (handles both O0001 and ORD0001 formats)
+                    order_id_str = last_order.order_id.replace('ORD', '').replace('O', '')
+                    last_number = int(order_id_str) if order_id_str.isdigit() else 0
                 except ValueError:
                     last_number = 0
                 new_number = last_number + 1
             else:
                 new_number = 1
-            self.order_id = f'O{new_number:02d}'
+            self.order_id = f'ORD{new_number:04d}'
 
         #compute function
         if self.product and self.quantity:

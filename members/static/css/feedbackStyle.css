@@ -66,12 +66,14 @@ h1 {
   grid-template-columns: repeat(11, 1fr);
   gap: 6px;
   flex-grow: 1;
+  color: var(--text-clr);
+  background: var(--base-clr);
 }
 
 .nps-buttons button {
   padding: 10px 0;
   border: 1px solid var(--border-clr);
-  background: #f8f9ff;
+  background: var(--base-clr);
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
@@ -87,6 +89,11 @@ h1 {
 .satisfaction {
   display: flex;
   gap: 15px;
+}
+
+.satisfaction button {
+  background: var(--base-clr);
+  border: 1px solid var(--border-clr);
 }
 
 .emoji {
@@ -107,7 +114,7 @@ h1 {
 /* Textarea & Select */
 textarea,
 select {
-  width: 100%;
+  width: -webkit-fill-available;
   padding: 12px;
   border: 1px solid var(--border-clr);
   border-radius: 6px;

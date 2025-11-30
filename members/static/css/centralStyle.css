@@ -748,7 +748,11 @@ main {
   border: none;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  background: linear-gradient(135deg, var(--palette-accent) 0%, var(--palette-accent-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--palette-accent) 0%,
+    var(--palette-accent-dark) 100%
+  );
   color: var(--w-text-clr);
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
   letter-spacing: 0.2px;
@@ -761,13 +765,18 @@ main {
 .toggle-form-button::before,
 .add-button::before,
 .submit-button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left 0.5s;
 }
 
@@ -782,7 +791,11 @@ main {
 .submit-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
-  background: linear-gradient(135deg, var(--palette-accent-dark) 0%, var(--palette-accent) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--palette-accent-dark) 0%,
+    var(--palette-accent) 100%
+  );
 }
 
 .toggle-form-button:active,
@@ -853,19 +866,28 @@ main {
   width: 38px;
   height: 38px;
   padding: 0;
-  background: linear-gradient(135deg, var(--palette-accent) 0%, var(--palette-accent-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--palette-accent) 0%,
+    var(--palette-accent-dark) 100%
+  );
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   color: var(--w-text-clr);
-  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 86, 179, 0.25), 0 2px 4px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
 }
 
 .edit-button:hover {
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-  background: linear-gradient(135deg, var(--palette-accent-dark) 0%, var(--palette-accent) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--palette-accent-dark) 0%,
+    var(--palette-accent) 100%
+  );
 }
 
 .edit-button:active {
@@ -1005,7 +1027,11 @@ main {
 }
 
 .edit-profile-button {
-  background: linear-gradient(135deg, var(--palette-accent) 0%, var(--palette-accent-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--palette-accent) 0%,
+    var(--palette-accent-dark) 100%
+  );
   color: var(--w-text-clr);
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
 }
@@ -1013,7 +1039,11 @@ main {
 .edit-profile-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
-  background: linear-gradient(135deg, var(--palette-accent-dark) 0%, var(--palette-accent) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--palette-accent-dark) 0%,
+    var(--palette-accent) 100%
+  );
 }
 
 .delete-profile-button {
@@ -1285,7 +1315,6 @@ main {
   backdrop-filter: blur(3px);
   display: none;
 }
-
 
 /* Responsive modals */
 @media (max-width: 767px) {

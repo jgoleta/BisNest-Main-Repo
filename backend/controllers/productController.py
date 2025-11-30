@@ -57,13 +57,34 @@ def update_product(request):
         data = json.loads(request.body.decode('utf-8'))
         product_id = data.get('product_id')
         price = data.get('price')
-        if not product_id or price is None:
-            return JsonResponse({'success': False, 'error': 'Missing product_id or price'}, status=400)
+        name = data.get('name')
+        stock = data.get('stock')
+        
+        if not product_id:
+            return JsonResponse({'success': False, 'error': 'Missing product_id'}, status=400)
 
         product = Product.objects.get(product_id=product_id)
-        product.price = Decimal(str(price))
+        
+        # Update price if provided
+        if price is not None:
+            product.price = Decimal(str(price))
+        
+        # Update name if provided
+        if name is not None:
+            product.name = name
+        
+        # Update stock if provided
+        if stock is not None:
+            product.stock = int(stock)
+        
         product.save()
-        return JsonResponse({'success': True, 'product_id': product.product_id, 'price': str(product.price)})
+        return JsonResponse({
+            'success': True, 
+            'product_id': product.product_id, 
+            'price': str(product.price),
+            'name': product.name,
+            'stock': product.stock
+        })
     except Product.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Product not found'}, status=404)
     except Exception as e:
