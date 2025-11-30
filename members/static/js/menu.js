@@ -181,6 +181,36 @@ function initializeChart() {
             color: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)",
           },
         },
+        x: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: chartColors.textColor,
+            font: {
+              size: 12,
+              weight: '500',
+            },
+            padding: 10,
+          },
+          border: {
+            color: chartColors.gridColor,
+          },
+        },
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index',
+      },
+      animation: {
+        duration: 1000,
+        easing: 'easeInOutQuart',
+      },
+      layout: {
+        padding: {
+          top: 10,
+          bottom: 10,
+        },
       },
     },
   });
