@@ -782,7 +782,8 @@ main {
 
 .toggle-form-button:hover::before,
 .add-button:hover::before,
-.submit-button:hover::before {
+.submit-button:hover::before,
+.cart-button:hover::before {
   left: 100%;
 }
 
@@ -800,14 +801,16 @@ main {
 
 .toggle-form-button:active,
 .add-button:active,
-.submit-button:active {
+.submit-button:active,
+.cart-button:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
 }
 
 .toggle-form-button:focus-visible,
 .add-button:focus-visible,
-.submit-button:focus-visible {
+.submit-button:focus-visible,
+.cart-button:focus-visible {
   outline: 2px solid var(--palette-accent);
   outline-offset: 2px;
 }
