@@ -40,12 +40,12 @@ function togglePaymentForm(forceClose = false) {
   if (forceClose || formContainer.classList.contains("active")) {
     formContainer.classList.remove("active");
     overlay.classList.remove("active");
-    document.body.style.overflow = "auto";
+    window.closeModal(formContainer, overlay);
   } else {
     //open
     formContainer.classList.add("active");
     overlay.classList.add("active");
-    document.body.style.overflow = "hidden";
+    window.openModal(formContainer, overlay);
   }
 }
 
@@ -56,7 +56,7 @@ if (params.get("open_form") === "true") {
   if (formContainer && overlay) {
     formContainer.classList.add("active");
     overlay.classList.add("active");
-    document.body.style.overflow = "hidden";
+    window.openModal(formContainer, overlay);
   }
 }
 

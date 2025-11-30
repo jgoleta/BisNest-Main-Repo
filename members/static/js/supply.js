@@ -31,27 +31,30 @@ function resetSupplyForm() {
 
 function toggleForm() {
   const isHidden = formContainer.style.display === "none" || formContainer.style.display === "";
-  if (isHidden) resetSupplyForm();
-  formContainer.style.display = isHidden ? "block" : "none";
-  modalOverlay.style.display = isHidden ? "block" : "none";
+  if (isHidden) {
+    resetSupplyForm();
+    window.openModal(formContainer, modalOverlay);
+  } else {
+    window.closeModal(formContainer, modalOverlay);
+  }
 }
 
 if (closeBtn) {
-  closeBtn.addEventListener("click", toggleForm);
+  closeBtn.addEventListener("click", () => {
+    window.closeModal(formContainer, modalOverlay);
+    resetSupplyForm();
+  });
 }
 
 function openSupplyForm() {
   resetSupplyForm();
-  formContainer.style.display = "block";
-  modalOverlay.style.display = "block";
-  document.getElementById("formTitle").textContent = "Supply Details";
-  // Force animation replay
-  void modalOverlay.offsetWidth;
+  window.openModal(formContainer, modalOverlay);
+  const formTitle = document.getElementById("formTitle");
+  if (formTitle) formTitle.textContent = "Supply Details";
 }
 
 function closeSupplyForm() {
-  formContainer.style.display = "none";
-  modalOverlay.style.display = "none";
+  window.closeModal(formContainer, modalOverlay);
 }
 
 function getNextSupplyId() {

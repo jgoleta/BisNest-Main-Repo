@@ -54,8 +54,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const isHidden =
       formContainer.style.display === "none" ||
       formContainer.style.display === "";
-    formContainer.style.display = isHidden ? "block" : "none";
-    modalOverlay.style.display = isHidden ? "block" : "none";
+    if (isHidden) {
+      window.openModal(formContainer, modalOverlay);
+    } else {
+      window.closeModal(formContainer, modalOverlay);
+    }
   }
   addBtn.addEventListener("click", toggleForm);
   closeBtn.addEventListener("click", toggleForm);
