@@ -109,9 +109,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (num > maxNum) maxNum = num;
           });
           const nextNum = maxNum + 1;
-          orderIdInput.value = `O${nextNum.toString().padStart(4, "0")}`;
+          orderIdInput.value = `ORD${nextNum.toString().padStart(4, "0")}`;
         } else {
-          orderIdInput.value = "O0001";
+          orderIdInput.value = "ORD0001";
         }
       }
 

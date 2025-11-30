@@ -5,7 +5,19 @@ from django.http import JsonResponse
 import json
 
 def orderHistoryPage(request):
-    form = OrderForm(initial={'order_id': f"O{Order.objects.count() + 1:04d}"})
+    # Get the highest order number to generate next ID
+    last_order = Order.objects.order_by('-id').first()
+    if last_order and last_order.order_id:
+        try:
+            # Extract number from order_id (handles both O0001 and ORD0001 formats)
+            order_id_str = last_order.order_id.replace('ORD', '').replace('O', '')
+            last_number = int(order_id_str) if order_id_str.isdigit() else 0
+        except ValueError:
+            last_number = 0
+        next_number = last_number + 1
+    else:
+        next_number = 1
+    form = OrderForm(initial={'order_id': f"ORD{next_number:04d}"})
 
     if request.method == 'POST':
         edit_id = request.POST.get('edit_id')

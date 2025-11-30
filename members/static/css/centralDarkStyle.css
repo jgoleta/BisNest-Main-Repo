@@ -209,18 +209,6 @@
   color: #a5b4fc !important;
 }
 
-.darkmode .btn {
-  background: var(--accent-clr) !important;
-  color: #fff !important;
-  border: 1px solid var(--accent-clr) !important;
-}
-
-.darkmode .btn:hover {
-  background: transparent !important;
-  color: var(--accent-clr) !important;
-  border: 2px solid var(--accent-clr) !important;
-}
-
 .darkmode .toggle-panel {
   background: #1e293b !important;
   color: var(--text-clr) !important;
@@ -571,18 +559,37 @@
 
 /* Product Page */
 .darkmode .product-button-style {
-  background: var(--card-bg) !important;
-  border: 1px solid var(--card-border) !important;
+  background: linear-gradient(135deg, var(--surface) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
+  border: 1.5px solid var(--card-border) !important;
   color: var(--text-clr) !important;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
 }
 
 .darkmode .product-button-style:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
   border-color: var(--accent-clr) !important;
+  background: linear-gradient(135deg, var(--surface) 0%, rgba(30, 41, 59, 1) 100%) !important;
 }
 
 .darkmode .product-price-label {
+  color: var(--accent-clr) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+.darkmode .product-price-name {
   color: var(--text-clr) !important;
+}
+
+.darkmode .product-stock-label {
+  color: rgba(255, 255, 255, 0.7) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Order Page */
