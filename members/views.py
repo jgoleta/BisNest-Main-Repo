@@ -16,22 +16,8 @@ def members(request):
 
 
 #Public
-
-
 def login_view(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            return redirect("menu")  # redirect to protected route
-        else:
-            messages.error(request, "Invalid username or password.")
-
-    return render(request, "landing.html")  
+    return redirect('account_login')
 
 
 def logout_view(request):
@@ -40,9 +26,7 @@ def logout_view(request):
 
 
 
-# protected
-
-
+# protected 
 @login_required(login_url='/login/')
 def menu_view(request):
     return render(request, "menu.html", {"user": request.user})

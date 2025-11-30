@@ -1,4 +1,5 @@
 {% load static %}
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -105,7 +106,8 @@
                         <button type="submit" class="btn">Login</button>
                         <p>or login with</p>
                         <div class="social-icons">
-                            <a href="#"><i class='bx bxl-google'></i></a>
+                            <!-- <a href="{% provider_login_url 'google' %}?next=/"><i class='bx bxl-google'></i></a> -->
+                            <a href="{% provider_login_url 'google' %}?next=/menu/"><i class='bx bxl-google'></i></a>
                         </div>
                     </form>
                 </div>
