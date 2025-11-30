@@ -35,7 +35,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${ e.join_date }</td>
                 </tr>`;
             });
-        });
+        
+            if (window.showEmployeePage) {
+                window.showEmployeePage(1);
+            }
+          });
 });
 
 document.addEventListener("click", async (e) => {

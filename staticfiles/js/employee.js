@@ -33,17 +33,15 @@ function toggleForm() {
 
   if (isHidden) {
     resetEmployeeForm();//clear
+    window.openModal(formContainer, modalOverlay);
+  } else {
+    window.closeModal(formContainer, modalOverlay);
   }
-  formContainer.style.display = isHidden ? "block" : "none";
-  modalOverlay.style.display = isHidden ? "block" : "none";
 }
-
-
 
 if (closeBtn) {
   closeBtn.addEventListener("click", () => {
-    formContainer.style.display = "none";
-    modalOverlay.style.display = "none";
+    window.closeModal(formContainer, modalOverlay);
     resetEmployeeForm();
   });
 }
@@ -76,13 +74,15 @@ function openProfilePopup(employeeRow) {
   deleteProfileForm.action = `/employee-info/delete/${id}/`;
 
   // Show popup
-  profileContainer.style.display = "block";
-  profileModalOverlay.style.display = "block";
+  if (profileContainer && profileModalOverlay) {
+    window.openModal(profileContainer, profileModalOverlay);
+  }
 }
 
 function closeProfilePopup() {
-  profileContainer.style.display = "none";
-  profileModalOverlay.style.display = "none";
+  if (profileContainer && profileModalOverlay) {
+    window.closeModal(profileContainer, profileModalOverlay);
+  }
 }
 
 // Handle row clicks to open profile
@@ -115,8 +115,7 @@ if (editProfileBtn) {
     closeProfilePopup();
 
     // Open edit form
-    formContainer.style.display = "block";
-    modalOverlay.style.display = "block";
+    window.openModal(formContainer, modalOverlay);
 
     const formTitle = document.getElementById("formTitle");
     if (formTitle) formTitle.textContent = "Edit Employee";
@@ -279,6 +278,8 @@ function searchEmployee() {
 
     renderPaginationControls(totalPages);
   }
+    window.showEmployeePage = showPage;
+
 
   function renderPaginationControls(totalPages) {
     paginationContainer.innerHTML = '';
@@ -404,3 +405,5 @@ function searchEmployee() {
     }
   });
 })();
+
+// AJAX FETCH

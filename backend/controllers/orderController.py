@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from members.models import Order, Product
+from members.models import Order, Product, Customer, Employee
 from members.forms import OrderForm
 from django.http import JsonResponse
+import json
 
 def orderHistoryPage(request):
     form = OrderForm(initial={'order_id': f"O{Order.objects.count() + 1:04d}"})
 
     if request.method == 'POST':
         edit_id = request.POST.get('edit_id')
+        cart_data = request.POST.get('cart_data')
 
         if edit_id:  # existing order edit
             order = get_object_or_404(Order, pk=edit_id)
@@ -15,6 +17,34 @@ def orderHistoryPage(request):
             if form.is_valid():
                 form.save()
                 return redirect('history')
+        elif cart_data:  # create orders from cart
+            try:
+                cart = json.loads(cart_data)
+                created_orders = []
+                
+                for item in cart:
+                    try:
+                        customer = Customer.objects.get(pk=item['customerId'])
+                        employee = Employee.objects.get(pk=item['employeeId'])
+                        product = Product.objects.get(pk=item['productId'])
+                        
+                        order = Order.objects.create(
+                            customer=customer,
+                            employee=employee,
+                            product=product,
+                            quantity=item['quantity']
+                        )
+                        created_orders.append(order)
+                    except Exception as e:
+                        print(f"Error creating order for item: {e}")
+                        continue
+                
+                if created_orders:
+                    return redirect('/payment/?open_form=true')
+                else:
+                    print("❌ No orders created from cart")
+            except json.JSONDecodeError:
+                print("❌ Invalid cart data JSON")
         else:  # create new order
             form = OrderForm(request.POST)
             if form.is_valid():
