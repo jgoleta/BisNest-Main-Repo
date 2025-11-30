@@ -23,6 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-w+pn$_7ymqew+^_%c23jeljx4rinl29v!qj-b%)xqa)o7gk^&e'
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+GOOGLE_OAUTH_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
