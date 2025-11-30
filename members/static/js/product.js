@@ -61,7 +61,7 @@ function loadCustomersAndEmployees() {
           option.value = employee.id;
           option.textContent = `${employee.employee_id || ''} - ${employee.name}`;
           employeeSelect.appendChild(option);
-        });
+});
       }
     })
     .catch(err => console.error('Error loading employees:', err));
@@ -168,21 +168,21 @@ function openEditModal(product, btn) {
 }
 
 if (closeEditModalBtn) {
-  closeEditModalBtn.addEventListener("click", () => {
+closeEditModalBtn.addEventListener("click", () => {
     window.closeModal(modal, modalOverlay);
-  });
+});
 }
 
 // Modal overlay click handled by centralized modal.js
 const saveBtn = document.getElementById("save-price-btn");
 
 if (productPriceEl && saveBtn) {
-  productPriceEl.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      saveBtn.click();
-    }
-  });
+productPriceEl.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    saveBtn.click();
+  }
+});
 }
 
 // Read CSRF token from cookie
@@ -205,107 +205,107 @@ const csrftoken = getCookie("csrftoken");
 
 // Save/update via AJAX to server endpoint
 if (saveBtn) {
-  saveBtn.addEventListener("click", () => {
+saveBtn.addEventListener("click", () => {
     if (!modalNameInput || !modalStockInput || !productPriceEl || !productIdEl) {
       showNotification("Error: Form elements not found", true);
       return;
     }
 
-    const newName = modalNameInput.value.trim();
-    const newStock = modalStockInput.value.trim();
-    const newPrice = productPriceEl.value.trim();
+  const newName = modalNameInput.value.trim();
+  const newStock = modalStockInput.value.trim();
+  const newPrice = productPriceEl.value.trim();
 
-    if (!newName) {
-      alert("Product name is required.");
-      return;
-    }
-    if (!newStock || isNaN(newStock) || parseInt(newStock) < 0) {
-      alert("Please enter a valid stock number (0 or greater).");
-      return;
-    }
-    if (!newPrice || isNaN(newPrice) || parseFloat(newPrice) < 0) {
-      alert("Please enter a valid price (0 or greater).");
-      return;
-    }
+  if (!newName) {
+    alert("Product name is required.");
+    return;
+  }
+  if (!newStock || isNaN(newStock) || parseInt(newStock) < 0) {
+    alert("Please enter a valid stock number (0 or greater).");
+    return;
+  }
+  if (!newPrice || isNaN(newPrice) || parseFloat(newPrice) < 0) {
+    alert("Please enter a valid price (0 or greater).");
+    return;
+  }
 
-    const payload = {
-      product_id: productIdEl.textContent,
-      name: newName,
-      stock: parseInt(newStock),
-      price: parseFloat(newPrice).toFixed(2),
-    };
+  const payload = {
+    product_id: productIdEl.textContent,
+    name: newName,
+    stock: parseInt(newStock),
+    price: parseFloat(newPrice).toFixed(2),
+  };
 
-    fetch("/product/update/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrftoken,
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          // update DOM: price label and name inside the selected button
-          if (currentButton) {
-            const priceLabel = currentButton.querySelector(
-              ".product-price-label"
-            );
-            const nameLabel = currentButton.querySelector(".product-price-name");
+  fetch("/product/update/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrftoken,
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        // update DOM: price label and name inside the selected button
+        if (currentButton) {
+          const priceLabel = currentButton.querySelector(
+            ".product-price-label"
+          );
+          const nameLabel = currentButton.querySelector(".product-price-name");
             const stockLabel = currentButton.querySelector(".product-stock-label");
-            if (priceLabel)
+          if (priceLabel)
               priceLabel.textContent = "₱" + parseFloat(data.price || payload.price).toFixed(2);
             if (nameLabel) nameLabel.textContent = data.name || payload.name;
             if (stockLabel) stockLabel.textContent = `Stock: ${data.stock || payload.stock}`;
-            // Update button's data attributes
+          // Update button's data attributes
             currentButton.dataset.price = data.price || payload.price;
             currentButton.dataset.name = data.name || payload.name;
             currentButton.dataset.stock = data.stock || payload.stock;
-          }
-          showNotification("Product updated successfully!");
-        } else {
-          showNotification("Update failed: " + (data.error || "Unknown"), true);
         }
+        showNotification("Product updated successfully!");
+      } else {
+        showNotification("Update failed: " + (data.error || "Unknown"), true);
+      }
         window.closeModal(modal, modalOverlay);
-      })
-      .catch((err) => {
-        showNotification("Update failed: " + err.message, true);
+    })
+    .catch((err) => {
+      showNotification("Update failed: " + err.message, true);
         window.closeModal(modal, modalOverlay);
-      });
-  });
+    });
+});
 }
 
 const deleteModalBtn = document.getElementById("delete-modal-btn");
 if (deleteModalBtn) {
-  deleteModalBtn.addEventListener("click", () => {
+deleteModalBtn.addEventListener("click", () => {
     if (!modalNameInput || !productIdEl) {
       showNotification("Error: Form elements not found", true);
       return;
     }
 
-    const productName = modalNameInput.value;
-    if (
-      !confirm(
-        `Are you sure you want to delete "${productName}"? This cannot be undone.`
-      )
-    ) {
-      return;
-    }
+  const productName = modalNameInput.value;
+  if (
+    !confirm(
+      `Are you sure you want to delete "${productName}"? This cannot be undone.`
+    )
+  ) {
+    return;
+  }
 
-    const payload = { product_id: productIdEl.textContent };
-    fetch("/product/delete/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrftoken,
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          // remove from DOM - handle both button and its row wrapper if empty
-          if (currentButton) {
+  const payload = { product_id: productIdEl.textContent };
+  fetch("/product/delete/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrftoken,
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        // remove from DOM - handle both button and its row wrapper if empty
+        if (currentButton) {
             const wrapper = currentButton.closest('.product-card-wrapper');
             const productDisplay = wrapper?.closest('.product-display');
             
@@ -313,28 +313,28 @@ if (deleteModalBtn) {
               wrapper.remove();
             }
             
-            // If this was the last product in the row, remove the row too
+          // If this was the last product in the row, remove the row too
             if (productDisplay && productDisplay.querySelectorAll('.product-card-wrapper').length === 0) {
               productDisplay.remove();
-            }
-            
-            // If no more products, show the "No products" message
-            const productList = document.getElementById("product-list");
-            if (
-              productList &&
-              productList.querySelectorAll(".product-button-style").length === 0
-            ) {
-              productList.innerHTML = "<p>No products available.</p>";
-            }
           }
-          showNotification("Product deleted successfully!");
-        } else {
-          showNotification("Delete failed: " + (data.error || "Unknown"), true);
+            
+          // If no more products, show the "No products" message
+          const productList = document.getElementById("product-list");
+          if (
+            productList &&
+            productList.querySelectorAll(".product-button-style").length === 0
+          ) {
+            productList.innerHTML = "<p>No products available.</p>";
+          }
         }
+        showNotification("Product deleted successfully!");
+      } else {
+        showNotification("Delete failed: " + (data.error || "Unknown"), true);
+      }
         window.closeModal(modal, modalOverlay);
-      })
-      .catch((err) => {
-        showNotification("Delete failed: " + err.message, true);
+    })
+    .catch((err) => {
+      showNotification("Delete failed: " + err.message, true);
         window.closeModal(modal, modalOverlay);
       });
   });
@@ -402,7 +402,7 @@ if (viewCartBtn) {
   viewCartBtn.addEventListener('click', function() {
     displayCart();
     window.openModal(cartModal, modalOverlay);
-  });
+    });
 }
 
 if (closeCartViewModal) {
