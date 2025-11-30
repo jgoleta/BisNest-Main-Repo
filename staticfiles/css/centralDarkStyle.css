@@ -48,6 +48,16 @@
 /* Cards & Containers */
 .darkmode .card,
 .darkmode .stat-card,
+.darkmode .chart-container {
+  background: var(--surface) !important;
+  border-color: var(--card-border) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+.darkmode .chart-container h2 {
+  color: var(--text-clr) !important;
+}
+
 .darkmode .chart-container,
 .darkmode .container-box,
 .darkmode .dashboard-container,
