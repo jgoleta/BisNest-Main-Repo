@@ -138,14 +138,14 @@ def feedbackPage(request):
 def profilePage(request):
     user = request.user
     
-    # Check if user is authenticated
+    #Check if user is auth
     if not user.is_authenticated:
         return redirect('login_view')
     
-    # Get or create profile for the user
+    #Get or create profile for the user
     from members.models import UserProfile  # Import here to avoid circular import
     
-    # Check if profile exists, create if it doesn't
+    #Check if profile exists, create if wla
     if not hasattr(user, 'profile'):
         UserProfile.objects.create(user=user)
         user.refresh_from_db()  # Refresh to get the profile
