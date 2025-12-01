@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from members.forms import UserProfileForm
+from allauth.socialaccount.models import SocialAccount
 
 # import models used by views in this module
 from django.db.models import Sum
@@ -138,19 +139,28 @@ def feedbackPage(request):
 def profilePage(request):
     user = request.user
     
-    # Check if user is authenticated
+    #check if user is auth
     if not user.is_authenticated:
         return redirect('login_view')
     
-    # Get or create profile for the user
-    from members.models import UserProfile  # Import here to avoid circular import
+    #get  profile f
+    from members.models import UserProfile  
     
-    # Check if profile exists, create if it doesn't
+    #check if profile exists, create if it doesn't
     if not hasattr(user, 'profile'):
         UserProfile.objects.create(user=user)
-        user.refresh_from_db()  # Refresh to get the profile
+        user.refresh_from_db()  #refresh to get profile
     
     profile = user.profile
+
+    google_picture_url = None
+    try:
+        from allauth.socialaccount.models import SocialAccount
+        social_account = SocialAccount.objects.get(user=user, provider='google')
+        extra_data = social_account.extra_data
+        google_picture_url = extra_data.get('picture')
+    except:
+        google_picture_url = None
     
     if request.method == 'POST':
         form = UserProfileForm(request.POST, user=user)
@@ -196,6 +206,7 @@ def profilePage(request):
         'form': form,
         'user': user,
         'profile': profile,
+        'google_picture_url': google_picture_url,
     }
     return render(request, 'profile.html', context)
 
