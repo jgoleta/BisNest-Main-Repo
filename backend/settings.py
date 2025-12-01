@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'members.supplies.apps.SuppliesConfig',
     'whitenoise.runserver_nostatic',
     'backend',
     'members',

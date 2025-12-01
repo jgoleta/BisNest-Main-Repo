@@ -232,7 +232,7 @@ saveBtn.addEventListener("click", () => {
     product_id: productIdEl.textContent,
     name: newName,
     stock: parseInt(newStock),
-    price: parseFloat(newPrice).toFixed(2),
+    price: parseFloat(newPrice),
   };
 
   fetch("/product/update/", {
