@@ -16,20 +16,33 @@
     {% include 'sidebar.html' %}
     <main class="main-content">
         {% include 'header.html' with page="User Profile" %}
-        
+
         <div class="profile-container">
             <form method="POST" action="{% url 'profile' %}">
                 {% csrf_token %}
-                
+
                 <div class="profile-header">
-                    <img src="https://via.placeholder.com/120" class="profile-img" alt="Profile Photo">
+                    {% if google_picture_url %}
+                    <!-- Show Google profile picture -->
+                    <img src="{{ google_picture_url }}" class="profile-img" alt="Google Profile Photo">
+                    {% else %}
+                    <!-- Show default avatar with initials -->
+                    {% with initials=user.first_name|first|default:user.username|first|upper|default:"U" %}
+                    <div
+                        class="profile-avatar {% if initials == 'A' or initials == 'J' %}blue{% elif initials == 'B' or initials == 'K' %}green{% elif initials == 'C' or initials == 'L' %}purple{% else %}red{% endif %}">
+                        {{ initials }}
+                    </div>
+                    {% endwith %}
+                    {% endif %}
                     <div>
-                        <h1 class="profile-name">
-                            <input type="text" name="username" class="profile-name-input" 
-                                   value="{{ form.username.value|default:user.username }}" 
-                                   placeholder="Username">
-                        </h1>
-                        <p class="profile-role">Registered User</p>
+                        <h1 class="profile-name">{{ user.first_name|default:user.username|default:"User" }}</h1>
+                        <p class="profile-role">
+                            {% if google_picture_url %}
+                            <span style="color: #4285f4;">●</span> Google Account
+                            {% else %}
+                            <span style="color: var(--palette-accent);">●</span> Registered User
+                            {% endif %}
+                        </p>
                         <p class="member-since">
                             Member since: {{ user.date_joined|date:"F d, Y" }}
                             {% if profile.last_updated %}
@@ -45,43 +58,40 @@
 
                         <div class="field">
                             <label>First Name</label>
-                            <input type="text" name="first_name" 
-                                   value="{{ form.first_name.value|default:user.first_name|default:'' }}" 
-                                   placeholder="First name">
+                            <input type="text" name="first_name"
+                                value="{{ form.first_name.value|default:user.first_name|default:'' }}"
+                                placeholder="First name">
                         </div>
 
                         <div class="field">
                             <label>Last Name</label>
-                            <input type="text" name="last_name" 
-                                   value="{{ form.last_name.value|default:user.last_name|default:'' }}" 
-                                   placeholder="Last name">
+                            <input type="text" name="last_name"
+                                value="{{ form.last_name.value|default:user.last_name|default:'' }}"
+                                placeholder="Last name">
                         </div>
 
                         <div class="field">
                             <label>Email</label>
-                            <input type="email" name="email" 
-                                   value="{{ form.email.value|default:user.email|default:'' }}" 
-                                   placeholder="Email address">
+                            <input type="email" name="email"
+                                value="{{ form.email.value|default:user.email|default:'' }}"
+                                placeholder="Email address">
                         </div>
 
                         <div class="field">
                             <label>Phone</label>
-                            <input type="text" name="phone" 
-                                   value="{{ form.phone.value|default:'' }}" 
-                                   placeholder="+63 912 345 6789">
+                            <input type="text" name="phone" value="{{ form.phone.value|default:'' }}"
+                                placeholder="+63 912 345 6789">
                         </div>
 
                         <div class="field">
                             <label>Address</label>
-                            <input type="text" name="address" 
-                                   value="{{ form.address.value|default:'' }}" 
-                                   placeholder="Naga City, Philippines">
+                            <input type="text" name="address" value="{{ form.address.value|default:'' }}"
+                                placeholder="Naga City, Philippines">
                         </div>
 
                         <div class="field">
                             <label>Birthday</label>
-                            <input type="date" name="birthday" 
-                                   value="{{ form.birthday.value|default:'' }}">
+                            <input type="date" name="birthday" value="{{ form.birthday.value|default:'' }}">
                         </div>
 
                         <hr class="divider">
@@ -103,8 +113,8 @@
 
                     <div class="profile-card">
                         <h2 class="section-title">About Me</h2>
-                        <textarea class="about-text" name="bio" 
-                                  placeholder="Write something about yourself here...">{{ form.bio.value|default:'' }}</textarea>
+                        <textarea class="about-text" name="bio"
+                            placeholder="Write something about yourself here...">{{ form.bio.value|default:'' }}</textarea>
 
                         <hr class="divider">
 
@@ -187,4 +197,5 @@
         </div>
     </main>
 </body>
+
 </html>
