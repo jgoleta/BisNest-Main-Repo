@@ -63,6 +63,7 @@ function openProfilePopup(employeeRow) {
   const joinDate = employeeRow.getAttribute("data-join-date");
 
   // Populate profile fields
+  document.querySelector(".delete-profile-button").dataset.id = id;
   document.getElementById("profile-id").textContent = id;
   document.getElementById("profile-name").textContent = name;
   document.getElementById("profile-position").textContent = position;
@@ -71,7 +72,7 @@ function openProfilePopup(employeeRow) {
   document.getElementById("profile-join-date").textContent = joinDate;
 
   // Set delete form action
-  deleteProfileForm.action = `/employee-info/delete/${id}/`;
+  // deleteProfileForm.action = `/delete-employee/${id}/`;
 
   // Show popup
   if (profileContainer && profileModalOverlay) {
@@ -144,15 +145,6 @@ if (editProfileBtn) {
 }
 
 // Handle delete button in profile with confirmation
-if (deleteProfileForm) {
-  deleteProfileForm.addEventListener("submit", function(e) {
-    const employeeName = document.getElementById("profile-name").textContent;
-    if (!confirm(`Are you sure you want to delete employee "${employeeName}"? This action cannot be undone.`)) {
-      e.preventDefault();
-      return false;
-    }
-  });
-}
 
 
 function searchEmployee() {

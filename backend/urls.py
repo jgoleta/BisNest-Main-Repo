@@ -56,7 +56,6 @@ urlpatterns = [
 
     # --- product AJAX endpoints ---
     path('product/update/', productController.update_product, name='update_product'),
-    path('product/update/', productController.update_product, name='update_product'),
     path('product/delete/', productController.delete_product, name='delete_product'),
 
     # --- order AJAX endpoints ---

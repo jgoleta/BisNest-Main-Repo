@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
   <script src="{% static 'js/darkMode.js' %}" defer></script>
   <script src="{% static 'js/sidebar.js' %}" defer></script>
+  <script src="{% static 'js/notify.js' %}" defer></script>
+  <script src="{% static 'js/modal.js' %}" defer></script>
   <script src="{% static 'js/product.js' %}" defer></script>
 </head>
 
@@ -73,8 +75,13 @@
           <span class="close-add-modal close-button">&times;</span>
           <h2>Add Product</h2>
           <div class="modal-divider"></div>
-          <form id="product-form" method="post" enctype="multipart/form-data">
+          <form id="product-form" method="POST">
             {% csrf_token %}
+            {% if form.errors %}
+                <div class="error-box">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
             <div class="form-row">
               <div class="form-group">
                 <label for="{{ form.name.id_for_label }}">Product Name:</label>

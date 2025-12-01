@@ -118,9 +118,9 @@
           </div>
           <div class="profile-actions">
             <button type="button" class="edit-profile-button" id="editProfileBtn">Edit</button>
-            <form id="deleteProfileForm" method="POST" style="display:inline;">
+            <form id="deleteProfileForm" style="display:inline;">
               {% csrf_token %}
-              <button type="submit" class="delete-profile-button">Delete</button>
+              <button type="button" class="delete-profile-button" data-id="">Delete</button>
             </form>
           </div>
         </div>

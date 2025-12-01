@@ -102,6 +102,25 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='products/', null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+            if not self.product_id:
+                new_number = 1
+                last_product = Product.objects.order_by('-id').first()
+                if last_product and last_product.product_id:
+                    try:
+                        # Extract number from product_id 
+                        last_number = int(last_product.product_id.replace('PRD', ''))
+                    except ValueError:
+                        last_number = 0
+                    new_number = last_number + 1
+                
+                self.product_id = f'PRD{str(new_number).zfill(5)}'
+
+            super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
 class Order(models.Model):
     order_id = models.CharField(max_length=10, unique=True, blank=True, null=True)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE, null=True, blank=True)
@@ -195,7 +214,7 @@ class Supply(models.Model):
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     date = models.DateField()
-
+    
     def __str__(self):
         product_name = self.product.name if self.product else "Unknown"
         return f"{self.supply_id} - {product_name} ({self.quantity}kg)"
