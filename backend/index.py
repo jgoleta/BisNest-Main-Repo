@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from members.forms import UserProfileForm
 
 # import models used by views in this module
 from django.db.models import Sum
@@ -135,4 +136,67 @@ def feedbackPage(request):
     return render(request, 'feedback.html')
 
 def profilePage(request):
-    return render(request, 'profile.html')
+    user = request.user
+    
+    # Check if user is authenticated
+    if not user.is_authenticated:
+        return redirect('login_view')
+    
+    # Get or create profile for the user
+    from members.models import UserProfile  # Import here to avoid circular import
+    
+    # Check if profile exists, create if it doesn't
+    if not hasattr(user, 'profile'):
+        UserProfile.objects.create(user=user)
+        user.refresh_from_db()  # Refresh to get the profile
+    
+    profile = user.profile
+    
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, user=user)
+        if form.is_valid():
+            #update user
+            user.username = form.cleaned_data['username']
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.email = form.cleaned_data['email']
+            user.save()
+            
+            #update UserProfile model fields
+            profile.address = form.cleaned_data['address']
+            profile.phone = form.cleaned_data['phone']
+            profile.birthday = form.cleaned_data['birthday']
+            profile.bio = form.cleaned_data['bio']
+            profile.save()
+            
+            return redirect('profile')
+        else:
+            # Show form errors
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        # Format birthday for HTML date input (YYYY-MM-DD)
+        birthday_value = ''
+        if profile.birthday:
+            birthday_value = profile.birthday.strftime('%Y-%m-%d')
+        
+        form = UserProfileForm(user=user, initial={
+            'username': user.username,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email,
+            'address': profile.address if profile.address else '',
+            'phone': profile.phone if profile.phone else '',
+            'birthday': birthday_value,
+            'bio': profile.bio if profile.bio else '',
+        })
+    
+    context = {
+        'form': form,
+        'user': user,
+        'profile': profile,
+    }
+    return render(request, 'profile.html', context)
+
+
