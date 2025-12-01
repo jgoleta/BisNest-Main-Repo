@@ -2,12 +2,37 @@ import re
 
 from django.db import models
 from django.utils.timezone import now
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 STATUS_CHOICES = [
     ('Pending', 'Pending'),
     ('Delivered', 'Delivered'),
     ('Cancelled', 'Cancelled'),
 ]
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    address = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    birthday = models.DateField(blank=True, null=True)
+    bio = models.TextField(max_length=500, blank=True, null=True)
+    last_updated = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
+
+# Signal handlers
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            UserProfile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        if hasattr(instance, 'profile'):
+            instance.profile.save()
 
 class Employee(models.Model):
     employee_id = models.CharField(max_length=10, unique=True, blank=True, null=True)

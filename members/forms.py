@@ -7,6 +7,10 @@ from .models import Order
 from .models import Supply
 from .models import SalesReport
 from .models import Product
+from .models import UserProfile
+from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
+
 
 class EmployeeForm(forms.ModelForm):
     class Meta:
@@ -116,3 +120,40 @@ class SalesReportForm(forms.ModelForm):
             'date': forms.DateInput(attrs={'type': 'date'}),
             'payment': forms.TextInput(attrs={'class':'form-control'}),
         }
+
+
+class UserProfileForm(forms.ModelForm):
+    username = forms.CharField(max_length=150, required=True)
+    first_name = forms.CharField(max_length=30, required=False)
+    last_name = forms.CharField(max_length=30, required=False)
+    email = forms.EmailField(required=True)
+    
+    class Meta:
+        model = UserProfile
+        fields = ['address', 'phone', 'birthday', 'bio']
+        widgets = {
+            'birthday': forms.DateInput(attrs={'type': 'date'}),
+            'bio': forms.Textarea(attrs={'rows': 4}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        
+        if self.user:
+            self.fields['username'].initial = self.user.username
+            self.fields['first_name'].initial = self.user.first_name
+            self.fields['last_name'].initial = self.user.last_name
+            self.fields['email'].initial = self.user.email
+    
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if username != self.user.username and User.objects.filter(username=username).exists():
+            raise ValidationError("Username already exists!")
+        return username
+    
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if email != self.user.email and User.objects.filter(email=email).exists():
+            raise ValidationError("Email already registered!")
+        return email
