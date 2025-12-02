@@ -15,19 +15,28 @@ def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        from django.contrib.auth.models import User
+        
+        if not email or not password:
+            messages.error(request, 'Please enter both email and password.')
+            return redirect('landingPage')
+        
         try:
             user_obj = User.objects.get(email=email)
-            username = user_obj.username
+            user = authenticate(request, username=user_obj.username, password=password)
+            
+            if user is not None:
+                login(request, user)
+                return redirect('menu')  
+            else:
+                messages.error(request, 'Invalid password.')
+                return redirect('landingPage')
+                
         except User.DoesNotExist:
-            username = None
-        user = authenticate(request, username=username, password=password) if username else None
-        if user is not None:
-            login(request, user)
-            return redirect('menu')  
-        else:
-            messages.error(request, 'Invalid email or password.')
-    return render(request, 'login.html')
+            messages.error(request, 'No account found with this email.')
+            return redirect('landingPage')
+    
+    #redirect to landing page
+    return redirect('landingPage')
 
 def logout_view(request):
     logout(request)
@@ -156,22 +165,28 @@ def register_view(request):
 
         if password1 != password2:
             messages.error(request, "Passwords don't match!")
-            return redirect('login_view')
+            return redirect('landingPage')
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists!")
-            return redirect('login_view')
+            return redirect('landingPage')
 
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already registered!")
-            return redirect('login_view')
+            return redirect('landingPage')
 
         user = User.objects.create_user(username=username, email=email, password=password1)
         user.save()
-        messages.success(request, "Registration successful! Please login.")
-        return redirect('login_view')
 
-    return redirect('login_view')
+        user = authenticate(username=username, password=password1)
+        if user:
+            login(request, user)
+            return redirect('menu') 
+        
+        messages.success(request, "Registration successful! Please login.")
+        return redirect('landingPage')
+
+    return redirect('landingPage')
 
 
 def feedbackPage(request):
@@ -252,3 +267,12 @@ def profilePage(request):
     return render(request, 'profile.html', context)
 
 
+@login_required
+def delete_account_view(request):
+    """Delete user account and redirect to landing page"""
+    if request.method == 'POST':
+        user = request.user
+        logout(request)
+        user.delete()  #delete linked userprofile
+        return redirect('landingPage')
+    return redirect('profile')

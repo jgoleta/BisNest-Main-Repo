@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
-    <link rel="icon" type="image/png" href="https://i.imgur.com/NFhTf4v.png">      
+    <link rel="icon" type="image/png" href="https://i.imgur.com/NFhTf4v.png">
     <link rel="stylesheet" href="{% static 'css/profileStyle.css' %}">
     <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
     <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
@@ -57,7 +57,7 @@
                     <div class="profile-card">
                         <h2 class="section-title">Personal Information</h2>
 
-                        <div class ="field">
+                        <div class="field">
                             <label>Username</label>
                             <input type="text" name="username"
                                 value="{{ form.username.value|default:user.username|default:'' }}"
@@ -199,8 +199,13 @@
 
                 <div class="profile-card full danger-zone">
                     <h2 class="section-title danger">Danger Zone</h2>
-                    <p class="warning-text">Deleting your account is permanent and cannot be undone.</p>
-                    <button class="delete-acc-btn">Delete Account</button>
+                    <p class="warning-text">Clicking delete will permanently remove your account.</p>
+
+                    <form method="POST" action="{% url 'delete_account' %}"
+                        onsubmit="return confirm('Permanently delete your account? This cannot be undone.');">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-acc-btn">Delete Account</button>
+                    </form>
                 </div>
             </div>
         </div>

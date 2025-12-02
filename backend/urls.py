@@ -47,6 +47,7 @@ urlpatterns = [
     path('delete-order/<int:id>/', orderController.delete_order, name='delete_order'),
     path('delete-supply/<str:supply_id>/', suppliesController.delete_supply, name='delete_supply'),
     path('update_delivery_status/<int:delivery_id>/', deliveryController.update_delivery_status, name='update_delivery_status'),
+    path('profile/delete/', index.delete_account_view, name='delete_account'),
 
     # --- customer AJAX endpoints ---
     path("customer/customers_json/", customersController.customers_json, name="customers_json"),

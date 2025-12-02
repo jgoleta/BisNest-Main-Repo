@@ -7,6 +7,7 @@ from django.contrib import messages
 from .forms import ProductForm
 from .models import Product, Customer, Employee
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 
 # Public
 def members(request):
@@ -16,10 +17,6 @@ def members(request):
 
 
 #Public
-def login_view(request):
-    return redirect('account_login')
-
-
 def logout_view(request):
     logout(request)
     return redirect('landingPage')
