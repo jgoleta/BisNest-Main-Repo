@@ -84,6 +84,100 @@
 
     {{ monthly_sales|json_script:"monthly-sales-data" }}
 
+    <!-- Report Modal -->
+    <div id="reportModal" class="report-modal">
+        <div class="report-modal-content">
+            <div class="report-modal-header">
+                <h2>Business Report</h2>
+                <span class="report-modal-close">&times;</span>
+            </div>
+            <div class="report-modal-body">
+                <div class="report-section">
+                    <h3>Sales Information</h3>
+                    <div class="report-item">
+                        <span class="report-label">Total Sales:</span>
+                        <span class="report-value">₱{{ total_sales|default:0|floatformat:2 }}</span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">Monthly Sales (This Month):</span>
+                        <span class="report-value">₱{{ monthly_sales_amount|default:0|floatformat:2 }}</span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">Weekly Sales (Last 7 Days):</span>
+                        <span class="report-value">₱{{ weekly_sales|default:0|floatformat:2 }}</span>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Customer Information</h3>
+                    <div class="report-item">
+                        <span class="report-label">Total Customers:</span>
+                        <span class="report-value">{{ total_customers|default:0 }}</span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">New Customers (Last 30 Days):</span>
+                        <span class="report-value">{{ new_customers|default:0 }}</span>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Order Information</h3>
+                    <div class="report-item">
+                        <span class="report-label">Total Orders:</span>
+                        <span class="report-value">{{ total_orders|default:0 }}</span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">Orders This Month:</span>
+                        <span class="report-value">{{ orders_this_month|default:0 }}</span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">Total Order Value:</span>
+                        <span class="report-value">₱{{ total_order_value|default:0|floatformat:2 }}</span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">Average Order Value:</span>
+                        <span class="report-value">₱{{ average_order_value|default:0|floatformat:2 }}</span>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Employee Information</h3>
+                    <div class="report-item">
+                        <span class="report-label">Total Employees:</span>
+                        <span class="report-value">{{ total_employees|default:0 }}</span>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Stock Information</h3>
+                    <div class="report-item">
+                        <span class="report-label">Total Products:</span>
+                        <span class="report-value">{{ total_products|default:0 }}</span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">Total Stock Quantity:</span>
+                        <span class="report-value">{{ total_stock_quantity|default:0 }}</span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">Products In Stock:</span>
+                        <span class="report-value">{{ in_stock_products|default:0 }}</span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">Products Out of Stock:</span>
+                        <span class="report-value">{{ out_of_stock_products|default:0 }}</span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">Inventory Level:</span>
+                        <span class="report-value">{{ inventory_level|default:0 }}%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="report-modal-footer">
+                <button class="report-modal-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

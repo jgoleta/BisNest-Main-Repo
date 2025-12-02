@@ -9,7 +9,7 @@ from allauth.socialaccount.models import SocialAccount
 # import models used by views in this module
 from django.db.models import Sum
 from django.utils import timezone
-from members.models import Supply, Payment, Order, Customer, Product
+from members.models import Supply, Payment, Order, Customer, Product, Employee
 
 def login_view(request):
     if request.method == 'POST':
@@ -46,23 +46,52 @@ def landingPage(request):
     #    return redirect('loginPage') 
 
 def menuPage(request):
+    # Get current year and date info
+    current_year = timezone.now().year
+    thirty_days_ago = timezone.now().date() - timezone.timedelta(days=30)
+    
     # Calculate Total Sales (sum of all payment amounts)
     total_sales = Payment.objects.aggregate(total=Sum('amount'))['total'] or 0
     
     # Calculate Total Orders
     total_orders = Order.objects.count()
     
-    # Calculate New Customers (last 30 days)
-    thirty_days_ago = timezone.now().date() - timezone.timedelta(days=30)
+    # Calculate Order Information
+    orders_this_month = Order.objects.filter(date__year=current_year, date__month=timezone.now().month).count()
+    recent_orders = Order.objects.filter(date__gte=thirty_days_ago).count()
+    total_order_value = Order.objects.aggregate(total=Sum('amount'))['total'] or 0
+    average_order_value = total_order_value / total_orders if total_orders > 0 else 0
+    
+    # Calculate Customer Information
+    total_customers = Customer.objects.count()
     new_customers = Customer.objects.filter(date_added__gte=thirty_days_ago).count()
+    
+    # Calculate Sales Information - Monthly and Weekly
+    current_month = timezone.now().month
+    monthly_sales_amount = Payment.objects.filter(
+        date__year=current_year, 
+        date__month=current_month
+    ).aggregate(total=Sum('amount'))['total'] or 0
+    
+    # Calculate weekly sales (last 7 days)
+    seven_days_ago = timezone.now().date() - timezone.timedelta(days=7)
+    weekly_sales = Payment.objects.filter(
+        date__gte=seven_days_ago
+    ).aggregate(total=Sum('amount'))['total'] or 0
     
     # Calculate Inventory Level (percentage of products with stock > 0)
     total_products = Product.objects.count()
     in_stock_products = Product.objects.filter(stock__gt=0).count()
     inventory_level = int((in_stock_products / total_products) * 100) if total_products > 0 else 0
     
+    # Calculate Stock Information
+    total_stock_quantity = Product.objects.aggregate(total=Sum('stock'))['total'] or 0
+    out_of_stock_products = Product.objects.filter(stock=0).count()
+    
+    # Calculate Employee Count
+    total_employees = Employee.objects.count()
+    
     # Calculate Monthly Sales for chart (current year)
-    current_year = timezone.now().year
     monthly_sales = [0] * 12
     payments_by_month = (
         Payment.objects.filter(date__year=current_year)
@@ -78,9 +107,21 @@ def menuPage(request):
     context = {
         'total_sales': total_sales,
         'total_orders': total_orders,
+        'total_customers': total_customers,
         'new_customers': new_customers,
         'inventory_level': inventory_level,
         'monthly_sales': monthly_sales,
+        'monthly_sales_amount': monthly_sales_amount,
+        'weekly_sales': weekly_sales,
+        'total_employees': total_employees,
+        'total_products': total_products,
+        'total_stock_quantity': total_stock_quantity,
+        'in_stock_products': in_stock_products,
+        'out_of_stock_products': out_of_stock_products,
+        'orders_this_month': orders_this_month,
+        'recent_orders': recent_orders,
+        'total_order_value': total_order_value,
+        'average_order_value': average_order_value,
     }
     return render(request, 'menu.html', context)
 
