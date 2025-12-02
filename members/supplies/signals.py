@@ -1,8 +1,7 @@
-# inventory/signals.py
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from ..models import Supply
-from ..models import Product  # Adjust if Product is in a different app
+from ..models import Product  
 
 @receiver(post_save, sender=Supply)
 def update_product_stock(sender, instance, created, **kwargs):
