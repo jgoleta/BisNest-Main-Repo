@@ -1,3 +1,44 @@
+function openPaymentModal() {
+    const formContainer = document.querySelector(".payment-form-container");
+    const overlay = document.getElementById("paymentModalOverlay");
+    if (!formContainer || !overlay) return;
+
+    formContainer.classList.add("active");
+    overlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+}
+
+function closePaymentModal() {
+    const formContainer = document.querySelector(".payment-form-container");
+    const overlay = document.getElementById("paymentModalOverlay");
+    if (!formContainer || !overlay) return;
+
+    formContainer.classList.remove("active");
+    overlay.classList.remove("active");
+    document.body.style.overflow = "";
+
+    resetPaymentForm();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const closeBtn = document.getElementById("closeBtn");
+    if (closeBtn) {
+        closeBtn.addEventListener("click", () => {
+            closePaymentModal();
+        });
+    }
+
+    // overlay click
+    const overlay = document.getElementById("paymentModalOverlay");
+    if (overlay) {
+        overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) {
+                closePaymentModal();
+            }
+        });
+    }
+});
+
 //reset form
 function resetPaymentForm() {
   const form = document.querySelector(".payment-form");
@@ -31,23 +72,15 @@ function resetPaymentForm() {
 
 // Toggle Payment Form Modal
 function togglePaymentForm(forceClose = false) {
-  const formContainer = document.querySelector(".payment-form-container");
-  const overlay = document.getElementById("paymentModalOverlay");
+    const formContainer = document.querySelector(".payment-form-container");
 
-  if (!formContainer || !overlay) return;
-
-  //Always close if called with forceClose=true
-  if (forceClose || formContainer.classList.contains("active")) {
-    formContainer.classList.remove("active");
-    overlay.classList.remove("active");
-    document.body.style.overflow = "auto";
-  } else {
-    //open
-    formContainer.classList.add("active");
-    overlay.classList.add("active");
-    document.body.style.overflow = "hidden";
-  }
+    if (forceClose || formContainer.classList.contains("active")) {
+        closePaymentModal();
+    } else {
+        openPaymentModal();
+    }
 }
+
 
 const params = new URLSearchParams(window.location.search);
 if (params.get("open_form") === "true") {
@@ -56,20 +89,23 @@ if (params.get("open_form") === "true") {
   if (formContainer && overlay) {
     formContainer.classList.add("active");
     overlay.classList.add("active");
-    document.body.style.overflow = "hidden";
+    window.openModal(formContainer, overlay);
   }
 }
 
 //close modal on close button click
-const cancelButton = document.querySelector(".cancel-button");
-const closeBtn = document.getElementById("closeBtn");
-if (closeBtn) {
-  closeBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    resetPaymentForm();
-    togglePaymentForm(true); //force close
-  });
-}
+document.getElementById("paymentModalOverlay")
+    ?.addEventListener("click", (e) => {
+        if (e.target.id === "paymentModalOverlay") {
+            closePaymentModal();
+        }
+    });
+    
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+        closePaymentModal();
+    }
+});
 
 //search payment by customer name
 function searchPaymentByCustomer() {
@@ -105,49 +141,64 @@ function searchPayment() {
   });
 }
 
-//edit button
-document.querySelectorAll(".edit-button").forEach((button) => {
-  button.addEventListener("click", () => {
-    const paymentId = button.getAttribute("data-payment_id");
-    const order = button.getAttribute("data-order");
-    const amount = button.getAttribute("data-amount");
-    const method = button.getAttribute("data-method");
+document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".edit-button");
+    if (!btn) return;
 
-    //fill form fields
+    e.preventDefault();
+
+    const paymentId = btn.getAttribute("data-payment_id");
+    const order = btn.getAttribute("data-order");
+    const amount = btn.getAttribute("data-amount");
+    const method = btn.getAttribute("data-method");
+    const id = btn.getAttribute("data-id");
+
+    // Form fields
     const paymentIdField = document.querySelector('[name="payment_id"]');
-    paymentIdField.value = paymentId;
-    paymentIdField.readOnly = true;
-
     const orderSelect = document.querySelector('[name="order"]');
-    orderSelect.value = order;
-    orderSelect.disabled = true;
-    orderSelect.style.pointerEvents = "none"; // prevent interaction
+    const amountField = document.querySelector('[name="amount"]');
+    const methodField = document.querySelector('[name="method"]');
 
-    document.querySelector('[name="amount"]').value = amount;
-    document.querySelector('[name="method"]').value = method;
-
-    //Add or update hidden edit_id field
-    let editIdInput = document.querySelector('input[name="edit_id"]');
-    if (!editIdInput) {
-      editIdInput = document.createElement("input");
-      editIdInput.type = "hidden";
-      editIdInput.name = "edit_id";
-      document.querySelector(".payment-form").appendChild(editIdInput);
+    if (paymentIdField) {
+        paymentIdField.value = paymentId || "";
+        paymentIdField.readOnly = true;
     }
-    editIdInput.value = button.getAttribute("data-id");
 
-    //Update form title
+    if (orderSelect) {
+        orderSelect.value = order || "";
+        orderSelect.disabled = true;
+        orderSelect.style.pointerEvents = "none";
+    }
+
+    if (amountField) amountField.value = amount || "";
+    if (methodField) methodField.value = method || "";
+
+    // Hidden edit_id
+    const paymentForm = document.querySelector(".payment-form");
+    let editIdInput = document.querySelector('input[name="edit_id"]');
+
+    if (!editIdInput) {
+        editIdInput = document.createElement("input");
+        editIdInput.type = "hidden";
+        editIdInput.name = "edit_id";
+        paymentForm.appendChild(editIdInput);
+    }
+
+    editIdInput.value = id || "";
+
+    // Update title
     const title = document.querySelector(".form-title");
     if (title) title.textContent = "Edit Payment";
 
-    //Open modal for editing
+    // Open modal
     const formContainer = document.querySelector(".payment-form-container");
     const overlay = document.getElementById("paymentModalOverlay");
+
     formContainer.classList.add("active");
     overlay.classList.add("active");
     document.body.style.overflow = "hidden";
-  });
 });
+
 
 //sort by id
 let paymentSortAscending = null;
@@ -395,9 +446,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${ p.date }</td>
                     <td>${ p.method }</td>
                     <td>
-                        <button type="button" class="edit-button" data-id="${ p.id }" data-payment_id="${ p.payment_id }"
-                        data-order="${ p.order.id }" data-amount="${ p.amount }" data-date="${ p.date }"
-                        data-method="${ p.method }" title="Edit Payment" aria-label="Edit Payment" style="margin-right:8px;">
+                      <div class="action-buttons">
+                        <button type="button" class="edit-button"
+                          data-id="${ p.id }"
+                          data-payment_id="${ p.payment_id }"
+                          data-order="${ p.order.id }"
+                          data-amount="${ p.amount }"
+                          data-date="${ p.date }"
+                          data-method="${ p.method }" 
+                          title="Edit Payment" aria-label="Edit Payment" style="margin-right:8px;">
                         <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px"
                             fill="#FFFFFF">
                             <path
@@ -413,6 +470,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             </svg>
                         </button>
                         </form>
+                      </div>
                     </td>
                 </tr>`;
             });

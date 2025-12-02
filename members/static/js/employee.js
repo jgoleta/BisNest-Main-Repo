@@ -33,17 +33,15 @@ function toggleForm() {
 
   if (isHidden) {
     resetEmployeeForm();//clear
+    window.openModal(formContainer, modalOverlay);
+  } else {
+    window.closeModal(formContainer, modalOverlay);
   }
-  formContainer.style.display = isHidden ? "block" : "none";
-  modalOverlay.style.display = isHidden ? "block" : "none";
 }
-
-
 
 if (closeBtn) {
   closeBtn.addEventListener("click", () => {
-    formContainer.style.display = "none";
-    modalOverlay.style.display = "none";
+    window.closeModal(formContainer, modalOverlay);
     resetEmployeeForm();
   });
 }
@@ -65,6 +63,7 @@ function openProfilePopup(employeeRow) {
   const joinDate = employeeRow.getAttribute("data-join-date");
 
   // Populate profile fields
+  document.querySelector(".delete-profile-button").dataset.id = id;
   document.getElementById("profile-id").textContent = id;
   document.getElementById("profile-name").textContent = name;
   document.getElementById("profile-position").textContent = position;
@@ -73,16 +72,18 @@ function openProfilePopup(employeeRow) {
   document.getElementById("profile-join-date").textContent = joinDate;
 
   // Set delete form action
-  deleteProfileForm.action = `/employee-info/delete/${id}/`;
+  // deleteProfileForm.action = `/delete-employee/${id}/`;
 
   // Show popup
-  profileContainer.style.display = "block";
-  profileModalOverlay.style.display = "block";
+  if (profileContainer && profileModalOverlay) {
+    window.openModal(profileContainer, profileModalOverlay);
+  }
 }
 
 function closeProfilePopup() {
-  profileContainer.style.display = "none";
-  profileModalOverlay.style.display = "none";
+  if (profileContainer && profileModalOverlay) {
+    window.closeModal(profileContainer, profileModalOverlay);
+  }
 }
 
 // Handle row clicks to open profile
@@ -115,8 +116,7 @@ if (editProfileBtn) {
     closeProfilePopup();
 
     // Open edit form
-    formContainer.style.display = "block";
-    modalOverlay.style.display = "block";
+    window.openModal(formContainer, modalOverlay);
 
     const formTitle = document.getElementById("formTitle");
     if (formTitle) formTitle.textContent = "Edit Employee";
@@ -145,15 +145,6 @@ if (editProfileBtn) {
 }
 
 // Handle delete button in profile with confirmation
-if (deleteProfileForm) {
-  deleteProfileForm.addEventListener("submit", function(e) {
-    const employeeName = document.getElementById("profile-name").textContent;
-    if (!confirm(`Are you sure you want to delete employee "${employeeName}"? This action cannot be undone.`)) {
-      e.preventDefault();
-      return false;
-    }
-  });
-}
 
 
 function searchEmployee() {

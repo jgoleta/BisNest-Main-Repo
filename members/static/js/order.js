@@ -7,6 +7,63 @@ document.addEventListener("DOMContentLoaded", () => {
   const sortBtn = document.getElementById("orderIdSortBtn");
   const orderTableBody = document.querySelector("#order-table tbody");
 
+  // Check for cart data and auto-fill form when modal is opened
+  function fillFormWithCartData() {
+    const cartData = localStorage.getItem('pendingOrderCart');
+    if (!cartData) return;
+    
+    try {
+      const cart = JSON.parse(cartData);
+      if (cart.length === 0) return;
+      
+      // Use the first item for form pre-fill
+      const firstItem = cart[0];
+      
+      // Set customer, employee, and product
+      const customerInput = document.querySelector('[name="customer"]');
+      const employeeInput = document.querySelector('[name="employee"]');
+      const productInput = document.querySelector('[name="product"]');
+      const quantityInput = document.querySelector('[name="quantity"]');
+      
+      if (customerInput && firstItem.customerId) {
+        customerInput.value = firstItem.customerId;
+        // Trigger change event to ensure form validation
+        customerInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      if (employeeInput && firstItem.employeeId) {
+        employeeInput.value = firstItem.employeeId;
+        employeeInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      if (productInput && firstItem.productId) {
+        productInput.value = firstItem.productId;
+        productInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      if (quantityInput && firstItem.quantity) {
+        quantityInput.value = firstItem.quantity;
+        quantityInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      
+      // Store cart data for form submission (to create all orders)
+      const cartDataInput = document.querySelector('input[name="cart_data"]');
+      if (!cartDataInput) {
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'cart_data';
+        hiddenInput.value = cartData;
+        orderForm.appendChild(hiddenInput);
+      } else {
+        cartDataInput.value = cartData;
+      }
+      
+      // Show notification
+      if (window.showNotification) {
+        showNotification(`Loaded ${cart.length} item(s) from cart. Form pre-filled with first item.`);
+      }
+    } catch (err) {
+      console.error('Error loading cart data:', err);
+    }
+  }
+
   //reset form
   function resetOrderForm() {
     if (!orderForm) return;
@@ -14,23 +71,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const editIdInput = document.querySelector('input[name="edit_id"]');
     if (editIdInput) editIdInput.remove();
+    
+    const cartDataInput = document.querySelector('input[name="cart_data"]');
+    if (cartDataInput) cartDataInput.remove();
 
     const title = document.getElementById("formTitle");
     if (title) title.textContent = "Order Information";
   }
+  
+  // Cart data will be loaded when user opens the form manually
 
   //open modal
   function openModal() {
-    formContainer.style.display = "block";
-    modalOverlay.style.display = "block";
-    document.body.style.overflow = "hidden";
+    window.openModal(formContainer, modalOverlay);
   }
 
   //close modal
   function closeModal() {
-    formContainer.style.display = "none";
-    modalOverlay.style.display = "none";
-    document.body.style.overflow = "auto";
+    window.closeModal(formContainer, modalOverlay);
   }
 
   if (newBtn) {
@@ -51,13 +109,15 @@ document.addEventListener("DOMContentLoaded", () => {
             if (num > maxNum) maxNum = num;
           });
           const nextNum = maxNum + 1;
-          orderIdInput.value = `O${nextNum.toString().padStart(4, "0")}`;
+          orderIdInput.value = `ORD${nextNum.toString().padStart(4, "0")}`;
         } else {
-          orderIdInput.value = "O0001";
+          orderIdInput.value = "ORD0001";
         }
       }
 
       openModal();
+      // Auto-fill form with cart data if available
+      fillFormWithCartData();
     });
   }
 
@@ -214,9 +274,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  //form submut
+  //form submit
   if (orderForm) {
-    orderForm.addEventListener("submit", () => {
+    orderForm.addEventListener("submit", function(e) {
+      // Check if cart data exists - if so, the backend will handle multiple orders
+      const cartDataInput = document.querySelector('input[name="cart_data"]');
+      if (cartDataInput && cartDataInput.value) {
+        // Cart data will be processed by backend
+        // Clear cart after submission
+        localStorage.removeItem('productCart');
+        localStorage.removeItem('pendingOrderCart');
+      }
+      
       // prevent multiple clicks
       const btns = orderForm.querySelectorAll("button[type='submit']");
       btns.forEach((b) => (b.disabled = true));

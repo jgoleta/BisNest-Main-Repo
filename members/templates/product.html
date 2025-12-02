@@ -6,11 +6,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Product | BisNest</title>
+  <link rel="icon" type="image/png" href="https://i.imgur.com/NFhTf4v.png">  
   <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
   <link rel="stylesheet" href="{% static 'css/productStyle.css' %}">
   <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
   <script src="{% static 'js/darkMode.js' %}" defer></script>
   <script src="{% static 'js/sidebar.js' %}" defer></script>
+  <script src="{% static 'js/notify.js' %}" defer></script>
+  <script src="{% static 'js/modal.js' %}" defer></script>
   <script src="{% static 'js/product.js' %}" defer></script>
 </head>
 
@@ -24,8 +27,10 @@
 
     <div class="container">
       <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search Product Name:" onkeyup="searchCustomer()">
         <div class="button-container">
+          <button id="view-cart-btn" class="cart-button" style="margin-right: 10px;">
+            Cart (<span id="cart-count">0</span>)
+          </button>
           <button id="add-product-btn" class="toggle-form-button">+ New</button>
         </div>
       </div>
@@ -37,12 +42,24 @@
         <div class="product-display">
           {% endif %}
 
-          <button class="product-button-style" data-id="{{ product.product_id }}" data-name="{{ product.name }}"
-            data-price="{{ product.price }}" data-stock="{{ product.stock }}"
-            data-image="{% if product.image %}{{ product.image.url }}{% endif %}">
-            <p class="product-price-label">₱{{ product.price|floatformat:2 }}</p>
-            <p class="product-price-name">{{ product.name }}</p>
-          </button>
+          <div class="product-card-wrapper">
+            <button class="product-button-style" data-id="{{ product.product_id }}" data-db-id="{{ product.id }}" data-name="{{ product.name }}"
+              data-price="{{ product.price }}" data-stock="{{ product.stock }}"
+              data-image="{% if product.image %}{{ product.image.url }}{% endif %}">
+              <p class="product-price-label">₱{{ product.price|floatformat:2 }}</p>
+              <p class="product-price-name">{{ product.name }}</p>
+              <p class="product-stock-label">Stock: {{ product.stock }}</p>
+            </button>
+            <div class="product-actions">
+              <button class="product-edit-btn" data-id="{{ product.product_id }}" data-db-id="{{ product.id }}" data-name="{{ product.name }}"
+                data-price="{{ product.price }}" data-stock="{{ product.stock }}"
+                data-image="{% if product.image %}{{ product.image.url }}{% endif %}" title="Edit Product">
+                <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#FFFFFF">
+                  <path d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
+                </svg>
+              </button>
+            </div>
+          </div>
 
           {% if forloop.counter0|add:1|divisibleby:6 or forloop.last %}
         </div>
@@ -59,8 +76,13 @@
           <span class="close-add-modal close-button">&times;</span>
           <h2>Add Product</h2>
           <div class="modal-divider"></div>
-          <form id="product-form" method="post" enctype="multipart/form-data">
+          <form id="product-form" method="POST">
             {% csrf_token %}
+            {% if form.errors %}
+                <div class="error-box">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
             <div class="form-row">
               <div class="form-group">
                 <label for="{{ form.name.id_for_label }}">Product Name:</label>
@@ -105,6 +127,54 @@
           <div class="modal-actions">
             <button id="save-price-btn" class="submit-button">Save</button>
             <button id="delete-modal-btn" class="remove-button">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="add-to-cart-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content">
+          <span class="close-button" id="close-cart-modal">&times;</span>
+          <h2>Add to Cart</h2>
+          <div class="modal-divider"></div>
+          <form id="add-to-cart-form">
+            <div class="form-group">
+              <label for="cart-product">Product:</label>
+              <input type="text" id="cart-product" readonly>
+              <input type="hidden" id="cart-product-id">
+            </div>
+            <div class="form-group">
+              <label for="cart-customer">Customer:</label>
+              <select id="cart-customer" required>
+                <option value="">Select Customer</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cart-employee">Employee:</label>
+              <select id="cart-employee" required>
+                <option value="">Select Employee</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cart-quantity">Quantity:</label>
+              <input type="number" id="cart-quantity" min="1" value="1" required>
+            </div>
+            <div class="modal-actions">
+              <button type="submit" class="submit-button">Add to Cart</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div id="cart-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content" style="max-width: 700px;">
+          <span class="close-button" id="close-cart-view-modal">&times;</span>
+          <h2>Shopping Cart</h2>
+          <div class="modal-divider"></div>
+          <div id="cart-items-container">
+            <p style="text-align: center; color: rgba(0,0,0,0.5);">Cart is empty</p>
+          </div>
+          <div class="modal-actions" style="margin-top: 20px;">
+            <button type="button" class="submit-button" id="place-order-btn" style="display: none;">Place Order</button>
           </div>
         </div>
       </div>

@@ -48,6 +48,16 @@
 /* Cards & Containers */
 .darkmode .card,
 .darkmode .stat-card,
+.darkmode .chart-container {
+  background: var(--surface) !important;
+  border-color: var(--card-border) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+.darkmode .chart-container h2 {
+  color: var(--text-clr) !important;
+}
+
 .darkmode .chart-container,
 .darkmode .container-box,
 .darkmode .dashboard-container,
@@ -55,6 +65,10 @@
   background: var(--card-bg) !important;
   border: 1px solid var(--card-border) !important;
   color: var(--text-clr) !important;
+}
+
+.darkmode .chart-container h2 {
+  color: var(--text-clr, #f8fafc) !important;
 }
 
 /* Tables */
@@ -209,18 +223,6 @@
   color: #a5b4fc !important;
 }
 
-.darkmode .btn {
-  background: var(--accent-clr) !important;
-  color: #fff !important;
-  border: 1px solid var(--accent-clr) !important;
-}
-
-.darkmode .btn:hover {
-  background: transparent !important;
-  color: var(--accent-clr) !important;
-  border: 2px solid var(--accent-clr) !important;
-}
-
 .darkmode .toggle-panel {
   background: #1e293b !important;
   color: var(--text-clr) !important;
@@ -267,6 +269,14 @@
   background: var(--primary-color) !important;
   border-bottom: 1px solid var(--line-clr) !important;
   color: var(--text-clr) !important;
+}
+
+/* Blurred header in dark mode when modal is open */
+.darkmode body.modal-open .header-container,
+.darkmode body.modal-open .app-header {
+  filter: blur(4px);
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 /* Table Wrapper */
@@ -563,18 +573,37 @@
 
 /* Product Page */
 .darkmode .product-button-style {
-  background: var(--card-bg) !important;
-  border: 1px solid var(--card-border) !important;
+  background: linear-gradient(135deg, var(--surface) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
+  border: 1.5px solid var(--card-border) !important;
   color: var(--text-clr) !important;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
 }
 
 .darkmode .product-button-style:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
   border-color: var(--accent-clr) !important;
+  background: linear-gradient(135deg, var(--surface) 0%, rgba(30, 41, 59, 1) 100%) !important;
 }
 
 .darkmode .product-price-label {
+  color: var(--accent-clr) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+.darkmode .product-price-name {
   color: var(--text-clr) !important;
+}
+
+.darkmode .product-stock-label {
+  color: rgba(255, 255, 255, 0.7) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Order Page */
@@ -807,6 +836,90 @@
 .darkmode .product-form textarea {
   background: #0f172a !important;
   border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+/* Product Page Modals */
+.darkmode .modal {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(3px) !important;
+}
+
+.darkmode .modal-content {
+  background: var(--surface) !important;
+  color: var(--text-clr) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4) !important;
+}
+
+.darkmode .modal-content h2 {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .modal-content p {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .modal-content .form-group label {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .modal-content .form-group input,
+.darkmode .modal-content .form-group textarea,
+.darkmode .modal-content .form-group select {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: var(--text-clr) !important;
+}
+
+.darkmode .modal-content .form-group input::placeholder,
+.darkmode .modal-content .form-group textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.darkmode .modal-content .form-group input:hover,
+.darkmode .modal-content .form-group textarea:hover,
+.darkmode .modal-content .form-group select:hover {
+  border-color: var(--accent-clr) !important;
+  background: rgba(129, 140, 248, 0.05) !important;
+}
+
+.darkmode .modal-content .form-group input:focus,
+.darkmode .modal-content .form-group textarea:focus,
+.darkmode .modal-content .form-group select:focus {
+  border-color: var(--accent-clr) !important;
+  background: #0f172a !important;
+  outline: 2px solid var(--accent-clr) !important;
+  outline-offset: 2px;
+}
+
+.darkmode .modal-content .form-group input:disabled,
+.darkmode .modal-content .form-group textarea:disabled {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: var(--card-border) !important;
+  color: var(--seconday-text-clr) !important;
+}
+
+.darkmode .modal-divider {
+  border-top: 1px solid var(--card-border) !important;
+}
+
+.darkmode .modal-content .modal-actions {
+  border-top: 1px solid var(--card-border) !important;
+}
+
+.darkmode .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(3px) !important;
+}
+
+/* Product Page Modal Close Button */
+.darkmode .modal-content .close-button {
+  color: var(--text-clr) !important;
+}
+
+.darkmode .modal-content .close-button:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
   color: var(--text-clr) !important;
 }
 

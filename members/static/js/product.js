@@ -4,24 +4,104 @@ const closeAddModal = document.querySelector(".close-add-modal");
 const addProductForm = document.getElementById("add-product-form");
 const modalOverlay = document.querySelector(".modal-overlay");
 
-// Helper function to toggle modal and overlay
-function toggleModal(modal, isOpen) {
-  modal.style.display = isOpen ? "block" : "none";
-  if (modalOverlay) {
-    modalOverlay.style.display = isOpen ? "block" : "none";
+if (addProductBtn) {
+  addProductBtn.addEventListener("click", () => {
+    window.openModal(addProductModal, modalOverlay);
+  });
+}
+if (closeAddModal) {
+  closeAddModal.addEventListener("click", () => {
+    window.closeModal(addProductModal, modalOverlay);
+    if (addProductForm) addProductForm.reset();
+  });
+}
+// Cart functionality
+let cart = JSON.parse(localStorage.getItem('productCart')) || [];
+let customers = [];
+let employees = [];
+
+// Initialize cart count
+function updateCartCount() {
+  const cartCount = document.getElementById('cart-count');
+  if (cartCount) {
+    cartCount.textContent = cart.length;
   }
 }
 
-addProductBtn.addEventListener("click", () => {
-  toggleModal(addProductModal, true);
+// Load customers and employees for dropdowns
+function loadCustomersAndEmployees() {
+  // Load customers
+  fetch('/customer/customers_json/')
+    .then(response => response.json())
+    .then(data => {
+      customers = data;
+      const customerSelect = document.getElementById('cart-customer');
+      if (customerSelect) {
+        customerSelect.innerHTML = '<option value="">Select Customer</option>';
+        data.forEach(customer => {
+          const option = document.createElement('option');
+          option.value = customer.id;
+          option.textContent = `${customer.customer_id} - ${customer.name}`;
+          customerSelect.appendChild(option);
+        });
+      }
+    })
+    .catch(err => console.error('Error loading customers:', err));
+
+  // Load employees
+  fetch('/employees_json/')
+    .then(response => response.json())
+    .then(data => {
+      employees = data;
+      const employeeSelect = document.getElementById('cart-employee');
+      if (employeeSelect) {
+        employeeSelect.innerHTML = '<option value="">Select Employee</option>';
+        data.forEach(employee => {
+          const option = document.createElement('option');
+          option.value = employee.id;
+          option.textContent = `${employee.employee_id || ''} - ${employee.name}`;
+          employeeSelect.appendChild(option);
 });
-closeAddModal.addEventListener("click", () => {
-  toggleModal(addProductModal, false);
-  addProductForm.reset();
-});
+      }
+    })
+    .catch(err => console.error('Error loading employees:', err));
+}
+
+// Open add to cart modal
+function openAddToCartModal(product, btn) {
+  const addToCartModal = document.getElementById('add-to-cart-modal');
+  const productInput = document.getElementById('cart-product');
+  const productIdInput = document.getElementById('cart-product-id');
+  
+  // Use database ID for ForeignKey
+  const dbId = btn.dataset.dbId || product.id;
+  
+  if (productInput && productIdInput) {
+    productInput.value = product.name;
+    productIdInput.value = dbId;
+  }
+  
+  // Reset form
+  const form = document.getElementById('add-to-cart-form');
+  if (form) {
+    form.reset();
+    productInput.value = product.name;
+    productIdInput.value = dbId;
+    document.getElementById('cart-quantity').value = 1;
+  }
+  
+  window.openModal(addToCartModal, modalOverlay);
+}
+
 // Attach click handlers to server-rendered product buttons
 document.querySelectorAll(".product-button-style").forEach((btn) => {
   btn.addEventListener("click", function (e) {
+    // Don't trigger if clicking on edit button
+    if (e.target.closest('.product-edit-btn')) {
+      return;
+    }
+    
+    // Regular click for add to cart
     document
       .querySelectorAll(".product-button-style.selected")
       .forEach((el) => el.classList.remove("selected"));
@@ -34,8 +114,33 @@ document.querySelectorAll(".product-button-style").forEach((btn) => {
         image: btn.dataset.image,
         stock: btn.dataset.stock,
       };
-      openEditModal(product, btn);
+      openAddToCartModal(product, btn);
     }
+  });
+});
+
+// Attach click handlers to edit buttons
+document.querySelectorAll(".product-edit-btn").forEach((btn) => {
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation(); // Prevent triggering product button click
+    
+    // Find the associated product button
+    const productBtn = btn.closest('.product-card-wrapper')?.querySelector('.product-button-style');
+    if (!productBtn) return;
+    
+    document
+      .querySelectorAll(".product-button-style.selected")
+      .forEach((el) => el.classList.remove("selected"));
+    productBtn.classList.add("selected");
+    
+    const product = {
+      id: productBtn.dataset.id,
+      name: productBtn.dataset.name,
+      price: productBtn.dataset.price,
+      image: productBtn.dataset.image,
+      stock: productBtn.dataset.stock,
+    };
+    openEditModal(product, productBtn);
   });
 });
 
@@ -43,40 +148,42 @@ const modal = document.getElementById("product-modal");
 const productNameEl = document.getElementById("modal-product-name");
 const productIdEl = document.getElementById("modal-product-id");
 const productPriceEl = document.getElementById("modal-product-price");
+const modalNameInput = document.getElementById("modal-product-name-input");
+const modalStockInput = document.getElementById("modal-product-stock");
 const closeEditModalBtn = document.getElementById("close-edit-modal");
 let currentButton = null;
 
 function openEditModal(product, btn) {
+  if (!productNameEl || !modalNameInput || !productIdEl || !modalStockInput || !productPriceEl) {
+    console.error("Modal elements not found");
+    return;
+  }
   productNameEl.textContent = product.name;
   modalNameInput.value = product.name;
-  productIdEl.textContent = product.id;
+  productIdEl.textContent = product.id; // This is the product_id (e.g., "P001")
   modalStockInput.value = btn.dataset.stock || "0";
   productPriceEl.value = product.price;
-  toggleModal(modal, true);
+  window.openModal(modal, modalOverlay);
   currentButton = btn;
 }
 
+if (closeEditModalBtn) {
 closeEditModalBtn.addEventListener("click", () => {
-  toggleModal(modal, false);
+    window.closeModal(modal, modalOverlay);
 });
-
-// Close modal when clicking on overlay
-if (modalOverlay) {
-  document.addEventListener("click", (event) => {
-    if (event.target === modalOverlay && modal.style.display === "block") {
-      toggleModal(modal, false);
-    }
-  });
 }
+
+// Modal overlay click handled by centralized modal.js
+const saveBtn = document.getElementById("save-price-btn");
+
+if (productPriceEl && saveBtn) {
 productPriceEl.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     e.preventDefault();
     saveBtn.click();
   }
 });
-const saveBtn = document.getElementById("save-price-btn");
-const modalNameInput = document.getElementById("modal-product-name-input");
-const modalStockInput = document.getElementById("modal-product-stock");
+}
 
 // Read CSRF token from cookie
 function getCookie(name) {
@@ -97,7 +204,13 @@ function getCookie(name) {
 const csrftoken = getCookie("csrftoken");
 
 // Save/update via AJAX to server endpoint
+if (saveBtn) {
 saveBtn.addEventListener("click", () => {
+    if (!modalNameInput || !modalStockInput || !productPriceEl || !productIdEl) {
+      showNotification("Error: Form elements not found", true);
+      return;
+    }
+
   const newName = modalNameInput.value.trim();
   const newStock = modalStockInput.value.trim();
   const newPrice = productPriceEl.value.trim();
@@ -119,7 +232,7 @@ saveBtn.addEventListener("click", () => {
     product_id: productIdEl.textContent,
     name: newName,
     stock: parseInt(newStock),
-    price: parseFloat(newPrice).toFixed(2),
+    price: parseFloat(newPrice),
   };
 
   fetch("/product/update/", {
@@ -139,28 +252,37 @@ saveBtn.addEventListener("click", () => {
             ".product-price-label"
           );
           const nameLabel = currentButton.querySelector(".product-price-name");
+            const stockLabel = currentButton.querySelector(".product-stock-label");
           if (priceLabel)
-            priceLabel.textContent = "₱" + parseFloat(data.price).toFixed(2);
-          if (nameLabel) nameLabel.textContent = data.name;
+              priceLabel.textContent = "₱" + parseFloat(data.price || payload.price).toFixed(2);
+            if (nameLabel) nameLabel.textContent = data.name || payload.name;
+            if (stockLabel) stockLabel.textContent = `Stock: ${data.stock || payload.stock}`;
           // Update button's data attributes
-          currentButton.dataset.price = data.price;
-          currentButton.dataset.name = data.name;
-          currentButton.dataset.stock = data.stock;
+            currentButton.dataset.price = data.price || payload.price;
+            currentButton.dataset.name = data.name || payload.name;
+            currentButton.dataset.stock = data.stock || payload.stock;
         }
         showNotification("Product updated successfully!");
       } else {
         showNotification("Update failed: " + (data.error || "Unknown"), true);
       }
-      toggleModal(modal, false);
+        window.closeModal(modal, modalOverlay);
     })
     .catch((err) => {
       showNotification("Update failed: " + err.message, true);
-      toggleModal(modal, false);
+        window.closeModal(modal, modalOverlay);
     });
 });
+}
 
 const deleteModalBtn = document.getElementById("delete-modal-btn");
+if (deleteModalBtn) {
 deleteModalBtn.addEventListener("click", () => {
+    if (!modalNameInput || !productIdEl) {
+      showNotification("Error: Form elements not found", true);
+      return;
+    }
+
   const productName = modalNameInput.value;
   if (
     !confirm(
@@ -184,12 +306,18 @@ deleteModalBtn.addEventListener("click", () => {
       if (data.success) {
         // remove from DOM - handle both button and its row wrapper if empty
         if (currentButton) {
-          const row = currentButton.parentElement;
-          currentButton.remove();
+            const wrapper = currentButton.closest('.product-card-wrapper');
+            const productDisplay = wrapper?.closest('.product-display');
+            
+            if (wrapper) {
+              wrapper.remove();
+            }
+            
           // If this was the last product in the row, remove the row too
-          if (row && row.children.length === 0) {
-            row.remove();
+            if (productDisplay && productDisplay.querySelectorAll('.product-card-wrapper').length === 0) {
+              productDisplay.remove();
           }
+            
           // If no more products, show the "No products" message
           const productList = document.getElementById("product-list");
           if (
@@ -203,12 +331,184 @@ deleteModalBtn.addEventListener("click", () => {
       } else {
         showNotification("Delete failed: " + (data.error || "Unknown"), true);
       }
-      toggleModal(modal, false);
+        window.closeModal(modal, modalOverlay);
     })
     .catch((err) => {
       showNotification("Delete failed: " + err.message, true);
-      toggleModal(modal, false);
+        window.closeModal(modal, modalOverlay);
+      });
+  });
+}
+
+// Add to cart form submission
+const addToCartForm = document.getElementById('add-to-cart-form');
+if (addToCartForm) {
+  addToCartForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const productId = document.getElementById('cart-product-id').value;
+    const productName = document.getElementById('cart-product').value;
+    const customerId = document.getElementById('cart-customer').value;
+    const employeeId = document.getElementById('cart-employee').value;
+    const quantity = parseFloat(document.getElementById('cart-quantity').value);
+    
+    if (!customerId || !employeeId) {
+      alert('Please select both customer and employee');
+      return;
+    }
+    
+    // Find product price - search by db-id first, then fallback to product_id
+    let productBtn = document.querySelector(`[data-db-id="${productId}"]`);
+    if (!productBtn) {
+      productBtn = document.querySelector(`[data-id="${productId}"]`);
+    }
+    const price = parseFloat(productBtn ? productBtn.dataset.price : 0);
+    
+    // Find customer and employee names
+    const customer = customers.find(c => c.id == customerId);
+    const employee = employees.find(e => e.id == employeeId);
+    
+    const cartItem = {
+      productId: productId,
+      productName: productName,
+      customerId: customerId,
+      customerName: customer ? customer.name : '',
+      employeeId: employeeId,
+      employeeName: employee ? employee.name : '',
+      quantity: quantity,
+      price: price,
+      amount: price * quantity
+    };
+    
+    cart.push(cartItem);
+    localStorage.setItem('productCart', JSON.stringify(cart));
+    updateCartCount();
+    
+    const addToCartModal = document.getElementById('add-to-cart-modal');
+    if (addToCartModal) window.closeModal(addToCartModal, modalOverlay);
+    showNotification(`${productName} added to cart!`);
+  });
+}
+
+// Cart modal handlers
+const viewCartBtn = document.getElementById('view-cart-btn');
+const cartModal = document.getElementById('cart-modal');
+const closeCartViewModal = document.getElementById('close-cart-view-modal');
+const closeCartBtn = document.getElementById('close-cart-btn');
+const cancelCartBtn = document.getElementById('cancel-cart-btn');
+const placeOrderBtn = document.getElementById('place-order-btn');
+
+if (viewCartBtn) {
+  viewCartBtn.addEventListener('click', function() {
+    displayCart();
+    window.openModal(cartModal, modalOverlay);
     });
+}
+
+if (closeCartViewModal) {
+  closeCartViewModal.addEventListener('click', function() {
+    window.closeModal(cartModal, modalOverlay);
+  });
+}
+
+if (closeCartBtn) {
+  closeCartBtn.addEventListener('click', function() {
+    window.closeModal(cartModal, modalOverlay);
+  });
+}
+
+if (cancelCartBtn) {
+  cancelCartBtn.addEventListener('click', function() {
+    const addToCartModal = document.getElementById('add-to-cart-modal');
+    if (addToCartModal) window.closeModal(addToCartModal, modalOverlay);
+  });
+}
+
+const closeCartModalBtn = document.getElementById('close-cart-modal');
+if (closeCartModalBtn) {
+  closeCartModalBtn.addEventListener('click', function() {
+    const addToCartModal = document.getElementById('add-to-cart-modal');
+    if (addToCartModal) window.closeModal(addToCartModal, modalOverlay);
+  });
+}
+
+// Display cart items
+function displayCart() {
+  const container = document.getElementById('cart-items-container');
+  if (!container) return;
+  
+  if (cart.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: rgba(0,0,0,0.5);">Cart is empty</p>';
+    if (placeOrderBtn) placeOrderBtn.style.display = 'none';
+    return;
+  }
+  
+  let html = '<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">';
+  html += '<thead><tr style="background: rgba(0,0,0,0.05); border-bottom: 2px solid rgba(0,0,0,0.1);">';
+  html += '<th style="padding: 12px; text-align: left;">Product</th>';
+  html += '<th style="padding: 12px; text-align: left;">Customer</th>';
+  html += '<th style="padding: 12px; text-align: left;">Employee</th>';
+  html += '<th style="padding: 12px; text-align: right;">Qty</th>';
+  html += '<th style="padding: 12px; text-align: right;">Amount</th>';
+  html += '<th style="padding: 12px; text-align: center;">Action</th>';
+  html += '</tr></thead><tbody>';
+  
+  let total = 0;
+  cart.forEach((item, index) => {
+    total += item.amount;
+    html += `<tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">`;
+    html += `<td style="padding: 12px;">${item.productName}</td>`;
+    html += `<td style="padding: 12px;">${item.customerName}</td>`;
+    html += `<td style="padding: 12px;">${item.employeeName}</td>`;
+    html += `<td style="padding: 12px; text-align: right;">${item.quantity}</td>`;
+    html += `<td style="padding: 12px; text-align: right;">₱${item.amount.toFixed(2)}</td>`;
+    html += `<td style="padding: 12px; text-align: center;">`;
+    html += `<button class="remove-cart-item" data-index="${index}" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;">Remove</button>`;
+    html += `</td></tr>`;
+  });
+  
+  html += '</tbody></table>';
+  html += `<div style="text-align: right; padding: 12px; border-top: 2px solid rgba(0,0,0,0.1);">`;
+  html += `<strong>Total: ₱${total.toFixed(2)}</strong>`;
+  html += `</div>`;
+  
+  container.innerHTML = html;
+  
+  // Add remove handlers
+  container.querySelectorAll('.remove-cart-item').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const index = parseInt(this.dataset.index);
+      cart.splice(index, 1);
+      localStorage.setItem('productCart', JSON.stringify(cart));
+      updateCartCount();
+      displayCart();
+      showNotification('Item removed from cart');
+    });
+  });
+  
+  if (placeOrderBtn) placeOrderBtn.style.display = 'block';
+}
+
+// Place order - redirect to order page with cart data
+if (placeOrderBtn) {
+  placeOrderBtn.addEventListener('click', function() {
+    if (cart.length === 0) {
+      alert('Cart is empty');
+      return;
+    }
+    
+    // Store cart data for order page
+    localStorage.setItem('pendingOrderCart', JSON.stringify(cart));
+    
+    // Redirect to order page
+    window.location.href = '/order/';
+  });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  updateCartCount();
+  loadCustomersAndEmployees();
 });
 
 // Notification helper is provided globally by `notify.js` (window.showNotification)

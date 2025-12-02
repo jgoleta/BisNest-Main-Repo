@@ -43,25 +43,34 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("click", async (e) => {
-    if (e.target.closest(".delete-profile-button")) {
-        const btn = e.target.closest(".delete-profile-button");
-        const employeeId = btn.dataset.id;
+    const deleteBtn = e.target.closest(".delete-profile-button");
 
-        if (!confirm("Delete this employee?")) return;
+    if (!deleteBtn) return;   // CLICK NOT ON DELETE BUTTON — EXIT
 
-        const response = await fetch(`/delete-employee/${employeeId}/`, {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": csrfToken,
-            }
-        });
+    const employeeId = deleteBtn.dataset.id;
 
-        if (response.ok) {
-            const row = document.getElementById(`employee-${employeeId}`);
-            if (row) row.remove();
-        } else {
-            alert("Failed to delete.");
+    if (!employeeId) {
+        console.error("No data-id found on delete button.");
+        return;
+    }
+
+    if (!confirm("Delete this employee?")) return;
+
+    const csrfToken = getCookie("csrftoken");
+
+    const response = await fetch(`/delete-employee/${employeeId}/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": csrfToken
         }
+    });
+
+    if (response.ok) {
+        const row = document.getElementById(`employee-${employeeId}`);
+        if (row) row.remove();
+        closeProfilePopup();
+    } else {
+        alert("Failed to delete.");
     }
 });
 

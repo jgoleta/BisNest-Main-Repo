@@ -132,9 +132,9 @@ th {
 }
 
 .btn:hover {
-  background: var(--palette-accent-dark);
-  box-shadow: 0 8px 20px rgba(30, 41, 59, 0.3);
   transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+  background: linear-gradient(135deg, var(--palette-accent-dark) 0%, var(--palette-accent) 100%);
 }
 
 /* Footer */

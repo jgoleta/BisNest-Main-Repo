@@ -6,7 +6,7 @@ URL configuration for goletan1am project.
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth.decorators import login_required
 from backend import index
 from backend.controllers import employeesController, orderController, paymentsController, productController, deliveryController, suppliesController, salesreportController, customersController
@@ -14,6 +14,7 @@ from backend.controllers import employeesController, orderController, paymentsCo
 urlpatterns = [
     # --- Admin ---
     path('admin/', admin.site.urls),
+    path('accounts/', include("allauth.urls")),  # allauth URLs
 
     # --- public---
     path('', index.landingPage, name='landingPage'),
@@ -23,19 +24,19 @@ urlpatterns = [
     path('signup/', index.signupPage, name='signupPage'),
 
     # --- protected---
-    path('menu/', login_required(index.menuPage, login_url='/login/'), name='menu'),
-    path('employeesinfo/', login_required(employeesController.employeesInfoPage, login_url='/login/'), name='employeesinfo'),
-    path('history/', login_required(orderController.orderHistoryPage, login_url='/login/'), name='history'),
-    path('payment/', login_required(paymentsController.paymentPage, login_url='/login/'), name='payment'),
-    path('customer/', login_required(customersController.customerInfoPage, login_url='/login/'), name='customer'),
-    path('product/', login_required(productController.productPage, login_url='/login/'), name='product'),
-    path('delivery/', login_required(deliveryController.deliveryPage, login_url='/login/'), name='delivery'),
-    path('supply/', login_required(suppliesController.supplyPage, login_url='/login/'), name='supply'),
-    path('sales/', login_required(salesreportController.salesPage, login_url='/login/'), name='sales'),
-    path('about/', login_required(index.aboutPage, login_url='/login/'), name='about'),
-    path('admin-settings/', login_required(index.adminSettingsPage, login_url='/login/'), name='admin_settings'),
-    path('feedback/', login_required(index.feedbackPage, login_url='/login/'), name='feedback'),
-    path('profile/', login_required(index.profilePage, login_url='/login/'), name='profile'),
+    path('menu/', login_required(index.menuPage, login_url='/'), name='menu'),
+    path('employeesinfo/', login_required(employeesController.employeesInfoPage, login_url='/'), name='employeesinfo'),
+    path('history/', login_required(orderController.orderHistoryPage, login_url='/'), name='history'),
+    path('payment/', login_required(paymentsController.paymentPage, login_url='/'), name='payment'),
+    path('customer/', login_required(customersController.customerInfoPage, login_url='/'), name='customer'),
+    path('product/', login_required(productController.productPage, login_url='/'), name='product'),
+    path('delivery/', login_required(deliveryController.deliveryPage, login_url='/'), name='delivery'),
+    path('supply/', login_required(suppliesController.supplyPage, login_url='/'), name='supply'),
+    path('sales/', login_required(salesreportController.salesPage, login_url='/'), name='sales'),
+    path('about/', login_required(index.aboutPage, login_url='/'), name='about'),
+    path('admin-settings/', login_required(index.adminSettingsPage, login_url='/'), name='admin_settings'),
+    path('feedback/', login_required(index.feedbackPage, login_url='/'), name='feedback'),
+    path('profile/', login_required(index.profilePage, login_url='/'), name='profile'),
 
     # --- crud ---
     path('delete-employee/<int:employee_id>/', employeesController.delete_employee, name='delete_employee'),
@@ -54,7 +55,6 @@ urlpatterns = [
     path("employees_json/", employeesController.employees_json, name="employees_json"),
 
     # --- product AJAX endpoints ---
-    path('product/update/', productController.update_product, name='update_product'),
     path('product/update/', productController.update_product, name='update_product'),
     path('product/delete/', productController.delete_product, name='delete_product'),
 

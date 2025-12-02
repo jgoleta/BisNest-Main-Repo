@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/NFhTf4v.png">      
     <link rel="stylesheet" href="{% static 'css/profileStyle.css' %}">
     <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
     <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
@@ -16,109 +17,144 @@
     {% include 'sidebar.html' %}
     <main class="main-content">
         {% include 'header.html' with page="User Profile" %}
+
         <div class="profile-container">
+            <form method="POST" action="{% url 'profile' %}">
+                {% csrf_token %}
 
-            <div class="profile-header">
-                <img src="https://via.placeholder.com/120" class="profile-img" alt="Profile Photo">
-                <div>
-                    <h1 class="profile-name">Lance Tuazon</h1>
-                    <p class="profile-role">Registered User</p>
-                    <p class="member-since">Member since: January 2024</p>
-                </div>
-            </div>
-
-            <div class="profile-content">
-
-                <div class="profile-card">
-
-                    <h2 class="section-title">Personal Information</h2>
-
-                    <div class="field">
-                        <label>Full Name</label>
-                        <input type="text" value="Lance Tuazon">
+                <div class="profile-header">
+                    {% if google_picture_url %}
+                    <!-- Show Google profile picture -->
+                    <img src="{{ google_picture_url }}" class="profile-img" alt="Google Profile Photo">
+                    {% else %}
+                    <!-- Show default avatar with initials -->
+                    {% with initials=user.first_name|first|default:user.username|first|upper|default:"U" %}
+                    <div
+                        class="profile-avatar {% if initials == 'A' or initials == 'J' %}blue{% elif initials == 'B' or initials == 'K' %}green{% elif initials == 'C' or initials == 'L' %}purple{% else %}red{% endif %}">
+                        {{ initials }}
                     </div>
-
-                    <div class="field">
-                        <label>Email</label>
-                        <input type="email" value="lance@example.com">
+                    {% endwith %}
+                    {% endif %}
+                    <div>
+                        <h1 class="profile-name">{{ user.first_name|default:user.username|default:"User" }}</h1>
+                        <p class="profile-role">
+                            {% if google_picture_url %}
+                            <span style="color: #4285f4;">●</span> Google Account
+                            {% else %}
+                            <span style="color: var(--palette-accent);">●</span> Registered User
+                            {% endif %}
+                        </p>
+                        <p class="member-since">
+                            Member since: {{ user.date_joined|date:"F d, Y" }}
+                            {% if profile.last_updated %}
+                            • Last updated: {{ profile.last_updated|date:"F d, Y" }}
+                            {% endif %}
+                        </p>
                     </div>
-
-                    <div class="field">
-                        <label>Phone</label>
-                        <input type="text" value="+63 912 345 6789">
-                    </div>
-
-                    <div class="field">
-                        <label>Address</label>
-                        <input type="text" value="Naga City, Philippines">
-                    </div>
-
-                    <div class="field">
-                        <label>Birthday</label>
-                        <input type="date" value="2003-05-14">
-                    </div>
-
-                    <hr class="divider">
-
-                    <h2 class="section-title">Account Security</h2>
-
-                    <button class="secondary-btn">Change Password</button>
-                    <button class="secondary-btn">Manage Backup Codes</button>
-
-                    <div class="settings mt-15">
-                        <label class="switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
-                        <span class="setting-label">Two-Factor Authentication</span>
-                    </div>
-
                 </div>
 
-                <div class="profile-card">
+                <div class="profile-content">
+                    <div class="profile-card">
+                        <h2 class="section-title">Personal Information</h2>
 
-                    <h2 class="section-title">About Me</h2>
-                    <textarea class="about-text">Write something about yourself here...</textarea>
+                        <div class="field">
+                            <label>First Name</label>
+                            <input type="text" name="first_name"
+                                value="{{ form.first_name.value|default:user.first_name|default:'' }}"
+                                placeholder="First name">
+                        </div>
 
-                    <hr class="divider">
+                        <div class="field">
+                            <label>Last Name</label>
+                            <input type="text" name="last_name"
+                                value="{{ form.last_name.value|default:user.last_name|default:'' }}"
+                                placeholder="Last name">
+                        </div>
 
-                    <h2 class="section-title">Membership Details</h2>
-                    <p class="detail-row"><strong>Status:</strong> Active</p>
-                    <p class="detail-row"><strong>Plan:</strong> Standard Member</p>
-                    <p class="detail-row"><strong>Renewal Date:</strong> December 31, 2025</p>
-                    <button class="secondary-btn">Upgrade Plan</button>
+                        <div class="field">
+                            <label>Email</label>
+                            <input type="email" name="email"
+                                value="{{ form.email.value|default:user.email|default:'' }}"
+                                placeholder="Email address">
+                        </div>
 
-                    <hr class="divider">
+                        <div class="field">
+                            <label>Phone</label>
+                            <input type="text" name="phone" value="{{ form.phone.value|default:'' }}"
+                                placeholder="+63 912 345 6789">
+                        </div>
 
-                    <h2 class="section-title">Preferences</h2>
+                        <div class="field">
+                            <label>Address</label>
+                            <input type="text" name="address" value="{{ form.address.value|default:'' }}"
+                                placeholder="Naga City, Philippines">
+                        </div>
 
-                    <div class="settings">
-                        <label class="switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
-                        <span class="setting-label">Email Notifications</span>
+                        <div class="field">
+                            <label>Birthday</label>
+                            <input type="date" name="birthday" value="{{ form.birthday.value|default:'' }}">
+                        </div>
+
+                        <hr class="divider">
+
+                        <h2 class="section-title">Account Security</h2>
+
+                        <button type="button" class="secondary-btn">Change Password</button>
+                        <button type="button" class="secondary-btn">Manage Backup Codes</button>
+
+                        <div class="settings mt-15">
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <span class="setting-label">Two-Factor Authentication</span>
+                        </div>
+
                     </div>
 
-                    <div class="settings">
-                        <label class="switch">
-                            <input type="checkbox">
-                            <span class="slider"></span>
-                        </label>
-                        <span class="setting-label">SMS Alerts</span>
+                    <div class="profile-card">
+                        <h2 class="section-title">About Me</h2>
+                        <textarea class="about-text" name="bio"
+                            placeholder="Write something about yourself here...">{{ form.bio.value|default:'' }}</textarea>
+
+                        <hr class="divider">
+
+                        <h2 class="section-title">Membership Details</h2>
+                        <p class="detail-row"><strong>Status:</strong> Active</p>
+                        <p class="detail-row"><strong>Plan:</strong> Standard Member</p>
+                        <p class="detail-row"><strong>Renewal Date:</strong> December 31, 2025</p>
+                        <button type="button" class="secondary-btn">Upgrade Plan</button>
+
+                        <hr class="divider">
+
+                        <h2 class="section-title">Preferences</h2>
+
+                        <div class="settings">
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <span class="setting-label">Email Notifications</span>
+                        </div>
+
+                        <div class="settings">
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="setting-label">SMS Alerts</span>
+                        </div>
+
+                        <!-- Save Button -->
+                        <button type="submit" class="save-btn mt-20">Save Changes</button>
+
                     </div>
-
-
-                    <button class="save-btn mt-20">Save Changes</button>
-
                 </div>
-            </div>
+            </form>
 
             <div class="full-row">
-
                 <div class="profile-card full">
                     <h2 class="section-title">Recent Activity</h2>
-
                     <ul class="activity-list">
                         <li>You updated your profile information (Nov 27, 2025)</li>
                         <li>Logged in from Windows Chrome (Nov 26, 2025)</li>
@@ -129,7 +165,6 @@
 
                 <div class="profile-card full">
                     <h2 class="section-title">Login History</h2>
-
                     <table class="login-table">
                         <tr>
                             <th>Date</th>
@@ -159,9 +194,7 @@
                     <p class="warning-text">Deleting your account is permanent and cannot be undone.</p>
                     <button class="delete-acc-btn">Delete Account</button>
                 </div>
-
             </div>
-
         </div>
     </main>
 </body>

@@ -33,7 +33,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${c.date_added}</td>
                 </tr>`;
             });
-        });
+
+            if (window.showEmployeePage) {
+                window.showEmployeePage(1);
+            }
+          });
 });
 
 document.addEventListener("click", async (e) => {

@@ -31,12 +31,18 @@ function resetCustomerForm() {
 function toggleForm() {
   const isHidden = formContainer.style.display === "none" || formContainer.style.display === "";
   if (isHidden) resetCustomerForm();
-  formContainer.style.display = isHidden ? "block" : "none";
-  modalOverlay.style.display = isHidden ? "block" : "none";
+  if (isHidden) {
+    window.openModal(formContainer, modalOverlay);
+  } else {
+    window.closeModal(formContainer, modalOverlay);
+  }
 }
 
 if (closeBtn) {
-  closeBtn.addEventListener("click", toggleForm);
+  closeBtn.addEventListener("click", () => {
+    window.closeModal(formContainer, modalOverlay);
+    resetCustomerForm();
+  });
 }
 
 function getNextCustomerId() {
@@ -124,13 +130,15 @@ function openProfilePopup(customerRow) {
     deleteProfileForm.action = `/delete-customer/${recordId}/`;
   }
 
-  if (profileContainer) profileContainer.style.display = "block";
-  if (profileModalOverlay) profileModalOverlay.style.display = "block";
+  if (profileContainer && profileModalOverlay) {
+    window.openModal(profileContainer, profileModalOverlay);
+  }
 }
 
 function closeProfilePopup() {
-  if (profileContainer) profileContainer.style.display = "none";
-  if (profileModalOverlay) profileModalOverlay.style.display = "none";
+  if (profileContainer && profileModalOverlay) {
+    window.closeModal(profileContainer, profileModalOverlay);
+  }
 }
 
 // Handle row clicks to open profile
@@ -162,8 +170,7 @@ if (editProfileBtn) {
     closeProfilePopup();
 
     // Open edit form
-    formContainer.style.display = "block";
-    modalOverlay.style.display = "block";
+    window.openModal(formContainer, modalOverlay);
 
     document.getElementById("formTitle").textContent = "Edit Customer";
     const nameInput = document.querySelector('.customer-form input[name="name"]');
@@ -373,6 +380,8 @@ if (deleteProfileForm) {
 
     renderPaginationControls(totalPages);
   }
+  
+  window.showEmployeePage = showPage;
 
   function renderPaginationControls(totalPages) {
     paginationContainer.innerHTML = '';
@@ -445,3 +454,5 @@ if (deleteProfileForm) {
   setTimeout(() => { if (!document.readyState || document.readyState !== 'loading') showPage(1); }, 50);
 
 })();
+
+// Ajax for customer fetch and delete

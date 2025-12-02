@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="{% static 'css/headerStyle.css' %}">
 <script src="{% static 'js/header.js' %}" defer></script>
 <script src="{% static 'js/darkMode.js' %}" defer></script>
+<script src="{% static 'js/modal.js' %}" defer></script>
 
 <header class="app-header">
     <div class="header-left">
@@ -17,14 +18,26 @@
             <button class="user-button" id="userButton" aria-haspopup="true" aria-expanded="false"
                 aria-controls="userMenu">
                 <span class="user-avatar" aria-hidden="true">👤</span>
-                <span class="user-name">User</span>
+                <span class="user-name">{% if user.is_authenticated %}
+                {{ user.first_name|default:user.username|default:"User" }}
+            {% else %}
+                Guest
+            {% endif %}</span>
                 <span class="caret">▾</span>
             </button>
 
             <div class="user-menu" id="userMenu" role="menu" aria-labelledby="userButton" hidden>
                 <div class="user-info" role="none">
-                    <div class="user-info-name">User</div>
-                    <div class="user-info-email">user@example.com</div>
+                    <div class="user-info-name">{% if user.is_authenticated %}
+                    {{ user.first_name|default:user.username|default:"User" }}
+                {% else %}
+                    Guest
+                {% endif %}</div>
+                    <div class="user-info-email">{% if user.is_authenticated %}
+                    {{ user.email }}
+                {% else %}
+                    Not signed in
+                {% endif %}</div>
                 </div>
 
                 <button class="menu-item" id="profileBtn" role="menuitem" onclick="location.href='{% url 'profile' %}'">
@@ -70,7 +83,7 @@
                     </label>
                 </div>
                 <button class="menu-item danger" id="logoutBtn" role="menuitem"
-                    onclick="location.href='{% url 'landingPage' %}';">
+                    onclick="location.href='{% url 'account_logout' %}';">
                     <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="#ef4444">
                             <path
