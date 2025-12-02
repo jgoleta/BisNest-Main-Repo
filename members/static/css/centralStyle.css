@@ -717,7 +717,7 @@ main {
   font-size: 15px;
   background: #fff;
   cursor: pointer;
-  max-width: 250px;
+  width: 250px;
 }
 
 /* Action buttons wrapper to align edit/delete */

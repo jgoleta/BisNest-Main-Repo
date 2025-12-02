@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 					const meta = document.createElement('div');
 					meta.className = 'notification-item-meta';
-					meta.textContent = `Stock ${alert.stock}/${alert.original_stock} • ${alert.percent_remaining}% remaining`;
+					meta.textContent = `Stock: ${alert.stock}/100 • ${alert.percent_remaining}% remaining`;
 
 					item.appendChild(title);
 					item.appendChild(meta);

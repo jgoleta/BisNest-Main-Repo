@@ -180,8 +180,7 @@ body {
 }
 
 .notification-item.alert-low-stock {
-  border-left-color: #f97316;
-  background: rgba(248, 250, 252, 0.9);
+  border-left-color: #ee1010 !important;
 }
 
 .notification-item-title {

@@ -3,6 +3,35 @@ const formContainer = document.getElementById("formContainer");
 const modalOverlay = document.getElementById("modalOverlay");
 const closeBtn = document.getElementById("closeBtn");
 
+// Loading overlay
+function createLoadingOverlay() {
+  let overlay = document.getElementById("loadingOverlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "loadingOverlay";
+    overlay.className = "loading-overlay";
+    overlay.innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+  return overlay;
+}
+
+function showLoading() {
+  const overlay = createLoadingOverlay();
+  overlay.style.display = "flex";
+}
+
+function hideLoading() {
+  const overlay = document.getElementById("loadingOverlay");
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+}
 
 function resetEmployeeForm() {
   const nameInput = document.querySelector('.employee-form input[name="name"]');
@@ -46,6 +75,42 @@ if (closeBtn) {
   });
 }
 
+// Employee form submission handler - must be in DOMContentLoaded
+document.addEventListener("DOMContentLoaded", () => {
+  const employeeFormElement = document.querySelector(".employee-form");
+  if (employeeFormElement) {
+    employeeFormElement.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      showLoading();
+      
+      const formData = new FormData(employeeFormElement);
+      const actionUrl = employeeFormElement.action || window.location.href;
+      
+      try {
+        const response = await fetch(actionUrl, {
+          method: "POST",
+          body: formData,
+        });
+        
+        if (!response.ok) {
+          throw new Error("Form submission failed");
+        }
+        
+        setTimeout(() => {
+          hideLoading();
+          window.closeModal(formContainer, modalOverlay);
+          resetEmployeeForm();
+          window.location.reload();
+        }, 800);
+      } catch (error) {
+        hideLoading();
+        alert("Error submitting form. Please try again.");
+        console.error("Form submission error:", error);
+      }
+    });
+  }
+});
 
 // Employee Profile Popup
 const profileContainer = document.getElementById("profileContainer");
@@ -63,6 +128,7 @@ function openProfilePopup(employeeRow) {
   const joinDate = employeeRow.getAttribute("data-join-date");
 
   // Populate profile fields
+  document.querySelector(".delete-profile-button").dataset.id = id;
   document.getElementById("profile-id").textContent = id;
   document.getElementById("profile-name").textContent = name;
   document.getElementById("profile-position").textContent = position;
@@ -71,7 +137,7 @@ function openProfilePopup(employeeRow) {
   document.getElementById("profile-join-date").textContent = joinDate;
 
   // Set delete form action
-  deleteProfileForm.action = `/employee-info/delete/${id}/`;
+  // deleteProfileForm.action = `/delete-employee/${id}/`;
 
   // Show popup
   if (profileContainer && profileModalOverlay) {
@@ -144,15 +210,6 @@ if (editProfileBtn) {
 }
 
 // Handle delete button in profile with confirmation
-if (deleteProfileForm) {
-  deleteProfileForm.addEventListener("submit", function(e) {
-    const employeeName = document.getElementById("profile-name").textContent;
-    if (!confirm(`Are you sure you want to delete employee "${employeeName}"? This action cannot be undone.`)) {
-      e.preventDefault();
-      return false;
-    }
-  });
-}
 
 
 function searchEmployee() {

@@ -89,23 +89,23 @@ def get_products(request):
 
 @login_required
 def low_stock_products(request):
-    """
-    Return products whose current stock is at or below 30% of their original_stock baseline.
-    This powers the global stock alert notification in the header.
-    """
+
     alerts = []
+    BASELINE_STOCK = 100 
+    ALERT_THRESHOLD_PERCENT = 0.3
+    
     for p in Product.objects.all():
-        # Ensure we have a valid baseline and positive stock
-        if p.original_stock and p.original_stock > 0 and p.stock is not None and p.stock > 0:
-            threshold = max(int(p.original_stock * 0.3), 1)
-            if p.stock <= threshold:
-                percent = round((p.stock / p.original_stock) * 100, 1)
-                alerts.append({
-                    "product_id": p.product_id,
-                    "name": p.name,
-                    "stock": p.stock,
-                    "original_stock": p.original_stock,
-                    "percent_remaining": percent,
-                })
+        threshold = int(BASELINE_STOCK * ALERT_THRESHOLD_PERCENT)
+
+        if p.stock is not None and p.stock <= threshold:
+            percent = round((p.stock / BASELINE_STOCK) * 100, 1)
+            alerts.append({
+                "product_id": p.product_id,
+                "name": p.name,
+                "stock": p.stock,
+                "baseline_stock": BASELINE_STOCK,
+                "alert_threshold": threshold,
+                "percent_remaining": percent,
+            })
 
     return JsonResponse({"alerts": alerts}, safe=False)

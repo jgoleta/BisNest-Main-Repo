@@ -20,6 +20,36 @@ function closePaymentModal() {
     resetPaymentForm();
 }
 
+// Loading overlay - MUST be at module level
+function createLoadingOverlay() {
+  let overlay = document.getElementById("loadingOverlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "loadingOverlay";
+    overlay.className = "loading-overlay";
+    overlay.innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+  return overlay;
+}
+
+function showLoading() {
+  const overlay = createLoadingOverlay();
+  overlay.style.display = "flex";
+}
+
+function hideLoading() {
+  const overlay = document.getElementById("loadingOverlay");
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const closeBtn = document.getElementById("closeBtn");
     if (closeBtn) {
@@ -419,67 +449,128 @@ if (document.readyState === "loading") {
 // AJAX FETCH
 
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("payments_json/")
-        .then(response => response.json())
-        .then(orders => {
-            const tbody = document.getElementById("payments-body");
-            tbody.innerHTML = ""; // clear loading row
+  const paymentForm = document.querySelector(".payment-form");
+  if (paymentForm) {
+    
+    paymentForm.addEventListener("submit", async function(e) {
+      e.preventDefault();
 
-            if (orders.length === 0) {
-                tbody.innerHTML += `
-                    <tr>
-                        <td colspan="10" style="text-align:center; padding:20px;">
-                            No data available
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            orders.forEach(p => {
-                tbody.innerHTML += `
-                <tr id="payment-${p.id}">
-                    <td>${ p.payment_id }</td>
-                    <td>${ p.order.order_id }</td>
-                    <td>${ p.customer.name }</td>
-                    <td>₱${ p.amount }</td>
-                    <td>${ p.date }</td>
-                    <td>${ p.method }</td>
-                    <td>
-                      <div class="action-buttons">
-                        <button type="button" class="edit-button"
-                          data-id="${ p.id }"
-                          data-payment_id="${ p.payment_id }"
-                          data-order="${ p.order.id }"
-                          data-amount="${ p.amount }"
-                          data-date="${ p.date }"
-                          data-method="${ p.method }" 
-                          title="Edit Payment" aria-label="Edit Payment" style="margin-right:8px;">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px"
-                            fill="#FFFFFF">
-                            <path
-                            d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
-                        </svg>
-                        </button>
+      showLoading();
 
-                        <button type="submit" class="delete-button" data-id="${p.id}" aria-label="Delete Payment">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
-                            fill="#FFFFFF">
-                            <path
-                                d="M312-144q-29.7 0-50.85-21.15Q240-186.3 240-216v-480h-48v-72h192v-48h192v48h192v72h-48v479.57Q720-186 698.85-165T648-144H312Zm72-144h72v-336h-72v336Zm120 0h72v-336h-72v336Z" />
-                            </svg>
-                        </button>
-                        </form>
-                      </div>
-                    </td>
-                </tr>`;
-            });
+      // If some fields were disabled for editing (e.g. order select),
+      // disabled fields are not included in FormData. Temporarily enable
+      // them so their values are sent.
+      const disabledElems = Array.from(paymentForm.querySelectorAll('[disabled]'));
+      disabledElems.forEach(el => el.disabled = false);
 
-            if (window.showEmployeePage) {
-                window.showEmployeePage(1);
-            }
+      // Fallback: if order select is missing inside the form, try to
+      // add a hidden input with the current order value (if available).
+      let orderSelect = paymentForm.querySelector('[name="order"]');
+      if (!orderSelect) {
+        const editOrderId = document.querySelector('[name="edit_id"]')?.value || null;
+        // If the form is in edit mode we may obtain the order id from the
+        // currently visible disabled select elsewhere; attempt to grab it.
+        const externalOrder = document.querySelector('[data-order]')?.getAttribute('data-order') || null;
+        const orderVal = externalOrder || editOrderId;
+        if (orderVal) {
+          const hiddenOrder = document.createElement('input');
+          hiddenOrder.type = 'hidden';
+          hiddenOrder.name = 'order';
+          hiddenOrder.value = orderVal;
+          paymentForm.appendChild(hiddenOrder);
+        }
+      }
 
-          });
+      const formData = new FormData(paymentForm);
+      const actionUrl = paymentForm.getAttribute("action") || window.location.href;
+
+      try {
+        const response = await fetch(actionUrl, {
+          method: "POST",
+          body: formData,
+          redirect: "follow"
+        });
+
+        if (!response.ok) {
+          throw new Error("Form submission failed");
+        }
+
+        setTimeout(() => {
+          hideLoading();
+          closePaymentModal();
+          resetPaymentForm();
+          // Re-disable previously disabled elements for consistent UI state
+          disabledElems.forEach(el => el.disabled = true);
+          window.location.reload();
+        }, 800);
+      } catch (error) {
+        hideLoading();
+        alert("Error submitting form. Please try again.");
+        console.error("Form submission error:", error);
+      }
+    });
+  }
+
+  // Load payments table data
+  fetch("payments_json/")
+    .then(response => response.json())
+    .then(orders => {
+      const tbody = document.getElementById("payments-body");
+      tbody.innerHTML = ""; // clear loading row
+
+      if (orders.length === 0) {
+        tbody.innerHTML += `
+          <tr>
+            <td colspan="10" style="text-align:center; padding:20px;">
+              No data available
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      orders.forEach(p => {
+        tbody.innerHTML += `
+        <tr id="payment-${p.id}">
+          <td>${p.payment_id}</td>
+          <td>${p.order.order_id}</td>
+          <td>${p.customer.name}</td>
+          <td>₱${p.amount}</td>
+          <td>${p.date}</td>
+          <td>${p.method}</td>
+          <td>
+            <div class="action-buttons">
+              <button type="button" class="edit-button"
+                data-id="${p.id}"
+                data-payment_id="${p.payment_id}"
+                data-order="${p.order.id}"
+                data-amount="${p.amount}"
+                data-date="${p.date}"
+                data-method="${p.method}" 
+                title="Edit Payment" aria-label="Edit Payment" style="margin-right:8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px"
+                  fill="#FFFFFF">
+                  <path
+                  d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
+              </svg>
+              </button>
+
+              <button type="button" class="delete-button" data-id="${p.id}" aria-label="Delete Payment">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+                  fill="#FFFFFF">
+                  <path
+                      d="M312-144q-29.7 0-50.85-21.15Q240-186.3 240-216v-480h-48v-72h192v-48h192v48h192v72h-48v479.57Q720-186 698.85-165T648-144H312Zm72-144h72v-336h-72v336Zm120 0h72v-336h-72v336Z" />
+                  </svg>
+              </button>
+            </div>
+          </td>
+        </tr>`;
+      });
+
+      if (window.showEmployeePage) {
+        window.showEmployeePage(1);
+      }
+    });
 });
 
 document.addEventListener("click", async (e) => {
@@ -489,19 +580,33 @@ document.addEventListener("click", async (e) => {
 
         if (!confirm("Delete this payment?")) return;
 
-        const response = await fetch(`/delete-payment/${paymentId}/`, {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": csrfToken,
-            }
-        });
+        showLoading();
 
-        if (response.ok) {
-            // Remove row from table
-            const row = document.getElementById(`payment-${paymentId}`);
-            if (row) row.remove();
-        } else {
-            alert("Failed to delete.");
+        try {
+            const response = await fetch(`/delete-payment/${paymentId}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                }
+            });
+
+            if (response.ok) {
+                // Remove row from table
+                const row = document.getElementById(`payment-${paymentId}`);
+                if (row) row.remove();
+                
+                setTimeout(() => {
+                  hideLoading();
+                  window.location.reload();
+                }, 800);
+            } else {
+                hideLoading();
+                alert("Failed to delete.");
+            }
+        } catch (error) {
+            hideLoading();
+            alert("Error deleting payment. Please try again.");
+            console.error("Delete error:", error);
         }
     }
 });

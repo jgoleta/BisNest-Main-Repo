@@ -5,6 +5,36 @@ const formContainer = document.querySelector(".supply-form-container");
 const modalOverlay = document.getElementById("modalOverlay");
 const closeBtn = document.getElementById("closeBtn");
 
+// Loading overlay
+function createLoadingOverlay() {
+  let overlay = document.getElementById("loadingOverlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "loadingOverlay";
+    overlay.className = "loading-overlay";
+    overlay.innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+  return overlay;
+}
+
+function showLoading() {
+  const overlay = createLoadingOverlay();
+  overlay.style.display = "flex";
+}
+
+function hideLoading() {
+  const overlay = document.getElementById("loadingOverlay");
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+}
+
 let supplyData = [];
 let freedIds = [];
 let nextSupplyId = 1;
@@ -110,6 +140,43 @@ function searchSupply() {
   const event = new CustomEvent('searchUpdated');
   document.dispatchEvent(event);
 }
+
+// Supply form submission handler - must be in DOMContentLoaded
+document.addEventListener("DOMContentLoaded", () => {
+  const supplyFormElement = document.querySelector(".supply-form");
+  if (supplyFormElement) {
+    supplyFormElement.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      showLoading();
+      
+      const formData = new FormData(supplyFormElement);
+      const actionUrl = supplyFormElement.action || window.location.href;
+      
+      try {
+        const response = await fetch(actionUrl, {
+          method: "POST",
+          body: formData,
+        });
+        
+        if (!response.ok) {
+          throw new Error("Form submission failed");
+        }
+        
+        setTimeout(() => {
+          hideLoading();
+          window.closeModal(formContainer, modalOverlay);
+          resetSupplyForm();
+          window.location.reload();
+        }, 800);
+      } catch (error) {
+        hideLoading();
+        alert("Error submitting form. Please try again.");
+        console.error("Form submission error:", error);
+      }
+    });
+  }
+});
 
 document.addEventListener("click", function (e) {
   const editBtn = e.target.closest(".edit-button");
