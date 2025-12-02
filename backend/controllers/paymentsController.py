@@ -47,7 +47,7 @@ def payments_json(request):
         "amount": p.amount,
         "date": p.date,
         "method": p.method,
-    } for p in payments]
+    } for p in payments if p.order is not None]
 
     return JsonResponse(data, safe=False)
 

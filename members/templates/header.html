@@ -14,6 +14,29 @@
         <h1 class="header-title">{{ page }}</h1>
     </div>
     <div class="header-right">
+        <div class="notification-dropdown" id="notificationDropdown">
+            <button class="notification-button" id="notificationButton" aria-haspopup="true" aria-expanded="false"
+                aria-controls="notificationMenu" title="Stock alerts">
+                <span class="notification-icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px"
+                        fill="currentColor">
+                        <path
+                            d="M480-80q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80Zm240-200v-240q0-99-63-173t-157-90v-37q0-17-11.5-28.5T460-860q-17 0-28.5 11.5T420-820v37q-94 16-157 90t-63 173v240l-60 60v20h640v-20l-60-60Z" />
+                    </svg>
+                </span>
+                <span class="notification-badge" id="notificationCount" hidden>0</span>
+            </button>
+            <div class="notification-menu" id="notificationMenu" role="menu" aria-labelledby="notificationButton" hidden>
+                <div class="notification-menu-header">
+                    <span>Notifications</span>
+                </div>
+                <div class="notification-menu-body" id="notificationList">
+                    <p class="notification-empty">No stock alerts</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Dropdown -->
         <div class="user-dropdown" id="userDropdown">
             <button class="user-button" id="userButton" aria-haspopup="true" aria-expanded="false"
                 aria-controls="userMenu">

@@ -13,11 +13,43 @@ function getCookie(name) {
   return cookieValue;
 }
 
+// Loading overlay
+function createLoadingOverlay() {
+  let overlay = document.getElementById("loadingOverlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "loadingOverlay";
+    overlay.className = "loading-overlay";
+    overlay.innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+  return overlay;
+}
+
+function showLoading() {
+  const overlay = createLoadingOverlay();
+  overlay.style.display = "flex";
+}
+
+function hideLoading() {
+  const overlay = document.getElementById("loadingOverlay");
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+}
+
 const csrfToken = getCookie("csrftoken");
 
 function updateStatus(selectElement, deliveryId) {
   const newStatus = selectElement.value;
   selectElement.className = `status-select status-${newStatus.toLowerCase()}`;
+
+  showLoading();
 
   fetch(`/update_delivery_status/${deliveryId}/`, {
     method: "POST",
@@ -36,6 +68,9 @@ function updateStatus(selectElement, deliveryId) {
         selectElement.value = data.previous_status;
         selectElement.className = `status-select status-${data.previous_status.toLowerCase()}`;
       }
+      setTimeout(() => {
+        hideLoading();
+      }, 800);
     })
     .catch((error) => {
       showNotification("Error updating status", true);
@@ -49,6 +84,42 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalOverlay = document.getElementById("modalOverlay");
   const closeBtn = document.getElementById("closeBtn");
   const deliveryTableBody = document.getElementById("deliveryTableBody");
+
+  // Delivery form submission handler
+  const deliveryFormElement = document.querySelector(".delivery-form");
+  if (deliveryFormElement) {
+    deliveryFormElement.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      showLoading();
+      
+      const formData = new FormData(deliveryFormElement);
+      const actionUrl = deliveryFormElement.action || window.location.href;
+      
+      try {
+        const response = await fetch(actionUrl, {
+          method: "POST",
+          body: formData,
+        });
+        
+        if (!response.ok) {
+          throw new Error("Form submission failed");
+        }
+        
+        setTimeout(() => {
+          hideLoading();
+          window.closeModal(formContainer, modalOverlay);
+          // Reset form
+          deliveryFormElement.reset();
+          window.location.reload();
+        }, 800);
+      } catch (error) {
+        hideLoading();
+        alert("Error submitting form. Please try again.");
+        console.error("Form submission error:", error);
+      }
+    });
+  }
 
   function toggleForm() {
     const isHidden =

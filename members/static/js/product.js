@@ -4,6 +4,36 @@ const closeAddModal = document.querySelector(".close-add-modal");
 const addProductForm = document.getElementById("add-product-form");
 const modalOverlay = document.querySelector(".modal-overlay");
 
+// Loading overlay
+function createLoadingOverlay() {
+  let overlay = document.getElementById("loadingOverlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "loadingOverlay";
+    overlay.className = "loading-overlay";
+    overlay.innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+  return overlay;
+}
+
+function showLoading() {
+  const overlay = createLoadingOverlay();
+  overlay.style.display = "flex";
+}
+
+function hideLoading() {
+  const overlay = document.getElementById("loadingOverlay");
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+}
+
 if (addProductBtn) {
   addProductBtn.addEventListener("click", () => {
     window.openModal(addProductModal, modalOverlay);
@@ -228,6 +258,8 @@ saveBtn.addEventListener("click", () => {
     return;
   }
 
+  showLoading();
+
   const payload = {
     product_id: productIdEl.textContent,
     name: newName,
@@ -266,11 +298,17 @@ saveBtn.addEventListener("click", () => {
       } else {
         showNotification("Update failed: " + (data.error || "Unknown"), true);
       }
-        window.closeModal(modal, modalOverlay);
+        setTimeout(() => {
+          hideLoading();
+          window.closeModal(modal, modalOverlay);
+        }, 800);
     })
     .catch((err) => {
       showNotification("Update failed: " + err.message, true);
-        window.closeModal(modal, modalOverlay);
+        setTimeout(() => {
+          hideLoading();
+          window.closeModal(modal, modalOverlay);
+        }, 800);
     });
 });
 }
@@ -291,6 +329,8 @@ deleteModalBtn.addEventListener("click", () => {
   ) {
     return;
   }
+
+  showLoading();
 
   const payload = { product_id: productIdEl.textContent };
   fetch("/product/delete/", {
@@ -331,11 +371,17 @@ deleteModalBtn.addEventListener("click", () => {
       } else {
         showNotification("Delete failed: " + (data.error || "Unknown"), true);
       }
-        window.closeModal(modal, modalOverlay);
+        setTimeout(() => {
+          hideLoading();
+          window.closeModal(modal, modalOverlay);
+        }, 800);
     })
     .catch((err) => {
       showNotification("Delete failed: " + err.message, true);
-        window.closeModal(modal, modalOverlay);
+        setTimeout(() => {
+          hideLoading();
+          window.closeModal(modal, modalOverlay);
+        }, 800);
       });
   });
 }

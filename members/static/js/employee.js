@@ -3,6 +3,35 @@ const formContainer = document.getElementById("formContainer");
 const modalOverlay = document.getElementById("modalOverlay");
 const closeBtn = document.getElementById("closeBtn");
 
+// Loading overlay
+function createLoadingOverlay() {
+  let overlay = document.getElementById("loadingOverlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "loadingOverlay";
+    overlay.className = "loading-overlay";
+    overlay.innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+  return overlay;
+}
+
+function showLoading() {
+  const overlay = createLoadingOverlay();
+  overlay.style.display = "flex";
+}
+
+function hideLoading() {
+  const overlay = document.getElementById("loadingOverlay");
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+}
 
 function resetEmployeeForm() {
   const nameInput = document.querySelector('.employee-form input[name="name"]');
@@ -46,6 +75,42 @@ if (closeBtn) {
   });
 }
 
+// Employee form submission handler - must be in DOMContentLoaded
+document.addEventListener("DOMContentLoaded", () => {
+  const employeeFormElement = document.querySelector(".employee-form");
+  if (employeeFormElement) {
+    employeeFormElement.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      showLoading();
+      
+      const formData = new FormData(employeeFormElement);
+      const actionUrl = employeeFormElement.action || window.location.href;
+      
+      try {
+        const response = await fetch(actionUrl, {
+          method: "POST",
+          body: formData,
+        });
+        
+        if (!response.ok) {
+          throw new Error("Form submission failed");
+        }
+        
+        setTimeout(() => {
+          hideLoading();
+          window.closeModal(formContainer, modalOverlay);
+          resetEmployeeForm();
+          window.location.reload();
+        }, 800);
+      } catch (error) {
+        hideLoading();
+        alert("Error submitting form. Please try again.");
+        console.error("Form submission error:", error);
+      }
+    });
+  }
+});
 
 // Employee Profile Popup
 const profileContainer = document.getElementById("profileContainer");

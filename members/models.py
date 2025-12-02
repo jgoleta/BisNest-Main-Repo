@@ -99,24 +99,33 @@ class Product(models.Model):
     product_id = models.CharField(max_length=10, unique=True, blank=True, null=True)
     name = models.CharField(max_length=255)
     stock = models.IntegerField(default=0)
+    original_stock = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='products/', null=True, blank=True)
 
     def save(self, *args, **kwargs):
-            if not self.product_id:
-                new_number = 1
-                last_product = Product.objects.order_by('-id').first()
-                if last_product and last_product.product_id:
-                    try:
-                        # Extract number from product_id 
-                        last_number = int(last_product.product_id.replace('PRD', ''))
-                    except ValueError:
-                        last_number = 0
-                    new_number = last_number + 1
-                
-                self.product_id = f'PRD{str(new_number).zfill(5)}'
 
-            super().save(*args, **kwargs)
+        if not self.product_id:
+            new_number = 1
+            last_product = Product.objects.order_by('-id').first()
+            if last_product and last_product.product_id:
+                try:
+                    last_number = int(last_product.product_id.replace('PRD', ''))
+                except ValueError:
+                    last_number = 0
+                new_number = last_number + 1
+
+            self.product_id = f'PRD{str(new_number).zfill(5)}'
+
+        if self.stock is not None:
+            if self.original_stock is None or self.original_stock <= 0:
+
+                self.original_stock = self.stock
+            elif self.stock > self.original_stock:
+
+                self.original_stock = self.stock
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

@@ -14,6 +14,36 @@ let customerData = [];
 let freedIds = [];
 let nextCustomerId = 1;
 
+// Loading overlay
+function createLoadingOverlay() {
+  let overlay = document.getElementById("loadingOverlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "loadingOverlay";
+    overlay.className = "loading-overlay";
+    overlay.innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+  return overlay;
+}
+
+function showLoading() {
+  const overlay = createLoadingOverlay();
+  overlay.style.display = "flex";
+}
+
+function hideLoading() {
+  const overlay = document.getElementById("loadingOverlay");
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+}
+
 function resetCustomerForm() {
   const nameInput = document.querySelector('.customer-form input[name="name"]');
   const phoneInput = document.querySelector('.customer-form input[name="phone"]');
@@ -216,6 +246,42 @@ function getCsrfToken(form) {
   return getCookie("csrftoken");
 }
 
+if (customerForm) {
+  customerForm.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    
+    showLoading();
+    
+    const formData = new FormData(customerForm);
+    const actionUrl = customerForm.action || window.location.href;
+    
+    try {
+      const response = await fetch(actionUrl, {
+        method: "POST",
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error("Form submission failed");
+      }
+      
+      // Close modal and hide loading
+      setTimeout(() => {
+        hideLoading();
+        window.closeModal(formContainer, modalOverlay);
+        resetCustomerForm();
+        
+        // Refresh page to show updated data
+        window.location.reload();
+      }, 800);
+    } catch (error) {
+      hideLoading();
+      alert("Error submitting form. Please try again.");
+      console.error("Form submission error:", error);
+    }
+  });
+}
+
 if (deleteProfileForm) {
   deleteProfileForm.addEventListener("submit", async function(e) {
     e.preventDefault();
@@ -224,6 +290,8 @@ if (deleteProfileForm) {
     if (!confirm(`Are you sure you want to delete customer "${customerName}"? This action cannot be undone.`)) {
       return false;
     }
+
+    showLoading();
 
     const actionUrl = deleteProfileForm.action;
     const csrfToken = getCsrfToken(deleteProfileForm);
@@ -246,9 +314,15 @@ if (deleteProfileForm) {
         if (row) row.remove();
       }
 
-      closeProfilePopup();
+      setTimeout(() => {
+        hideLoading();
+        closeProfilePopup();
+        window.location.reload();
+      }, 800);
     } catch (error) {
+      hideLoading();
       alert("Failed to delete customer. Please try again.");
+      console.error("Delete error:", error);
     }
   });
 }

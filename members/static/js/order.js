@@ -1,3 +1,33 @@
+// Loading overlay - MUST be at module level, not inside DOMContentLoaded
+function createLoadingOverlay() {
+  let overlay = document.getElementById("loadingOverlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "loadingOverlay";
+    overlay.className = "loading-overlay";
+    overlay.innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+  return overlay;
+}
+
+function showLoading() {
+  const overlay = createLoadingOverlay();
+  overlay.style.display = "flex";
+}
+
+function hideLoading() {
+  const overlay = document.getElementById("loadingOverlay");
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const formContainer = document.querySelector(".order-form-container");
   const modalOverlay = document.getElementById("modalOverlay");
@@ -286,10 +316,16 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.removeItem('pendingOrderCart');
       }
       
+      showLoading();
+      
       // prevent multiple clicks
       const btns = orderForm.querySelectorAll("button[type='submit']");
       btns.forEach((b) => (b.disabled = true));
-      setTimeout(() => btns.forEach((b) => (b.disabled = false)), 2000);
+      setTimeout(() => {
+        hideLoading();
+        btns.forEach((b) => (b.disabled = false));
+        window.location.reload();
+      }, 1600);
     });
   }
 });
