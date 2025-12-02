@@ -173,28 +173,14 @@
 
                 <div class="profile-card full">
                     <h2 class="section-title">Login History</h2>
-                    <table class="login-table">
-                        <tr>
-                            <th>Date</th>
-                            <th>Device</th>
-                            <th>Location</th>
-                        </tr>
-                        <tr>
-                            <td>Nov 27, 2025</td>
-                            <td>Windows / Chrome</td>
-                            <td>Naga City</td>
-                        </tr>
-                        <tr>
-                            <td>Nov 26, 2025</td>
-                            <td>Android / Chrome</td>
-                            <td>Naga City</td>
-                        </tr>
-                        <tr>
-                            <td>Nov 25, 2025</td>
-                            <td>Windows / Firefox</td>
-                            <td>Naga City</td>
-                        </tr>
-                    </table>
+                    <p class="last-login-info">
+                        Last login:
+                        {% if user.last_login %}
+                        {{ user.last_login|date:"M d, Y" }}
+                        {% else %}
+                        Never logged in
+                        {% endif %}
+                    </p>
                 </div>
 
                 <div class="profile-card full danger-zone">
