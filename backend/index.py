@@ -188,10 +188,6 @@ def register_view(request):
 
     return redirect('landingPage')
 
-
-def feedbackPage(request):
-    return render(request, 'feedback.html')
-
 def profilePage(request):
     user = request.user
     
@@ -276,3 +272,5 @@ def delete_account_view(request):
         user.delete()  #delete linked userprofile
         return redirect('landingPage')
     return redirect('profile')
+
+

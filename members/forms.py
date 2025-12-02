@@ -8,6 +8,7 @@ from .models import Supply
 from .models import SalesReport
 from .models import Product
 from .models import UserProfile
+from .models import Feedback
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
@@ -157,3 +158,19 @@ class UserProfileForm(forms.ModelForm):
         if email != self.user.email and User.objects.filter(email=email).exists():
             raise ValidationError("Email already registered!")
         return email
+    
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['nps_score', 'satisfaction', 'message', 'user_type']
+        widgets = {
+            'message': forms.Textarea(attrs={
+                'rows': 4,
+                'placeholder': 'Your message...',
+                'class': 'feedback-textarea'
+            }),
+            'user_type': forms.Select(attrs={'class': 'feedback-select'}),
+            'nps_score': forms.HiddenInput(),
+            'satisfaction': forms.HiddenInput(),
+        }

@@ -243,3 +243,33 @@ class SalesReport(models.Model):
     def __str__(self):
         pname = self.product.name if self.product else "Unknown"
         return f"{self.date} - {pname}"
+
+
+class Feedback(models.Model):
+    SATISFACTION_CHOICES = [
+        (1, 'Very Unsatisfied'),
+        (2, 'Unsatisfied'),
+        (3, 'Neutral'),
+        (4, 'Satisfied'),
+        (5, 'Very Satisfied'),
+    ]
+    
+    USER_TYPE_CHOICES = [
+        ('new', 'New Customer'),
+        ('returning', 'Returning Customer'),
+        ('business', 'Business Client'),
+        ('student', 'Student'),
+        ('other', 'Other'),
+    ]
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='feedbacks', null=True, blank=True)
+    nps_score = models.IntegerField(choices=[(i, str(i)) for i in range(0, 10)], null=True, blank=True)
+    satisfaction = models.IntegerField(choices=SATISFACTION_CHOICES, null=True, blank=True)
+    message = models.TextField(blank=True, null=True)
+    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='new')
+    created_at = models.DateTimeField(auto_now_add=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.TextField(blank=True, null=True)
+    
+    def __str__(self):
+        return f"Feedback from {self.user.username if self.user else 'Anonymous'} - {self.created_at}"

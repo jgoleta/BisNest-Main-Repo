@@ -9,7 +9,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.decorators import login_required
 from backend import index
-from backend.controllers import employeesController, orderController, paymentsController, productController, deliveryController, suppliesController, salesreportController, customersController
+from backend.controllers import employeesController, orderController, paymentsController, productController, deliveryController, suppliesController, salesreportController, customersController, feedbackController
 
 urlpatterns = [
     # --- Admin ---
@@ -35,7 +35,7 @@ urlpatterns = [
     path('sales/', login_required(salesreportController.salesPage, login_url='/'), name='sales'),
     path('about/', login_required(index.aboutPage, login_url='/'), name='about'),
     path('admin-settings/', login_required(index.adminSettingsPage, login_url='/'), name='admin_settings'),
-    path('feedback/', login_required(index.feedbackPage, login_url='/'), name='feedback'),
+    path('feedback/', login_required(feedbackController.feedbackPage, login_url='/'), name='feedback'),
     path('profile/', login_required(index.profilePage, login_url='/'), name='profile'),
 
     # --- crud ---
