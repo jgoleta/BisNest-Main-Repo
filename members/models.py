@@ -99,19 +99,17 @@ class Product(models.Model):
     product_id = models.CharField(max_length=10, unique=True, blank=True, null=True)
     name = models.CharField(max_length=255)
     stock = models.IntegerField(default=0)
-    # Baseline stock used for percentage-based stock alerts
     original_stock = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='products/', null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        # Auto-generate product_id if missing (keep existing behaviour)
+
         if not self.product_id:
             new_number = 1
             last_product = Product.objects.order_by('-id').first()
             if last_product and last_product.product_id:
                 try:
-                    # Extract number from product_id 
                     last_number = int(last_product.product_id.replace('PRD', ''))
                 except ValueError:
                     last_number = 0
@@ -119,15 +117,12 @@ class Product(models.Model):
 
             self.product_id = f'PRD{str(new_number).zfill(5)}'
 
-        # Keep track of the highest stock this product has had as "original_stock"
-        # This acts as the baseline for 30% stock alerts.
         if self.stock is not None:
             if self.original_stock is None or self.original_stock <= 0:
-                # First time setting baseline – use current stock
+
                 self.original_stock = self.stock
             elif self.stock > self.original_stock:
-                # If stock has been increased above baseline (e.g. new supply),
-                # raise the baseline so alerts stay meaningful.
+
                 self.original_stock = self.stock
 
         super().save(*args, **kwargs)
