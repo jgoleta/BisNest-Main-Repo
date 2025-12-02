@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="{% static 'css/centralDarkStyle.css' %}">
     <link rel="stylesheet" href="{% static 'css/centralStyle.css' %}">
     <script src="{% static 'js/darkMode.js' %}" defer></script>
-
 </head>
 
 <body>
@@ -23,13 +22,24 @@
             <h1>We Value Your Feedback</h1>
             <p class="subtitle">Your response helps us improve your experience.</p>
 
-            <form class="feedback-form">
+
+
+            <form method="POST" class="feedback-form">
+                {% csrf_token %}
+
+                <!-- Hidden fields for NPS and Satisfaction -->
+                <input type="hidden" name="nps_score" id="id_nps_score" value="">
+                <input type="hidden" name="satisfaction" id="id_satisfaction" value="">
 
                 <div class="section">
-                    <label class="section-label">How likely are you to recommend us?</label>
+                    <label class="section-label">How likely are you to recommend us? (0-10)</label>
                     <div class="nps-scale">
                         <span>0</span>
                         <div class="nps-buttons">
+                            {% for i in "0123456789" %}
+                            <button type="button" class="nps-btn" data-value="{{ i }}">{{ i }}</button>
+                            {% endfor %}
+                            <button type="button" class="nps-btn" data-value="10">10</button>
                         </div>
                         <span>10</span>
                     </div>
@@ -48,60 +58,66 @@
 
                 <div class="section">
                     <label class="section-label">Tell us more (optional)</label>
-                    <textarea placeholder="Your message..."></textarea>
+                    <textarea name="message" placeholder="Your message..." rows="4"></textarea>
                 </div>
 
                 <div class="section">
                     <label class="section-label">I am a...</label>
-                    <select>
-                        <option>New Customer</option>
-                        <option>Returning Customer</option>
-                        <option>Business Client</option>
-                        <option>Student</option>
+                    <select name="user_type">
+                        <option value="new">New Customer</option>
+                        <option value="returning">Returning Customer</option>
+                        <option value="business">Business Client</option>
+                        <option value="student">Student</option>
+                        <option value="other">Other</option>
                     </select>
                 </div>
 
                 <button type="submit" class="submit-btn">Submit Feedback</button>
 
                 <p class="footer-note">Your response is confidential and helps us improve.</p>
-
             </form>
-
-            <div class="success-msg" id="successMsg">
-                🎉 Thank you for your feedback!
-            </div>
         </div>
     </main>
 
     <script>
-        const npsContainer = document.querySelector(".nps-buttons");
-
-        for (let i = 0; i <= 10; i++) {
-            const btn = document.createElement("button");
-            btn.textContent = i;
-            btn.dataset.value = i;
-
+        // NPS Scale functionality
+        document.querySelectorAll(".nps-btn").forEach(btn => {
             btn.addEventListener("click", () => {
-                document.querySelectorAll(".nps-buttons button").forEach(b => b.classList.remove("active"));
+                document.querySelectorAll(".nps-btn").forEach(b => b.classList.remove("active"));
                 btn.classList.add("active");
+                document.getElementById("id_nps_score").value = btn.dataset.value;
             });
+        });
 
-            npsContainer.appendChild(btn);
-        }
-
+        // Emoji satisfaction functionality
         document.querySelectorAll(".emoji").forEach(emoji => {
             emoji.addEventListener("click", () => {
                 document.querySelectorAll(".emoji").forEach(e => e.classList.remove("active"));
                 emoji.classList.add("active");
+                document.getElementById("id_satisfaction").value = emoji.dataset.value;
             });
         });
 
+        // Form validation before submission
         document.querySelector(".feedback-form").addEventListener("submit", (e) => {
-            e.preventDefault();
-            document.getElementById("successMsg").style.display = "block";
-        });
+            const npsValue = document.getElementById("id_nps_score").value;
+            const satisfactionValue = document.getElementById("id_satisfaction").value;
 
+            if (!npsValue) {
+                e.preventDefault();
+                alert("Please select a NPS score (0-10)");
+                return;
+            }
+
+            if (!satisfactionValue) {
+                e.preventDefault();
+                alert("Please select your satisfaction level");
+                return;
+            }
+        });
     </script>
+
+
 </body>
 
 </html>
