@@ -85,3 +85,27 @@ def delete_product(request):
 def get_products(request):
     products = Product.objects.all().values('product_id', 'name', 'stock', 'price', 'image')
     return JsonResponse(list(products), safe=False)
+
+
+@login_required
+def low_stock_products(request):
+    """
+    Return products whose current stock is at or below 30% of their original_stock baseline.
+    This powers the global stock alert notification in the header.
+    """
+    alerts = []
+    for p in Product.objects.all():
+        # Ensure we have a valid baseline and positive stock
+        if p.original_stock and p.original_stock > 0 and p.stock is not None and p.stock > 0:
+            threshold = max(int(p.original_stock * 0.3), 1)
+            if p.stock <= threshold:
+                percent = round((p.stock / p.original_stock) * 100, 1)
+                alerts.append({
+                    "product_id": p.product_id,
+                    "name": p.name,
+                    "stock": p.stock,
+                    "original_stock": p.original_stock,
+                    "percent_remaining": percent,
+                })
+
+    return JsonResponse({"alerts": alerts}, safe=False)
