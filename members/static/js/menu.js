@@ -249,18 +249,76 @@ if (document.readyState === 'loading') {
   }
 }
 
-// Refresh button - reload page to get fresh data
-const refreshBtn = document.getElementById("refreshBtn");
-if (refreshBtn) {
-  refreshBtn.addEventListener("click", () => {
-    window.location.reload();
+// Initialize report modal 
+function initReportModal() {
+  // Refresh button - reload page to get fresh data
+  const refreshBtn = document.getElementById("refreshBtn");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", () => {
+      window.location.reload();
+    });
+  }
+
+  // Generate Report button and modal elements
+  const generateReportBtn = document.getElementById("generateReportBtn");
+  const reportModal = document.getElementById("reportModal");
+  const closeModalBtn = document.querySelector(".report-modal-close");
+  const closeModalBtnFooter = document.querySelector(".report-modal-close-btn");
+
+  // Open modal when Generate Report button is clicked
+  if (generateReportBtn && reportModal) {
+    generateReportBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      reportModal.style.display = "block";
+      document.body.style.overflow = "hidden"; // Prevent background scrolling
+    });
+  } else {
+    console.warn("Report modal elements not found");
+  }
+
+  // Close modal when clicking the X button
+  if (closeModalBtn && reportModal) {
+    closeModalBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      reportModal.style.display = "none";
+      document.body.style.overflow = ""; // Restore scrolling
+    });
+  }
+
+  // Close modal when clicking the Close button
+  if (closeModalBtnFooter && reportModal) {
+    closeModalBtnFooter.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      reportModal.style.display = "none";
+      document.body.style.overflow = ""; // Restore scrolling
+    });
+  }
+
+  // Close modal when clicking outside of it
+  if (reportModal) {
+    reportModal.addEventListener("click", function (event) {
+      if (event.target === reportModal) {
+        reportModal.style.display = "none";
+        document.body.style.overflow = ""; // Restore scrolling
+      }
+    });
+  }
+
+  // Close modal with Escape key
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && reportModal && reportModal.style.display === "block") {
+      reportModal.style.display = "none";
+      document.body.style.overflow = ""; // Restore scrolling
+    }
   });
 }
 
-// Generate Report button
-const generateReportBtn = document.getElementById("generateReportBtn");
-if (generateReportBtn) {
-  generateReportBtn.addEventListener("click", () => {
-    alert("Report generation would be implemented here");
-  });
+// Ensure modal/refresh handlers run after DOM is ready (script is in <head> without defer)
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initReportModal);
+} else {
+  initReportModal();
 }
