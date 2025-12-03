@@ -181,7 +181,7 @@ def register_view(request):
         user = authenticate(username=username, password=password1)
         if user:
             login(request, user)
-            return redirect('menu') 
+            return redirect('landingPage') 
         
         messages.success(request, "Registration successful! Please login.")
         return redirect('landingPage')
