@@ -260,6 +260,40 @@
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
+.report-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.report-modal-print {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 6px;
+}
+
+.report-modal-print:hover,
+.report-modal-print:focus {
+  background: #c82333;
+  transform: scale(1.1);
+  outline: none;
+}
+
+.report-modal-print svg {
+  width: 20px;
+  height: 20px;
+  stroke: white;
+}
+
 .report-modal-close:hover,
 .report-modal-close:focus {
   color: var(--text-clr, #111827);
