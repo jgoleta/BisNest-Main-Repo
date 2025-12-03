@@ -500,3 +500,30 @@
     transform: rotate(360deg);
   }
 }
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 16px 24px;
+  background-color: #10b981;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  min-width: 300px;
+  max-width: 400px;
+  border-left: 4px solid #059669;
+}
+
+.notification.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-10px);
+}
