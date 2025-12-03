@@ -264,6 +264,7 @@ function initReportModal() {
   const reportModal = document.getElementById("reportModal");
   const closeModalBtn = document.querySelector(".report-modal-close");
   const closeModalBtnFooter = document.querySelector(".report-modal-close-btn");
+  const printBtn = document.querySelector(".report-modal-print");
 
   // Open modal when Generate Report button is clicked
   if (generateReportBtn && reportModal) {
@@ -277,6 +278,108 @@ function initReportModal() {
     console.warn("Report modal elements not found");
   }
 
+  // Print button functionality
+  if (printBtn) {
+    printBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Store current display state
+      const originalContents = document.body.innerHTML;
+      const printContents = document.querySelector('.report-modal-content').cloneNode(true);
+      
+      // Remove buttons and actions from print version
+      const printButtons = printContents.querySelectorAll('.report-modal-actions, .report-modal-close-btn');
+      printButtons.forEach(btn => btn.remove());
+      
+      // Create a new window for printing
+      const printWindow = window.open('', '_blank');
+      
+      // Add print styles
+      const printStyles = `
+        <style>
+          @media print {
+            @page { margin: 1cm; }
+            body { font-family: Arial, sans-serif; font-size: 12pt; }
+            .report-modal-content { 
+              margin: 0; 
+              padding: 0; 
+              border: none; 
+              box-shadow: none; 
+              width: 100%; 
+              max-width: 100%;
+            }
+            .report-modal-header { 
+              padding: 20px 0; 
+              border-bottom: 2px solid #333; 
+              margin-bottom: 20px;
+            }
+            .report-section { 
+              page-break-inside: avoid;
+              margin-bottom: 20px;
+            }
+            .report-item { 
+              margin: 10px 0;
+              padding: 8px 0;
+              border-bottom: 1px solid #eee;
+            }
+            .report-label { 
+              font-weight: 600; 
+              color: #333;
+            }
+            .report-value { 
+              color: #1a1a1a; 
+            }
+            h2 { 
+              color: #333; 
+              font-size: 24px; 
+              margin: 0 0 10px 0;
+            }
+            h3 { 
+              color: #444; 
+              font-size: 18px; 
+              margin: 20px 0 10px 0;
+              padding-bottom: 5px;
+              border-bottom: 1px solid #ddd;
+            }
+          }
+        </style>
+      `;
+      
+      // Set the print window content
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Business Report - ${new Date().toLocaleDateString()}</title>
+            ${printStyles}
+          </head>
+          <body>
+            <div style="max-width: 800px; margin: 0 auto; padding: 20px;">
+              <div style="text-align: center; margin-bottom: 20px;">
+                <h1>Business Report</h1>
+                <p>Generated on: ${new Date().toLocaleString()}</p>
+              </div>
+              ${printContents.innerHTML}
+            </div>
+            <script>
+              // Print when the window has loaded
+              window.onload = function() {
+                setTimeout(function() {
+                  window.print();
+                  window.onafterprint = function() {
+                    window.close();
+                  };
+                }, 200);
+              };
+            <\/script>
+          </body>
+        </html>
+      `);
+      
+      printWindow.document.close();
+    });
+  }
+
   // Close modal when clicking the X button
   if (closeModalBtn && reportModal) {
     closeModalBtn.addEventListener("click", function (e) {
@@ -284,6 +387,56 @@ function initReportModal() {
       e.stopPropagation();
       reportModal.style.display = "none";
       document.body.style.overflow = ""; // Restore scrolling
+    });
+  }
+
+  // Download CSV functionality
+  const downloadCsvBtn = document.getElementById("downloadCsvBtn");
+  if (downloadCsvBtn) {
+    downloadCsvBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Get all report data
+      const reportData = [];
+      const sections = document.querySelectorAll('.report-section');
+      
+      sections.forEach(section => {
+        const sectionTitle = section.querySelector('h3').textContent;
+        const items = section.querySelectorAll('.report-item');
+        
+        // Add section title as a header
+        reportData.push([sectionTitle, '']);
+        
+        // Add items in this section
+        items.forEach(item => {
+          const label = item.querySelector('.report-label').textContent.trim();
+          const value = item.querySelector('.report-value').textContent.trim();
+          reportData.push([label, value]);
+        });
+        
+        // Add empty row between sections
+        reportData.push(['', '']);
+      });
+      
+      // Add timestamp
+      const timestamp = new Date().toLocaleString();
+      reportData.unshift(['Business Report', ''], ['Generated on', timestamp], ['', '']);
+      
+      // Convert to CSV format
+      let csvContent = 'data:text/csv;charset=utf-8,';
+      reportData.forEach(row => {
+        csvContent += row.join(',') + '\r\n';
+      });
+      
+      // Create download link and trigger download
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `business_report_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     });
   }
 
