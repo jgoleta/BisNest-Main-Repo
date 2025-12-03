@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from members.forms import UserProfileForm
 from allauth.socialaccount.models import SocialAccount
+import re
 
 # import models used by views in this module
 from django.db.models import Sum
@@ -165,6 +166,23 @@ def register_view(request):
 
         if password1 != password2:
             messages.error(request, "Passwords don't match!")
+            return redirect('landingPage')
+
+        # Simple password policy: at least 8 chars, one uppercase, one lowercase, one digit
+        if not password1 or len(password1) < 8:
+            messages.error(request, 'Password must be at least 8 characters long.')
+            return redirect('landingPage')
+
+        if not re.search(r'[A-Z]', password1):
+            messages.error(request, 'Password must contain at least one uppercase letter.')
+            return redirect('landingPage')
+
+        if not re.search(r'[a-z]', password1):
+            messages.error(request, 'Password must contain at least one lowercase letter.')
+            return redirect('landingPage')
+
+        if not re.search(r'[0-9]', password1):
+            messages.error(request, 'Password must contain at least one number.')
             return redirect('landingPage')
 
         if User.objects.filter(username=username).exists():
