@@ -9,7 +9,6 @@
     <title>BisNEST | Smart Business Management Platform</title>
     <link rel="icon" type="image/png" href="https://i.imgur.com/NFhTf4v.png">
     <link rel="stylesheet" href="{% static 'css/landingStyle.css' %}">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
@@ -76,92 +75,7 @@
         </div>
     </nav>
 
-    <div id="loginModal" class="login-modal">
-        <div class="login-modal-overlay" onclick="closeLoginModal()"></div>
-        <div class="login-modal-content">
-            <span class="close-button" id="closeLoginBtn" onclick="closeLoginModal()">&times;</span>
-            
-            <div class="modal-container">
-                <div class="form-box login-form-box">
-                    <form method="POST" action="{% url 'login_view' %}">
-                        {% csrf_token %}
-                        <h2>Login</h2>
-                        <div class="input-box">
-                            <div class="indicator">Email Address:</div>
-                            <input type="text" name="email" placeholder="bisnest@gmail.com" required />
-                            <i class='bx bxs-user'></i>
-                        </div>
-                        <div class="input-box">
-                            <div class="indicator">Password:</div>
-                            <input type="password" name="password" placeholder="*********" required />
-                            <i class='bx bxs-lock-alt'></i>
-                        </div>
-                        <div class="input-box">
-                            <div class="indicator">Token:</div>
-                            <input placeholder="a122FsaS63"/>
-                            <i class='bx bxs-lock-alt'></i>
-                        </div>
-                        <div class="forgot-link">
-                            <a href="#">Forgot Password?</a>
-                        </div>
-                        <button type="submit" class="btn">Login</button>
-                        <p>or login with</p>
-                        <div class="social-icons">
-                            <!-- <a href="{% provider_login_url 'google' %}?next=/"><i class='bx bxl-google'></i></a> -->
-                            <a href="{% provider_login_url 'google' %}?next=/menu/"><i class='bx bxl-google'></i></a>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="form-box register-form-box">
-                    <form method="POST" action="{% url 'register_view' %}">
-                        {% csrf_token %}
-                        <h2>Registration</h2>
-                        <div class="input-box">
-                            <div class="indicator">Username:</div>
-                            <input type="text" name="username" placeholder="BisNest" required />
-                            <i class='bx bxs-user'></i>
-                        </div>
-                        <div class="input-box">
-                            <div class="indicator">Email Address:</div>
-                            <input type="email" name="email" placeholder="bisnest@gmail.com" required />
-                            <i class='bx bxs-envelope'></i>
-                        </div>
-                        <div class="input-box">
-                            <div class="indicator">Password:</div>
-                            <input type="password" name="password1" placeholder="*********" required />
-                            <i class='bx bxs-lock-alt'></i>
-                        </div>
-                        <div class="input-box">
-                            <div class="indicator">Confirm Password:</div>
-                            <input type="password" name="password2" placeholder="*********" required />
-                            <i class='bx bxs-lock-alt'></i>
-                        </div>
-                        <button type="submit" class="btn">Register</button>
-                        <p>or register with</p>
-                        <div class="social-icons">
-                            <a href="#"><i class='bx bxl-google'></i></a>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="toggle-box">
-                    <div class="toggle-box-inner">
-                        <div class="toggle-panel toggle-left">
-                            <h3>Hello, Welcome!</h3>
-                            <p>Don't have an account?</p>
-                            <button class="btn register-btn" onclick="switchToRegister(event)">Register</button>
-                        </div>
-                        <div class="toggle-panel toggle-right">
-                            <h3>Welcome Back!</h3>
-                            <p>Already have an account? </p>
-                            <button class="btn login-btn" onclick="switchToLogin(event)">Login</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include 'login.html' %}
 
     <section class="hero" id="hero">
         <div class="container hero-content">
@@ -336,129 +250,8 @@
         </div>
     </footer>
 
-    <script>
-        // Login Modal Functions
-        function openLoginModal(e) {
-            if (e) {
-                e.preventDefault();
-            }
-            const modal = document.getElementById('loginModal');
-            modal.style.display = 'flex';
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLoginModal() {
-            const modal = document.getElementById('loginModal');
-            modal.classList.remove('show');
-            setTimeout(() => {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }, 300);
-        }
-
-        function switchToRegister(e) {
-            e.preventDefault();
-            const container = document.querySelector('.modal-container');
-            container.classList.add('active');
-        }
-
-        function switchToLogin(e) {
-            e.preventDefault();
-            const container = document.querySelector('.modal-container');
-            container.classList.remove('active');
-        }
-
-        // Close modal when pressing Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeLoginModal();
-            }
-        });
-        const elements = document.querySelectorAll('.fade-in, .slide-up');
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.2 });
-
-        elements.forEach(el => observer.observe(el));
-
-        // Section visibility animation
-        const sections = document.querySelectorAll("section");
-
-        const revealSection = () => {
-            const triggerBottom = window.innerHeight * 0.85;
-            sections.forEach(section => {
-                const sectionTop = section.getBoundingClientRect().top;
-                if (sectionTop < triggerBottom) {
-                    section.classList.add("visible");
-                }
-            });
-        };
-
-        window.addEventListener("scroll", revealSection);
-        window.addEventListener("load", revealSection);
-
-        // Smooth scroll for anchor links with active state
-        const navLinks = document.querySelectorAll('a[href^="#"]');
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                if (href !== '#' && document.querySelector(href)) {
-                    e.preventDefault();
-
-                    const target = document.querySelector(href);
-                    const offsetTop = target.offsetTop - 80; // Account for sticky navbar
-
-                    // Smooth scroll with animation
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-
-                    // Add active state to navigation
-                    navLinks.forEach(l => l.parentElement.classList.remove('active'));
-                    this.parentElement.classList.add('active');
-                }
-            });
-        });
-
-        // Update active nav link on scroll
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (window.pageYOffset >= sectionTop - 100) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.parentElement.classList.remove('active');
-                if (link.getAttribute('href').slice(1) === current) {
-                    link.parentElement.classList.add('active');
-                }
-            });
-        });
-
-        // Add scroll progress indicator
-        const progressBar = document.createElement('div');
-        progressBar.className = 'scroll-progress';
-        document.body.appendChild(progressBar);
-
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = (scrollTop / docHeight) * 100;
-            progressBar.style.width = scrollPercent + '%';
-        });
-    </script>
 </body>
+
+<script src="{% static 'js/landing.js' %}" defer></script>
 
 </html>
