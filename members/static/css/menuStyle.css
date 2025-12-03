@@ -354,6 +354,42 @@
   border-radius: 0 0 16px 16px;
 }
 
+.report-download-csv {
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+  background-color: #10b981; /* Green color for download action */
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.report-download-csv:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+  background-color: #0d9f6e; /* Slightly darker green on hover */
+}
+
+.report-download-csv:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+}
+
+.report-download-csv svg {
+  margin-right: 8px;
+  transition: transform 0.2s ease;
+}
+
+.report-download-csv:hover svg {
+  transform: translateY(1px);
+}
+
 .report-modal-close-btn {
   padding: 10px 24px;
   font-size: 15px;

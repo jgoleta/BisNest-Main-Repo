@@ -390,6 +390,56 @@ function initReportModal() {
     });
   }
 
+  // Download CSV functionality
+  const downloadCsvBtn = document.getElementById("downloadCsvBtn");
+  if (downloadCsvBtn) {
+    downloadCsvBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Get all report data
+      const reportData = [];
+      const sections = document.querySelectorAll('.report-section');
+      
+      sections.forEach(section => {
+        const sectionTitle = section.querySelector('h3').textContent;
+        const items = section.querySelectorAll('.report-item');
+        
+        // Add section title as a header
+        reportData.push([sectionTitle, '']);
+        
+        // Add items in this section
+        items.forEach(item => {
+          const label = item.querySelector('.report-label').textContent.trim();
+          const value = item.querySelector('.report-value').textContent.trim();
+          reportData.push([label, value]);
+        });
+        
+        // Add empty row between sections
+        reportData.push(['', '']);
+      });
+      
+      // Add timestamp
+      const timestamp = new Date().toLocaleString();
+      reportData.unshift(['Business Report', ''], ['Generated on', timestamp], ['', '']);
+      
+      // Convert to CSV format
+      let csvContent = 'data:text/csv;charset=utf-8,';
+      reportData.forEach(row => {
+        csvContent += row.join(',') + '\r\n';
+      });
+      
+      // Create download link and trigger download
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `business_report_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  }
+
   // Close modal when clicking the Close button
   if (closeModalBtnFooter && reportModal) {
     closeModalBtnFooter.addEventListener("click", function (e) {
