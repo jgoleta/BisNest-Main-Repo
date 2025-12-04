@@ -48,7 +48,7 @@
                         <path
                             d="M160-160v-516L82-846l72-34 94 202h464l94-202 72 34-78 170v516H160Zm240-280h160q17 0 28.5-11.5T600-480q0-17-11.5-28.5T560-520H400q-17 0-28.5 11.5T360-480q0 17 11.5 28.5T400-440Z" />
                     </svg>
-                    <h3  style="color: #B89230;">Orders</h3>
+                    <h3 style="color: #B89230;">Orders</h3>
                     <div class="stat-value" id="totalOrders">{{ total_orders|default:0 }}</div>
                     <div class="stat-note">Total orders in system</div>
                 </div>
@@ -72,127 +72,132 @@
                     <div class="stat-value" id="inventoryLevel">{{ inventory_level|default:0 }}%</div>
                     <div class="stat-note">Products with available stock</div>
                 </div>
+                <div class="chart-container">
+                    <h2>Monthly Sales Trend</h2>
+                    <canvas id="salesChart"></canvas>
+                </div>
             </div>
 
-            <div class="chart-container">
-                <h2>Monthly Sales Trend</h2>
-                <canvas id="salesChart"></canvas>
+
+            {{ monthly_sales|json_script:"monthly-sales-data" }}
+
+            <div id="reportModal" class="report-modal">
+                <div class="report-modal-content">
+                    <div class="report-modal-header">
+                        <h2>Business Report</h2>
+                        <div class="report-modal-actions">
+                            <button class="report-modal-print" title="Print Report">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                    <path
+                                        d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+                                    </path>
+                                    <rect x="6" y="14" width="12" height="8"></rect>
+                                </svg>
+                            </button>
+                            <span class="report-modal-close">&times;</span>
+                        </div>
+                    </div>
+                    <div class="report-modal-body">
+                        <div class="report-section">
+                            <h3>Sales Information</h3>
+                            <div class="report-item">
+                                <span class="report-label">Total Sales:</span>
+                                <span class="report-value">₱{{ total_sales|default:0|floatformat:2 }}</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Monthly Sales (This Month):</span>
+                                <span class="report-value">₱{{ monthly_sales_amount|default:0|floatformat:2 }}</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Weekly Sales (Last 7 Days):</span>
+                                <span class="report-value">₱{{ weekly_sales|default:0|floatformat:2 }}</span>
+                            </div>
+                        </div>
+
+                        <div class="report-section">
+                            <h3>Customer Information</h3>
+                            <div class="report-item">
+                                <span class="report-label">Total Customers:</span>
+                                <span class="report-value">{{ total_customers|default:0 }}</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">New Customers (Last 30 Days):</span>
+                                <span class="report-value">{{ new_customers|default:0 }}</span>
+                            </div>
+                        </div>
+
+                        <div class="report-section">
+                            <h3>Order Information</h3>
+                            <div class="report-item">
+                                <span class="report-label">Total Orders:</span>
+                                <span class="report-value">{{ total_orders|default:0 }}</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Orders This Month:</span>
+                                <span class="report-value">{{ orders_this_month|default:0 }}</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Total Order Value:</span>
+                                <span class="report-value">₱{{ total_order_value|default:0|floatformat:2 }}</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Average Order Value:</span>
+                                <span class="report-value">₱{{ average_order_value|default:0|floatformat:2 }}</span>
+                            </div>
+                        </div>
+
+                        <div class="report-section">
+                            <h3>Employee Information</h3>
+                            <div class="report-item">
+                                <span class="report-label">Total Employees:</span>
+                                <span class="report-value">{{ total_employees|default:0 }}</span>
+                            </div>
+                        </div>
+
+                        <div class="report-section">
+                            <h3>Stock Information</h3>
+                            <div class="report-item">
+                                <span class="report-label">Total Products:</span>
+                                <span class="report-value">{{ total_products|default:0 }}</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Total Stock Quantity:</span>
+                                <span class="report-value">{{ total_stock_quantity|default:0 }}</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Products In Stock:</span>
+                                <span class="report-value">{{ in_stock_products|default:0 }}</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Products Out of Stock:</span>
+                                <span class="report-value">{{ out_of_stock_products|default:0 }}</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Inventory Level:</span>
+                                <span class="report-value">{{ inventory_level|default:0 }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-modal-footer">
+                        <button class="report-download-csv" id="downloadCsvBtn" title="Download CSV">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" style="margin-right: 8px;">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Download CSV
+                        </button>
+                    </div>
+                </div>
             </div>
 
         </div>
     </main>
-
-    {{ monthly_sales|json_script:"monthly-sales-data" }}
-
-    <!-- Report Modal -->
-    <div id="reportModal" class="report-modal">
-        <div class="report-modal-content">
-            <div class="report-modal-header">
-                <h2>Business Report</h2>
-                <div class="report-modal-actions">
-                    <button class="report-modal-print" title="Print Report">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                            <rect x="6" y="14" width="12" height="8"></rect>
-                        </svg>
-                    </button>
-                    <span class="report-modal-close">&times;</span>
-                </div>
-            </div>
-            <div class="report-modal-body">
-                <div class="report-section">
-                    <h3>Sales Information</h3>
-                    <div class="report-item">
-                        <span class="report-label">Total Sales:</span>
-                        <span class="report-value">₱{{ total_sales|default:0|floatformat:2 }}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">Monthly Sales (This Month):</span>
-                        <span class="report-value">₱{{ monthly_sales_amount|default:0|floatformat:2 }}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">Weekly Sales (Last 7 Days):</span>
-                        <span class="report-value">₱{{ weekly_sales|default:0|floatformat:2 }}</span>
-                    </div>
-                </div>
-                
-                <div class="report-section">
-                    <h3>Customer Information</h3>
-                    <div class="report-item">
-                        <span class="report-label">Total Customers:</span>
-                        <span class="report-value">{{ total_customers|default:0 }}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">New Customers (Last 30 Days):</span>
-                        <span class="report-value">{{ new_customers|default:0 }}</span>
-                    </div>
-                </div>
-                
-                <div class="report-section">
-                    <h3>Order Information</h3>
-                    <div class="report-item">
-                        <span class="report-label">Total Orders:</span>
-                        <span class="report-value">{{ total_orders|default:0 }}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">Orders This Month:</span>
-                        <span class="report-value">{{ orders_this_month|default:0 }}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">Total Order Value:</span>
-                        <span class="report-value">₱{{ total_order_value|default:0|floatformat:2 }}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">Average Order Value:</span>
-                        <span class="report-value">₱{{ average_order_value|default:0|floatformat:2 }}</span>
-                    </div>
-                </div>
-                
-                <div class="report-section">
-                    <h3>Employee Information</h3>
-                    <div class="report-item">
-                        <span class="report-label">Total Employees:</span>
-                        <span class="report-value">{{ total_employees|default:0 }}</span>
-                    </div>
-                </div>
-                
-                <div class="report-section">
-                    <h3>Stock Information</h3>
-                    <div class="report-item">
-                        <span class="report-label">Total Products:</span>
-                        <span class="report-value">{{ total_products|default:0 }}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">Total Stock Quantity:</span>
-                        <span class="report-value">{{ total_stock_quantity|default:0 }}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">Products In Stock:</span>
-                        <span class="report-value">{{ in_stock_products|default:0 }}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">Products Out of Stock:</span>
-                        <span class="report-value">{{ out_of_stock_products|default:0 }}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">Inventory Level:</span>
-                        <span class="report-value">{{ inventory_level|default:0 }}%</span>
-                    </div>
-                </div>
-            </div>
-            <div class="report-modal-footer">
-                <button class="report-download-csv" id="downloadCsvBtn" title="Download CSV">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                    </svg>
-                    Download CSV
-                </button>
-            </div>
-        </div>
-    </div>
 
 </body>
 

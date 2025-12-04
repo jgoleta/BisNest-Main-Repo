@@ -5,15 +5,12 @@
   padding: 10px 16px;
   margin-left: 6px;
   min-width: 96px;
-  position: relative;
   font-weight: 600;
   border-radius: 10px;
   background: var(--base-clr, #ffffff);
   color: var(--text-clr, #111827);
   cursor: pointer;
   transition: transform 0.14s ease, box-shadow 0.2s ease, background 0.2s ease;
-  text-align: center;
-  width: 100%;
   font-size: 0.95rem;
   box-shadow: 0 6px 18px rgba(2,6,23,0.06);
   border: 1px solid rgba(15,23,42,0.04);
@@ -89,23 +86,24 @@
 
 /* Chart container adjustments */
 .chart-container {
+  grid-column: 1 / -1;
   background-color: var(--card-bg, #ffffff);
-  border-radius: 16px;
+  border-radius: 12px;
   padding: 24px;
   box-shadow: 0 6px 20px rgba(2,6,23,0.05);
   margin-bottom: 30px;
   height: 450px;
   max-height: 50vh;
-  border: 1px solid var(--card-border, rgba(30,41,59,0.08));
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  position: relative;
 }
 
 .chart-container h2 {
-  margin: 0 0 20px 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-clr);
-  text-align: left;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-clr, #111827);
+  margin-bottom: 20px;
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
 }
 
 .chart-container canvas {
@@ -251,9 +249,6 @@
   margin: 0;
   font-size: 24px;
   font-weight: 700;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: var(--text-clr, #111827);
 }
 
@@ -264,8 +259,40 @@
   line-height: 1;
   cursor: pointer;
   transition: color 0.2s ease, transform 0.2s ease;
-  position: absolute;
-  right: 20px;
+}
+
+.report-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.report-modal-print {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 6px;
+}
+
+.report-modal-print:hover,
+.report-modal-print:focus {
+  background: #c82333;
+  transform: scale(1.1);
+  outline: none;
+}
+
+.report-modal-print svg {
+  width: 20px;
+  height: 20px;
+  stroke: white;
 }
 
 .report-modal-close:hover,
@@ -328,6 +355,42 @@
   border-radius: 0 0 16px 16px;
 }
 
+.report-download-csv {
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+  background-color: #10b981; /* Green color for download action */
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.report-download-csv:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+  background-color: #0d9f6e; /* Slightly darker green on hover */
+}
+
+.report-download-csv:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+}
+
+.report-download-csv svg {
+  margin-right: 8px;
+  transition: transform 0.2s ease;
+}
+
+.report-download-csv:hover svg {
+  transform: translateY(1px);
+}
+
 .report-modal-close-btn {
   padding: 10px 24px;
   font-size: 15px;
@@ -348,31 +411,6 @@
 }
 
 .report-modal-close-btn:active {
-  transform: translateY(0);
-}
-
-/* Print Button Styles */
-.report-modal-print-btn {
-  padding: 10px 24px;
-  font-size: 15px;
-  font-weight: 600;
-  border-radius: 8px;
-  background-color: #BB271A;
-  color: #ffffff;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.14s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-  box-shadow: 0 4px 12px rgba(187, 39, 26, 0.3);
-  margin-right: 10px;
-}
-
-.report-modal-print-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(187, 39, 26, 0.4);
-  background-color: #9A1F16;
-}
-
-.report-modal-print-btn:active {
   transform: translateY(0);
 }
 

@@ -35,12 +35,6 @@
   background: rgba(255,255,255,0.1);
 }
 
-/* Header */
-.darkmode .app-header {
-  background: #0f172a;
-  border-bottom: 1px solid var(--line-clr);
-  color: var(--text-clr);
-}
 .darkmode .header-title {
   color: var(--accent-clr) !important;
 }
@@ -266,7 +260,7 @@
 }
 
 .darkmode .app-header {
-  background: var(--primary-color) !important;
+  background: var(--card-bg) !important;
   border-bottom: 1px solid var(--line-clr) !important;
   color: var(--text-clr) !important;
 }
@@ -650,7 +644,6 @@
 }
 
 /* Admin Page */
-.darkmode .main-grid,
 .darkmode .dashboard-container,
 .darkmode .stat-card {
   background: var(--card-bg) !important;
@@ -671,8 +664,6 @@
 
 /* Profile Page */
 .darkmode .profile-container {
-  background: var(--surface) !important;
-  border: 1px solid var(--card-border) !important;
   color: var(--text-clr) !important;
 }
 
