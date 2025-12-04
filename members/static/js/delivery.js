@@ -49,8 +49,6 @@ function updateStatus(selectElement, deliveryId) {
   const newStatus = selectElement.value;
   selectElement.className = `status-select status-${newStatus.toLowerCase()}`;
 
-  showLoading();
-
   fetch(`/update_delivery_status/${deliveryId}/`, {
     method: "POST",
     headers: {
@@ -490,15 +488,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${ d.customer.address }</td>
                     <td>${ d.scheduled_date }</td>
                     <td>
-                    <select class="status-select status-${ d.status }" onchange="updateStatus(this, '${ d.id }')">
-                        <option value="Pending" {% if d.status == 'Pending' %}selected{% endif %}>Pending</option>
-                        <option value="Delivered" {% if d.status == 'Delivered' %}selected{% endif %}>Delivered</option>
-                        <option value="Cancelled" {% if d.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                    <select class="status-select status-${ d.status.toLowerCase() }" onchange="updateStatus(this, '${ d.id }')">
+                        <option value="Pending" ${ d.status === 'Pending' ? 'selected' : '' }>Pending</option>
+                        <option value="Delivered" ${ d.status === 'Delivered' ? 'selected' : '' }>Delivered</option>
+                        <option value="Cancelled" ${ d.status === 'Cancelled' ? 'selected' : '' }>Cancelled</option>
                     </select>
                     </td>
                     <td>
                     <button type="button" class="edit-button" data-id="${ d.id }" data-delivery_id="${ d.delivery_id }"
-                        data-order="${ d.order.id }" data-customer="${ d.customer }" data-address="${ d.address }"
+                        data-order="${ d.order.id }" data-customer="${ d.customer }" data-address="${ d.customer.address }"
                         data-scheduled_date="${ d.scheduled_date }" data-status="${ d.status }"
                         title="Edit Delivery" aria-label="Edit Delivery" style="margin-right:8px;">
                         <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px"

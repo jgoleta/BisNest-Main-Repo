@@ -29,6 +29,7 @@
   border-radius: 14px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   margin-bottom: 30px;
+  margin-top: 30px;
 }
 
 .profile-img {
@@ -141,7 +142,7 @@
 
 /* CARDS */
 .profile-card {
-  background: #fff;
+  background: var(--card-bg);
   padding: 25px;
   border-radius: 14px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
@@ -300,7 +301,6 @@ input:checked + .slider:before {
 }
 
 .warning-text {
-  color: #444;
   margin-bottom: 15px;
 }
 

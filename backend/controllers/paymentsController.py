@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from members.models import Payment
+from members.models import Payment, SalesReport
 from members.forms import PaymentForm
 from django.http import JsonResponse
 
@@ -51,10 +51,16 @@ def payments_json(request):
 
     return JsonResponse(data, safe=False)
 
+
 def delete_payment(request, payment_id):
     if request.method == "POST":
         payment = get_object_or_404(Payment, pk=payment_id)
+
+        sales_reports = SalesReport.objects.filter(payment=payment)
+        for report in sales_reports:
+            report.delete()
+
         payment.delete()
         return JsonResponse({"success": True})
-    
+
     return JsonResponse({"error": "Invalid request"}, status=400)
