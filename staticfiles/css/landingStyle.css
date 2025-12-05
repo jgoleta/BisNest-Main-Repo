@@ -884,3 +884,39 @@ button {
   }
 }
 
+
+/* Login error message styling */
+.login-error-message {
+    margin: 15px 20px;
+    animation: slideDown 0.3s ease;
+}
+
+.login-error-message .message {
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.login-error-message .message.error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-left: 4px solid #ef4444;
+}
+
+.login-error-message .message.success {
+    background-color: #d1fae5;
+    color: #065f46;
+    border-left: 4px solid #10b981;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

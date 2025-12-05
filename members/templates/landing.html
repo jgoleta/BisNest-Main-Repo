@@ -253,5 +253,30 @@
 </body>
 
 <script src="{% static 'js/landing.js' %}" defer></script>
-
+<script>
+//if wrong password, reload page and display invalid password
+document.addEventListener('DOMContentLoaded', function() {
+    {% if messages %}
+    let hasAuthError = false;
+    
+    {% for message in messages %}
+        {% if 'password' in message.message|lower or 'email' in message.message|lower or 'account' in message.message|lower or message.tags == 'error' %}
+        hasAuthError = true;
+        {% endif %}
+    {% endfor %}
+    
+    if (hasAuthError) {
+        // Wait a bit for page to load, then open modal
+        setTimeout(function() {
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }, 500);
+    }
+    {% endif %}
+});
+</script>
 </html>
