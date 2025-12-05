@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from members.forms import UserProfileForm
 from allauth.socialaccount.models import SocialAccount
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 import re
 
 # import models used by views in this module
@@ -206,57 +208,108 @@ def register_view(request):
 
     return redirect('landingPage')
 
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
 def profilePage(request):
     user = request.user
     
-    #check if user is auth
+    # Check if user is authenticated
     if not user.is_authenticated:
         return redirect('login_view')
     
-    #get  profile f
-    from members.models import UserProfile  
-    
-    #check if profile exists, create if it doesn't
+    # Get or create profile
+    from members.models import UserProfile
     if not hasattr(user, 'profile'):
         UserProfile.objects.create(user=user)
-        user.refresh_from_db()  #refresh to get profile
+        user.refresh_from_db()
     
     profile = user.profile
 
+    # Check if user has Google account
     google_picture_url = None
+    has_google_account = False
     try:
         from allauth.socialaccount.models import SocialAccount
         social_account = SocialAccount.objects.get(user=user, provider='google')
         extra_data = social_account.extra_data
         google_picture_url = extra_data.get('picture')
+        has_google_account = True
+    except SocialAccount.DoesNotExist:
+        has_google_account = False
     except:
-        google_picture_url = None
+        has_google_account = False
+    
+    # Initialize forms
+    form = None
+    password_form = None
     
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, user=user)
-        if form.is_valid():
-            #update user
-            user.username = form.cleaned_data['username']
-            user.first_name = form.cleaned_data['first_name']
-            user.last_name = form.cleaned_data['last_name']
-            user.email = form.cleaned_data['email']
-            user.save()
-            
-            #update UserProfile model fields
-            profile.address = form.cleaned_data['address']
-            profile.phone = form.cleaned_data['phone']
-            profile.birthday = form.cleaned_data['birthday']
-            profile.bio = form.cleaned_data['bio']
-            profile.save()
-            
-            return redirect('profile')
+        # Check which form was submitted
+        if 'change_password' in request.POST and not has_google_account:
+            # Handle password change form
+            password_form = PasswordChangeForm(user, request.POST)
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)  # Important!
+                messages.success(request, 'Your password was successfully updated!')
+                # Refresh the user object
+                user.refresh_from_db()
+                # Reset password form
+                password_form = PasswordChangeForm(user)
+            else:
+                # Extract specific password validation errors
+                for field_name, errors in password_form.errors.items():
+                    for error in errors:
+                        if field_name == 'new_password2':
+                            if "The two password fields didn't match." in error:
+                                messages.error(request, "New passwords do not match.")
+                            else:
+                                messages.error(request, "Please confirm your new password.")
+                        elif field_name == 'old_password':
+                            if "Your old password was entered incorrectly." in error:
+                                messages.error(request, "Current password is incorrect.")
+                            else:
+                                messages.error(request, "Please enter your current password.")
+                        elif field_name == 'new_password1':
+                            if "This password is too common." in error:
+                                messages.error(request, "This password is too common. Please choose a stronger one.")
+                            elif "This password is entirely numeric." in error:
+                                messages.error(request, "Password cannot be entirely numeric.")
+                            elif "The password is too similar to the username." in error:
+                                messages.error(request, "Password is too similar to your username.")
+                            else:
+                                messages.error(request, f"New password: {error}")
+                        else:
+                            messages.error(request, error)
         else:
-            # Show form errors
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field}: {error}")
-    else:
-        # Format birthday for HTML date input (YYYY-MM-DD)
+            # Handle profile update form
+            form = UserProfileForm(request.POST, user=user)
+            if form.is_valid():
+                # Update user
+                user.username = form.cleaned_data['username']
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                user.email = form.cleaned_data['email']
+                user.save()
+                
+                # Update UserProfile model fields
+                profile.address = form.cleaned_data['address']
+                profile.phone = form.cleaned_data['phone']
+                profile.birthday = form.cleaned_data['birthday']
+                profile.bio = form.cleaned_data['bio']
+                profile.save()
+                
+                messages.success(request, 'Profile updated successfully!')
+                return redirect('profile')
+            else:
+                # Show form errors
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"{field}: {error}")
+    
+    # Prepare forms for GET request
+    if not form:
         birthday_value = ''
         if profile.birthday:
             birthday_value = profile.birthday.strftime('%Y-%m-%d')
@@ -272,14 +325,18 @@ def profilePage(request):
             'bio': profile.bio if profile.bio else '',
         })
     
+    if not password_form:
+        password_form = PasswordChangeForm(user)
+    
     context = {
         'form': form,
+        'password_form': password_form,
         'user': user,
         'profile': profile,
         'google_picture_url': google_picture_url,
+        'has_google_account': has_google_account,
     }
     return render(request, 'profile.html', context)
-
 
 @login_required
 def delete_account_view(request):
