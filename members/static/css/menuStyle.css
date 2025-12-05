@@ -359,7 +359,7 @@
   font-size: 15px;
   font-weight: 600;
   border-radius: 8px;
-  background-color: #10b981; /* Green color for download action */
+  background-color: #10b981; 
   color: white;
   border: none;
   cursor: pointer;
@@ -373,7 +373,7 @@
 .report-download-csv:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
-  background-color: #0d9f6e; /* Slightly darker green on hover */
+  background-color: #0d9f6e; 
 }
 
 .report-download-csv:active {

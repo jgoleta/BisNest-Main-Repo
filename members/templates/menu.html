@@ -108,7 +108,7 @@
                         <span class="report-value">₱{{ total_sales|default:0|floatformat:2 }}</span>
                     </div>
                     <div class="report-item">
-                        <span class="report-label">Monthly Sales (This Month):</span>
+                        <span class="report-label">Monthly Sales: ({% now "F" %}) </span>
                         <span class="report-value">₱{{ monthly_sales_amount|default:0|floatformat:2 }}</span>
                     </div>
                     <div class="report-item">
