@@ -717,3 +717,49 @@
     font-size: 1.5rem;
   }
 }
+
+
+/* Field error messages */
+.login-field-errors,
+.register-field-errors {
+    margin: 5px 0 15px;
+    animation: slideDown 0.3s ease;
+}
+
+.field-error-message {
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    border-left: 3px solid;
+}
+
+.field-error-message.error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #991b1b;
+    border-left-color: #ef4444;
+}
+
+.field-error-message.success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #065f46;
+    border-left-color: #10b981;
+}
+
+/* Highlight the problematic field */
+.input-box.error input {
+    border-color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

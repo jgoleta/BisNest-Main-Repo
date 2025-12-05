@@ -1,113 +1,130 @@
 // Login Modal Functions
-        function openLoginModal(e) {
-            if (e) {
-                e.preventDefault();
-            }
-            const modal = document.getElementById('loginModal');
-            modal.style.display = 'flex';
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
+function openLoginModal(e) {
+  if (e) {
+    e.preventDefault();
+  }
+  const modal = document.getElementById("loginModal");
+  modal.style.display = "flex";
+  modal.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
 
-        function closeLoginModal() {
-            const modal = document.getElementById('loginModal');
-            modal.classList.remove('show');
-            setTimeout(() => {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }, 300);
-        }
+function closeLoginModal() {
+  const modal = document.getElementById("loginModal");
+  modal.classList.remove("show");
 
-        function switchToRegister(e) {
-            e.preventDefault();
-            const container = document.querySelector('.modal-container');
-            container.classList.add('active');
-        }
+  // Clear any error messages
+  const errorDiv = document.getElementById("loginError");
+  if (errorDiv) {
+    errorDiv.style.display = "none";
+    errorDiv.innerHTML = "";
+  }
 
-        function switchToLogin(e) {
-            e.preventDefault();
-            const container = document.querySelector('.modal-container');
-            container.classList.remove('active');
-        }
+  // Clear modal messages
+  const modalMessages = document.getElementById("modalMessages");
+  if (modalMessages) {
+    modalMessages.innerHTML = "";
+  }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeLoginModal();
-            }
-        });
-        const elements = document.querySelectorAll('.fade-in, .slide-up');
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.2 });
+  setTimeout(() => {
+    modal.style.display = "none";
+    document.body.style.overflow = "auto";
+  }, 300);
+}
 
-        elements.forEach(el => observer.observe(el));
+function switchToRegister(e) {
+  e.preventDefault();
+  const container = document.querySelector(".modal-container");
+  container.classList.add("active");
+}
 
-        const sections = document.querySelectorAll("section");
+function switchToLogin(e) {
+  e.preventDefault();
+  const container = document.querySelector(".modal-container");
+  container.classList.remove("active");
+}
 
-        const revealSection = () => {
-            const triggerBottom = window.innerHeight * 0.85;
-            sections.forEach(section => {
-                const sectionTop = section.getBoundingClientRect().top;
-                if (sectionTop < triggerBottom) {
-                    section.classList.add("visible");
-                }
-            });
-        };
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeLoginModal();
+  }
+});
+const elements = document.querySelectorAll(".fade-in, .slide-up");
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.2 }
+);
 
-        window.addEventListener("scroll", revealSection);
-        window.addEventListener("load", revealSection);
+elements.forEach((el) => observer.observe(el));
 
-        const navLinks = document.querySelectorAll('a[href^="#"]');
+const sections = document.querySelectorAll("section");
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                if (href !== '#' && document.querySelector(href)) {
-                    e.preventDefault();
+const revealSection = () => {
+  const triggerBottom = window.innerHeight * 0.85;
+  sections.forEach((section) => {
+    const sectionTop = section.getBoundingClientRect().top;
+    if (sectionTop < triggerBottom) {
+      section.classList.add("visible");
+    }
+  });
+};
 
-                    const target = document.querySelector(href);
-                    const offsetTop = target.offsetTop - 80; 
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
+window.addEventListener("scroll", revealSection);
+window.addEventListener("load", revealSection);
 
-                    navLinks.forEach(l => l.parentElement.classList.remove('active'));
-                    this.parentElement.classList.add('active');
-                }
-            });
-        });
+const navLinks = document.querySelectorAll('a[href^="#"]');
 
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (window.pageYOffset >= sectionTop - 100) {
-                    current = section.getAttribute('id');
-                }
-            });
+navLinks.forEach((link) => {
+  link.addEventListener("click", function (e) {
+    const href = this.getAttribute("href");
+    if (href !== "#" && document.querySelector(href)) {
+      e.preventDefault();
 
-            navLinks.forEach(link => {
-                link.parentElement.classList.remove('active');
-                if (link.getAttribute('href').slice(1) === current) {
-                    link.parentElement.classList.add('active');
-                }
-            });
-        });
+      const target = document.querySelector(href);
+      const offsetTop = target.offsetTop - 80;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
 
-        const progressBar = document.createElement('div');
-        progressBar.className = 'scroll-progress';
-        document.body.appendChild(progressBar);
+      navLinks.forEach((l) => l.parentElement.classList.remove("active"));
+      this.parentElement.classList.add("active");
+    }
+  });
+});
 
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = (scrollTop / docHeight) * 100;
-            progressBar.style.width = scrollPercent + '%';
-        });
+window.addEventListener("scroll", () => {
+  let current = "";
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.clientHeight;
+    if (window.pageYOffset >= sectionTop - 100) {
+      current = section.getAttribute("id");
+    }
+  });
+
+  navLinks.forEach((link) => {
+    link.parentElement.classList.remove("active");
+    if (link.getAttribute("href").slice(1) === current) {
+      link.parentElement.classList.add("active");
+    }
+  });
+});
+
+const progressBar = document.createElement("div");
+progressBar.className = "scroll-progress";
+document.body.appendChild(progressBar);
+
+window.addEventListener("scroll", () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrollPercent = (scrollTop / docHeight) * 100;
+  progressBar.style.width = scrollPercent + "%";
+});

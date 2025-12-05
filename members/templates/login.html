@@ -7,9 +7,10 @@
 <script src="{% static 'js/auth.js' %}" defer></script>
 
 <div id="loginModal" class="login-modal">
-  <div class="login-modal-overlay" onclick="closeLoginModal()"></div>
+  <div class="login-modal-overlay"></div>
   <div class="login-modal-content">
     <span class="close-button" id="closeLoginBtn" onclick="closeLoginModal()">&times;</span>
+
 
     <div class="modal-container">
       <div class="form-box login-form-box">
@@ -26,6 +27,19 @@
             <input type="password" name="password" placeholder="●●●●●●●●●" required />
             <i class='bx bxs-lock-alt'></i>
           </div>
+          {% if messages %}
+          <div class="login-field-errors">
+            {% for message in messages %}
+              {% if 'password' in message.message|lower or 'email' in message.message|lower or 'account' in message.message|lower or message.tags == 'error' %}
+              {% if not 'logged out' in message.message|lower and not 'signed out' in message.message|lower %}
+              <div class="field-error-message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+              </div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
           <div class="show-pw-row">
             <label class="show-pw">
               <input type="checkbox" class="show-pw-login-checkbox" />
