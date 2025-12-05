@@ -391,17 +391,15 @@ input:checked + .slider:before {
     border: 1px solid #ffeaa7;
 }
 
-/* Add or update these styles in profileStyle.css */
 
-/* Button group spacing fix */
+
 .button-group {
     display: flex;
-    gap: 15px; /* Increased from 10px to 15px */
-    margin-top: 25px; /* Increased from 15px to 25px */
+    gap: 15px;
+    margin-top: 25px; 
     align-items: center;
 }
 
-/* Make sure buttons have proper spacing */
 .button-group .save-btn,
 .button-group .secondary-btn {
     flex: 1;
@@ -413,7 +411,6 @@ input:checked + .slider:before {
     transition: all 0.2s ease;
 }
 
-/* Specific styling for cancel button */
 .button-group .secondary-btn {
     background: var(--border-clr);
     color: var(--text-clr);
@@ -426,7 +423,6 @@ input:checked + .slider:before {
     transform: translateY(-1px);
 }
 
-/* Save button in button group */
 .button-group .save-btn {
     background: var(--palette-accent);
     color: white;
@@ -438,31 +434,28 @@ input:checked + .slider:before {
     transform: translateY(-1px);
 }
 
-/* Password form field spacing */
 #passwordChangeSection .field {
-    margin-bottom: 20px; /* Increased from 18px */
+    margin-bottom: 20px; 
 }
 
 #passwordChangeSection .field:last-child {
     margin-bottom: 10px;
 }
 
-/* Add some space above the button group */
 #passwordChangeSection {
     background-color: #f9f9f9;
     padding: 25px;
     border-radius: 10px;
     border: 1px solid var(--border-clr);
-    margin: 20px 0; /* Increased from 15px */
+    margin: 20px 0; 
     animation: fadeIn 0.3s ease;
 }
 
-/* Password requirements box spacing */
 .password-requirements {
     background: #f8f9fa;
     border-left: 3px solid var(--palette-accent);
-    padding: 15px 20px; /* Increased padding */
-    margin: 20px 0; /* Increased from 15px */
+    padding: 15px 20px; 
+    margin: 20px 0; 
     border-radius: 0 5px 5px 0;
 }
 
