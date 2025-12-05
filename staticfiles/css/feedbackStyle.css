@@ -85,6 +85,11 @@ h1 {
   color: white;
 }
 
+.nps-buttons button:select {
+  background: var(--palette-accent);
+  color: white;
+}
+
 /* Emojis */
 .satisfaction {
   display: flex;

@@ -446,30 +446,27 @@ function initReportModal() {
       e.preventDefault();
       e.stopPropagation();
       reportModal.style.display = "none";
-      document.body.style.overflow = ""; // Restore scrolling
+      document.body.style.overflow = "";
     });
   }
 
-  // Close modal when clicking outside of it
   if (reportModal) {
     reportModal.addEventListener("click", function (event) {
       if (event.target === reportModal) {
         reportModal.style.display = "none";
-        document.body.style.overflow = ""; // Restore scrolling
+        document.body.style.overflow = "";
       }
     });
   }
 
-  // Close modal with Escape key
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape" && reportModal && reportModal.style.display === "block") {
       reportModal.style.display = "none";
-      document.body.style.overflow = ""; // Restore scrolling
+      document.body.style.overflow = "";
     }
   });
 }
 
-// Ensure modal/refresh handlers run after DOM is ready (script is in <head> without defer)
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initReportModal);
 } else {

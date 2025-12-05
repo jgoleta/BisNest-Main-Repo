@@ -26,7 +26,7 @@ class CustomerForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'stock', 'price', 'image']
+        fields = ['name', 'description', 'stock', 'price', 'image']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -41,6 +41,11 @@ class ProductForm(forms.ModelForm):
                 'class': 'form-control',
                 'id': 'add-product-price',
                 'step': 0.01
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'id': 'add-product-description',
+                'rows': 3
             }),
             'image': forms.ClearableFileInput(attrs={
                 'class': 'form-control-file',

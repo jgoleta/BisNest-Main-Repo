@@ -360,3 +360,123 @@ input:checked + .slider:before {
     outline: none;
     border-bottom: 2px solid #4a90e2;
 }
+
+/* Messages styling - Make sure this exists */
+.messages-container {
+    margin: 15px 20px;
+}
+
+.message {
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px; 
+    align-items: center;
+}
+
+.button-group .save-btn,
+.button-group .secondary-btn {
+    flex: 1;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 6px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.button-group .secondary-btn {
+    background: var(--border-clr);
+    color: var(--text-clr);
+    border: 1px solid var(--border-clr);
+}
+
+.button-group .secondary-btn:hover {
+    background: #e5e7eb;
+    border-color: #d1d5db;
+    transform: translateY(-1px);
+}
+
+.button-group .save-btn {
+    background: var(--palette-accent);
+    color: white;
+    border: none;
+}
+
+.button-group .save-btn:hover {
+    background: var(--palette-accent-dark);
+    transform: translateY(-1px);
+}
+
+#passwordChangeSection .field {
+    margin-bottom: 20px; 
+}
+
+#passwordChangeSection .field:last-child {
+    margin-bottom: 10px;
+}
+
+#passwordChangeSection {
+    background-color: #f9f9f9;
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid var(--border-clr);
+    margin: 20px 0; 
+    animation: fadeIn 0.3s ease;
+}
+
+.password-requirements {
+    background: #f8f9fa;
+    border-left: 3px solid var(--palette-accent);
+    padding: 15px 20px; 
+    margin: 20px 0; 
+    border-radius: 0 5px 5px 0;
+}
+
+.password-feedback {
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin: 10px 0;
+    font-size: 14px;
+    display: none;
+}
+
+.password-feedback.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border-left: 4px solid #ef4444;
+    display: block;
+}
+
+.password-feedback.success {
+    background: #d1fae5;
+    color: #065f46;
+    border-left: 4px solid #10b981;
+    display: block;
+}

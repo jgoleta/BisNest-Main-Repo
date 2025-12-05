@@ -114,6 +114,9 @@ if (deleteButton) {
       const idNumber = parseInt(removed.id.substring(1));
       freedIds.push(idNumber);
       renderTable();
+
+      showNotification("Customer Successfully Removed"); // NOTIFICATION
+
     } else {
       alert("Please select a row to delete.");
     }
@@ -196,10 +199,8 @@ if (editProfileBtn) {
     const phone = document.getElementById("profile-phone").textContent;
     const address = document.getElementById("profile-address").textContent;
 
-    // Close profile popup
     closeProfilePopup();
 
-    // Open edit form
     window.openModal(formContainer, modalOverlay);
 
     document.getElementById("formTitle").textContent = "Edit Customer";
@@ -271,8 +272,9 @@ if (customerForm) {
         window.closeModal(formContainer, modalOverlay);
         resetCustomerForm();
         
-        // Refresh page to show updated data
-        window.location.reload();
+        showNotification("Customer Successfully Added"); // NOTIFICATION
+
+        setTimeout(() => window.location.reload(), 600);
       }, 800);
     } catch (error) {
       hideLoading();
@@ -317,7 +319,10 @@ if (deleteProfileForm) {
       setTimeout(() => {
         hideLoading();
         closeProfilePopup();
-        window.location.reload();
+
+        showNotification("Customer Successfully Removed"); // NOTIFICATION
+
+        setTimeout(() => window.location.reload(), 600);
       }, 800);
     } catch (error) {
       hideLoading();
@@ -528,5 +533,15 @@ if (deleteProfileForm) {
   setTimeout(() => { if (!document.readyState || document.readyState !== 'loading') showPage(1); }, 50);
 
 })();
+
+function showNotification(message) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.classList.add('show');
+
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000); 
+}
 
 // Ajax for customer fetch and delete
