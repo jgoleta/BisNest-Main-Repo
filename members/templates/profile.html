@@ -103,12 +103,87 @@
                             <input type="date" name="birthday" value="{{ form.birthday.value|default:'' }}">
                         </div>
 
+                        {% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+        {% if not "signed out" in message.message|lower %}
+        <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
                         <hr class="divider">
 
                         <h2 class="section-title">Account Security</h2>
 
-                        <button type="button" class="secondary-btn">Change Password</button>
-                        <button type="button" class="secondary-btn">Manage Backup Codes</button>
+                        {% if not has_google_account %}
+                        <!-- Password Change Form for registered users -->
+                        <div id="passwordChangeSection" style="display: none; margin-bottom: 20px;">
+                            <form method="POST" action="{% url 'profile' %}" id="passwordForm">
+                                {% csrf_token %}
+                                <input type="hidden" name="change_password" value="true">
+
+                                <div class="field">
+                                    <label>Current Password</label>
+                                    <input type="password" name="old_password" placeholder="Enter your current password"
+                                        required>
+                                    <small>Enter your current password to verify it's you.</small>
+                                </div>
+
+                                <div class="field">
+                                    <label>New Password</label>
+                                    <input type="password" name="new_password1" placeholder="Enter new password"
+                                        required id="newPassword1">
+                                    <small>
+                                        Password requirements:
+                                        <ul style="margin: 5px 0 0 20px; padding: 0;">
+                                            <li>At least 8 characters long</li>
+                                            <li>Contains at least one uppercase letter</li>
+                                            <li>Contains at least one lowercase letter</li>
+                                            <li>Contains at least one number</li>
+                                        </ul>
+                                    </small>
+
+                                    <!-- Password strength meter (optional) -->
+                                    <div class="password-strength" style="margin-top: 10px;">
+                                        <div class="password-strength-meter"></div>
+                                    </div>
+                                    <div class="password-strength-text" style="margin-top: 5px;"></div>
+                                </div>
+
+                                <div class="field">
+                                    <label>Confirm New Password</label>
+                                    <input type="password" name="new_password2" placeholder="Confirm new password"
+                                        required id="newPassword2">
+                                    <small>Re-enter your new password to confirm.</small>
+                                </div>
+
+                                <!-- Validation error container -->
+                                <div id="passwordError" class="password-feedback" style="display: none;"></div>
+
+                                <div class="button-group">
+                                    <button type="submit" class="save-btn">Change Password</button>
+                                    <button type="button" class="secondary-btn"
+                                        onclick="hidePasswordForm()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <button type="button" class="secondary-btn" id="showPasswordBtn" onclick="showPasswordForm()">
+                            Change Password
+                        </button>
+                        {% else %}
+                        <!-- For Google users, show disabled button -->
+                        <button type="button" class="secondary-btn" disabled style="opacity: 0.6; cursor: not-allowed;">
+                            <span style="color: #4285f4;">✓</span> Password managed by Google
+                        </button>
+                        <p style="font-size: 12px; color: #666; margin-top: 5px;">
+                            Google account users cannot change password here. Use Google account settings.
+                        </p>
+                        {% endif %}
 
                         <div class="settings mt-15">
                             <label class="switch">
@@ -195,7 +270,226 @@
                 </div>
             </div>
         </div>
+
     </main>
+
 </body>
+<script>
+    // Password change form functions
+    function showPasswordForm() {
+        document.getElementById('passwordChangeSection').style.display = 'block';
+        document.getElementById('showPasswordBtn').style.display = 'none';
+        // Clear any previous error messages
+        const passwordError = document.getElementById('passwordError');
+        if (passwordError) passwordError.style.display = 'none';
+        // Scroll to the form
+        document.getElementById('passwordChangeSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function hidePasswordForm() {
+        document.getElementById('passwordChangeSection').style.display = 'none';
+        document.getElementById('showPasswordBtn').style.display = 'block';
+        // Clear form fields
+        const passwordForm = document.getElementById('passwordForm');
+        if (passwordForm) passwordForm.reset();
+        // Reset password strength meter
+        const strengthMeter = document.querySelector('.password-strength-meter');
+        const strengthText = document.querySelector('.password-strength-text');
+        if (strengthMeter && strengthText) {
+            strengthMeter.parentElement.classList.remove('weak', 'fair', 'good');
+            strengthText.textContent = 'Enter a password';
+        }
+    }
+
+    // Main initialization
+    document.addEventListener('DOMContentLoaded', function () {
+        // ========== PASSWORD STRENGTH INDICATOR ==========
+        const newPasswordInput = document.querySelector('[name="new_password1"]');
+        const strengthMeter = document.querySelector('.password-strength-meter');
+        const strengthText = document.querySelector('.password-strength-text');
+
+        if (newPasswordInput && strengthMeter && strengthText) {
+            newPasswordInput.addEventListener('input', function () {
+                const password = this.value;
+                let strength = 0;
+
+                // Length check
+                if (password.length >= 8) strength++;
+
+                // Has uppercase
+                if (/[A-Z]/.test(password)) strength++;
+
+                // Has lowercase  
+                if (/[a-z]/.test(password)) strength++;
+
+                // Has number
+                if (/[0-9]/.test(password)) strength++;
+
+                // Update strength meter
+                const parent = strengthMeter.parentElement;
+                parent.classList.remove('weak', 'fair', 'good');
+
+                if (password.length === 0) {
+                    strengthText.textContent = 'Enter a password';
+                } else if (strength <= 2) {
+                    parent.classList.add('weak');
+                    strengthText.textContent = 'Weak password';
+                    strengthText.style.color = '#ef4444';
+                } else if (strength <= 3) {
+                    parent.classList.add('fair');
+                    strengthText.textContent = 'Fair password';
+                    strengthText.style.color = '#f59e0b';
+                } else {
+                    parent.classList.add('good');
+                    strengthText.textContent = 'Strong password';
+                    strengthText.style.color = '#10b981';
+                }
+            });
+        }
+
+        // ========== REAL-TIME PASSWORD VALIDATION ==========
+        const newPassword1 = document.getElementById('newPassword1');
+        const newPassword2 = document.getElementById('newPassword2');
+        const passwordError = document.getElementById('passwordError');
+
+        if (newPassword1 && newPassword2) {
+            // Real-time password validation
+            newPassword1.addEventListener('input', function() {
+                validatePassword();
+                checkPasswordsMatch();
+            });
+            
+            newPassword2.addEventListener('input', function() {
+                checkPasswordsMatch();
+            });
+        }
+
+        // ========== FORM SUBMISSION VALIDATION ==========
+        const passwordForm = document.getElementById('passwordForm');
+        if (passwordForm) {
+            passwordForm.addEventListener('submit', function (e) {
+                const newPassword1 = this.querySelector('[name="new_password1"]').value;
+                const newPassword2 = this.querySelector('[name="new_password2"]').value;
+                const oldPassword = this.querySelector('[name="old_password"]').value;
+
+                // Check if old password is entered
+                if (!oldPassword) {
+                    alert('Please enter your current password.');
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Basic client-side validation
+                const errors = [];
+                
+                if (newPassword1.length < 8) {
+                    errors.push("Password must be at least 8 characters long.");
+                }
+                
+                if (!/[A-Z]/.test(newPassword1)) {
+                    errors.push("Password must contain at least one uppercase letter.");
+                }
+                
+                if (!/[a-z]/.test(newPassword1)) {
+                    errors.push("Password must contain at least one lowercase letter.");
+                }
+                
+                if (!/[0-9]/.test(newPassword1)) {
+                    errors.push("Password must contain at least one number.");
+                }
+                
+                if (newPassword1 !== newPassword2) {
+                    errors.push("New passwords do not match.");
+                }
+
+                if (errors.length > 0) {
+                    // Show errors in the passwordError div
+                    if (passwordError) {
+                        passwordError.innerHTML = errors.join('<br>');
+                        passwordError.className = 'password-feedback error';
+                        passwordError.style.display = 'block';
+                        passwordError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        // Fallback to alert
+                        alert(errors.join('\n'));
+                    }
+                    e.preventDefault();
+                    return false;
+                }
+
+                return true; // Allow form submission
+            });
+        }
+
+        // ========== AUTO-SHOW PASSWORD FORM ON ERRORS ==========
+        {% if messages %}
+        {% for message in messages %}
+        {% if 'password' in message.tags|default:''|lower or 'Password' in message|default:'' %}
+        // Auto-show password form if there are password errors
+        if (!{{ has_google_account|yesno:"true,false" }}) {
+            setTimeout(showPasswordForm, 300);
+        }
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+    });
+
+    // ========== HELPER FUNCTIONS ==========
+    function validatePassword() {
+        const password = document.getElementById('newPassword1').value;
+        const errors = [];
+        
+        if (password.length < 8) {
+            errors.push("Password must be at least 8 characters long.");
+        }
+        
+        if (!/[A-Z]/.test(password)) {
+            errors.push("Password must contain at least one uppercase letter.");
+        }
+        
+        if (!/[a-z]/.test(password)) {
+            errors.push("Password must contain at least one lowercase letter.");
+        }
+        
+        if (!/[0-9]/.test(password)) {
+            errors.push("Password must contain at least one number.");
+        }
+        
+        return errors;
+    }
+    
+    function checkPasswordsMatch() {
+        const newPassword1 = document.getElementById('newPassword1');
+        const newPassword2 = document.getElementById('newPassword2');
+        const passwordError = document.getElementById('passwordError');
+        
+        if (newPassword1 && newPassword2 && newPassword1.value && newPassword2.value) {
+            if (newPassword1.value !== newPassword2.value) {
+                showError("Passwords do not match.");
+                return false;
+            } else {
+                hideError();
+                return true;
+            }
+        }
+        return true;
+    }
+    
+    function showError(message) {
+        const passwordError = document.getElementById('passwordError');
+        if (passwordError) {
+            passwordError.innerHTML = message;
+            passwordError.className = 'password-feedback error';
+            passwordError.style.display = 'block';
+        }
+    }
+    
+    function hideError() {
+        const passwordError = document.getElementById('passwordError');
+        if (passwordError) {
+            passwordError.style.display = 'none';
+        }
+    }
+</script>
 
 </html>
