@@ -45,14 +45,23 @@
           <div class="product-card-wrapper">
             <button class="product-button-style" data-id="{{ product.product_id }}" data-db-id="{{ product.id }}" data-name="{{ product.name }}"
               data-price="{{ product.price }}" data-stock="{{ product.stock }}"
+              data-description="{{ product.description|default_if_none:'' }}"
               data-image="{% if product.image %}{{ product.image.url }}{% endif %}">
               <p class="product-price-label">₱{{ product.price|floatformat:2 }}</p>
               <p class="product-price-name">{{ product.name }}</p>
+              <div class="product-description-container">
+                {% if product.description %}
+                <p class="product-description">{{ product.description }}</p>
+                {% else %}
+                <p class="product-description">No Description</p>
+                {% endif %}
+              </div>
               <p class="product-stock-label">Stock: {{ product.stock }}</p>
             </button>
             <div class="product-actions">
               <button class="product-edit-btn" data-id="{{ product.product_id }}" data-db-id="{{ product.id }}" data-name="{{ product.name }}"
                 data-price="{{ product.price }}" data-stock="{{ product.stock }}"
+                data-description="{{ product.description|default_if_none:'' }}"
                 data-image="{% if product.image %}{{ product.image.url }}{% endif %}" title="Edit Product">
                 <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#FFFFFF">
                   <path d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
@@ -96,6 +105,10 @@
                 <label for="{{ form.price.id_for_label }}">Price:</label>
                 {{ form.price }}
               </div>
+              <div class="form-group">
+                <label for="{{ form.description.id_for_label }}">Description:</label>
+                {{ form.description }}
+              </div>
             </div>
             <div class="modal-actions">
               <button type="submit" class="submit-button">Submit</button>
@@ -114,6 +127,10 @@
           <div class="form-group">
             <label for="modal-product-name-input" class="modal-label">Name:</label>
             <input type="text" id="modal-product-name-input">
+          </div>
+          <div class="form-group">
+            <label for="modal-product-description" class="modal-label">Description:</label>
+            <textarea id="modal-product-description"></textarea>
           </div>
           <div class="form-group">
             <label for="modal-product-stock" class="modal-label">Stock:</label>

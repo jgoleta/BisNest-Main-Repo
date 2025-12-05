@@ -33,6 +33,7 @@ def update_product(request):
         product_id = data.get('product_id')
         price = data.get('price')
         name = data.get('name')
+        description = data.get('description')
         stock = data.get('stock')
         
         if not product_id:
@@ -47,6 +48,10 @@ def update_product(request):
         # Update name if provided
         if name is not None:
             product.name = name
+            
+        # Update description if provided
+        if description is not None:
+            product.description = description
         
         # Update stock if provided
         if stock is not None:
@@ -58,6 +63,7 @@ def update_product(request):
             'product_id': product.product_id, 
             'price': str(product.price),
             'name': product.name,
+            'description': product.description,
             'stock': product.stock
         })
     except Product.DoesNotExist:

@@ -169,6 +169,7 @@ document.querySelectorAll(".product-edit-btn").forEach((btn) => {
       price: productBtn.dataset.price,
       image: productBtn.dataset.image,
       stock: productBtn.dataset.stock,
+      description: productBtn.dataset.description,
     };
     openEditModal(product, productBtn);
   });
@@ -180,11 +181,12 @@ const productIdEl = document.getElementById("modal-product-id");
 const productPriceEl = document.getElementById("modal-product-price");
 const modalNameInput = document.getElementById("modal-product-name-input");
 const modalStockInput = document.getElementById("modal-product-stock");
+const modalDescriptionInput = document.getElementById("modal-product-description");
 const closeEditModalBtn = document.getElementById("close-edit-modal");
 let currentButton = null;
 
 function openEditModal(product, btn) {
-  if (!productNameEl || !modalNameInput || !productIdEl || !modalStockInput || !productPriceEl) {
+  if (!productNameEl || !modalNameInput || !productIdEl || !modalStockInput || !productPriceEl || !modalDescriptionInput) {
     console.error("Modal elements not found");
     return;
   }
@@ -193,6 +195,7 @@ function openEditModal(product, btn) {
   productIdEl.textContent = product.id; // This is the product_id (e.g., "P001")
   modalStockInput.value = btn.dataset.stock || "0";
   productPriceEl.value = product.price;
+  modalDescriptionInput.value = product.description || "";
   window.openModal(modal, modalOverlay);
   currentButton = btn;
 }
@@ -236,7 +239,7 @@ const csrftoken = getCookie("csrftoken");
 // Save/update via AJAX to server endpoint
 if (saveBtn) {
 saveBtn.addEventListener("click", () => {
-    if (!modalNameInput || !modalStockInput || !productPriceEl || !productIdEl) {
+    if (!modalNameInput || !modalStockInput || !productPriceEl || !productIdEl || !modalDescriptionInput) {
       showNotification("Error: Form elements not found", true);
       return;
     }
@@ -244,6 +247,7 @@ saveBtn.addEventListener("click", () => {
   const newName = modalNameInput.value.trim();
   const newStock = modalStockInput.value.trim();
   const newPrice = productPriceEl.value.trim();
+  const newDescription = modalDescriptionInput.value.trim();
 
   if (!newName) {
     alert("Product name is required.");
@@ -265,6 +269,7 @@ saveBtn.addEventListener("click", () => {
     name: newName,
     stock: parseInt(newStock),
     price: parseFloat(newPrice),
+    description: newDescription,
   };
 
   fetch("/product/update/", {
@@ -293,6 +298,7 @@ saveBtn.addEventListener("click", () => {
             currentButton.dataset.price = data.price || payload.price;
             currentButton.dataset.name = data.name || payload.name;
             currentButton.dataset.stock = data.stock || payload.stock;
+            currentButton.dataset.description = data.description || payload.description;
         }
         showNotification("Product updated successfully!");
       } else {

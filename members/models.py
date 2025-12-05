@@ -98,6 +98,7 @@ class Customer(models.Model):
 class Product(models.Model):
     product_id = models.CharField(max_length=10, unique=True, blank=True, null=True)
     name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
     stock = models.IntegerField(default=0)
     original_stock = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
