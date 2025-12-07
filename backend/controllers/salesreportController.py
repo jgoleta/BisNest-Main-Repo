@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from members.models import Payment, SalesReport
 
 def salesPage(request):
-    sales = Payment.objects.all().order_by('-date')
+    sales = Payment.objects.select_related('order').prefetch_related('order__order_items__product')   
+    
     return render(request, 'sales.html', {
         'sales': sales,
     })
