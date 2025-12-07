@@ -43,61 +43,83 @@
                 <span class="close-button" id="closeBtn">&times;</span>
                 <h2 class="form-title" id="formTitle">Order Information</h2>
                 <form method="POST" class="order-form">
-                    {% csrf_token %}
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="{{ form.order_id.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg"
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>
+                            <svg xmlns="http://www.w3.org/2000/svg"
                                     height="20px" viewBox="0 -960 960 960" width="20px" fill="#8C1AF6">
                                     <path
                                         d="M192-192v-480l-76-161 65-31 91 192h416l91-192 65 30-76 162v480H192Zm228-264h120q15.3 0 25.65-10.29Q576-476.58 576-491.79t-10.35-25.71Q555.3-528 540-528H420q-15.3 0-25.65 10.29Q384-507.42 384-492.21t10.35 25.71Q404.7-456 420-456Z" />
-                                </svg> Order ID:</label>
-                            {{ form.order_id }}
-                        </div>
-                        <div class="form-group">
-                            <label for="{{ form.customer.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg"
+                            </svg> 
+                            Order ID:
+                        </label>
+                        {{ form.order_id }}
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <svg xmlns="http://www.w3.org/2000/svg"
                                     height="20px" viewBox="0 -960 960 960" width="20px" fill="#5985E1">
                                     <path
                                         d="M480-480q-60 0-102-42t-42-102q0-60 42-102t102-42q60 0 102 42t42 102q0 60-42 102t-102 42ZM192-192v-96q0-23 12.5-43.5T239-366q55-32 116.5-49T480-432q63 0 124.5 17T721-366q22 13 34.5 34t12.5 44v96H192Z" />
-                                </svg> Customer Name:</label>
-                            {{ form.customer }}
-                        </div>
-                        <div class="form-group">
-                            <label for="{{ form.employee.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg"
+                            </svg>
+                            Customer Name:
+                        </label>
+                        {{ form.customer }}
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <svg xmlns="http://www.w3.org/2000/svg"
                                     height="20px" viewBox="0 -960 960 960" width="20px" fill="#5985E1">
                                     <path
                                         d="M480-480q-60 0-102-42t-42-102q0-60 42-102t102-42q60 0 102 42t42 102q0 60-42 102t-102 42ZM192-192v-96q0-23 12.5-43.5T239-366q55-32 116.5-49T480-432q63 0 124.5 17T721-366q22 13 34.5 34t12.5 44v96H192Z" />
-                                </svg> Employee Name:</label>
-                            {{ form.employee }}
-                        </div>
-                        <div class="form-group">
-                            <label for="{{ form.product.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg"
-                                    height="20px" viewBox="0 -960 960 960" width="20px" fill="#00b496">
-                                    <path
-                                        d="M816-504v288q0 29-21 50.5T744-144H216q-30 0-51-21.5T144-216v-289q-33-23-41.5-59t.5-76l46-128q5-24 23-36t44-12h528q26 0 43.5 11t23.5 37l46 128q9 40 0 76t-41 60Zm-248-48q21 0 35.5-14t12.5-34l-24-144h-72v144q0 20 14 34t34 14Zm-176 0q20 0 34-14t14-34v-144h-72l-24 144q-2 20 12.5 34t35.5 14Zm-176 0q18 0 31.5-11t15.5-28l25-153h-72l-45 128q-8 23 6 43.5t39 20.5Zm528 0q25 0 39.5-20.5T790-616l-46-128h-72l25 153q2 17 16 28t31 11Z" />
-                                </svg> Product Name:</label>
-                            {{ form.product }}
-                        </div>
-                        <div class="form-group">
-                            <label for="{{ form.quantity.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg"
-                                    height="20px" viewBox="0 -960 960 960" width="20px" fill="#BD4C31">
-                                    <path
-                                        d="M279-144q-27 0-47.5-17.5T207-206l-63-466h120v-72.21Q264-774 285.17-795q21.16-21 50.89-21h288.22Q654-816 675-794.85T696-744v72h120l-63 466q-4 27-24.4 44.5T681-144H279Zm167-144 170-170-51-51-119 119-51-51-51 51 102 102ZM336-672h288v-72H336v72Z" />
-                                </svg> Quantity:</label>
-                            {{ form.quantity }}
-                        </div>
-                        <div class="form-group">
-                            <label for="{{ form.amount.id_for_label }}"><svg xmlns="http://www.w3.org/2000/svg"
-                                    height="20px" viewBox="0 -960 960 960" width="20px" fill="#A96424">
-                                    <path
-                                        d="M240-96 96-240l144-144 51 51-57 57h492l-57-57 51-51 144 144L720-96l-51-51 57-57H234l57 57-51 51Zm240-432q50 0 85-34.5t35-85.5q0-50-35-85t-85-35q-51 0-85.5 35T360-648q0 51 34.5 85.5T480-528Zm-288 96q-30 0-51-21t-21-51v-288q0-29 21-50.5t51-21.5h576q29 0 50.5 21.5T840-792v288q0 30-21.5 51T768-432H192Zm0-72h72q0-29-21.5-50.5T192-576l2 72h-2Zm504 0h74l-2-72q-30 0-51 21.5T696-504Zm72-216 2-72h-74q0 30 21 51t51 21Zm-576 0q29 0 50.5-21t21.5-51h-72 2l-2 72Z" />
-                                </svg> Amount:</label>
-                            {{ form.amount }}
-                        </div>
+                                </svg>
+                             Employee Name:
+                        </label>
+                        {{ form.employee }}
                     </div>
-                    <div class="submit-wrapper">
-                        <button type="submit" class="submit-button">Submit</button>
-                    </div>
-                </form>
+                </div>
+
+                <hr style="margin: 20px 0; border: 1px solid #ddd;">
+                <h3>Order Items</h3>
+
+                {{ formset.management_form }}
+
+                <div class="order-items-container">
+                    {% for item_form in formset %}
+                        {{ item_form.id }}
+
+                        <div class="form-row item-row" style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                            
+                            <div class="form-group">
+                                <label>Product</label>
+                                {{ item_form.product }}
+                            </div>
+
+                            <div class="form-group">
+                                <label>Qty</label>
+                                {{ item_form.quantity }}
+                            </div>
+
+                            <div class="form-group">
+                                <label>Amount</label>
+                                {{ item_form.amount }}
+                            </div>
+
+                            <div class="form-group" style="display: flex; align-items: center; justify-content: center;">
+                                <label style="margin-right: 5px; color: red;">Delete?</label>
+                                {{ item_form.DELETE }} 
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="submit-wrapper">
+                    <button type="submit" class="submit-button">Update Order</button>
+                </div>
+            </form>
             </div>
 
             <div class="order-table-container">

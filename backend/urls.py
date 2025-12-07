@@ -39,6 +39,7 @@ urlpatterns = [
     path('profile/', login_required(index.profilePage, login_url='/'), name='profile'),
 
     # --- crud ---
+    path('get-order-form/<int:pk>/', orderController.get_order_form_html, name='get_order_form'),    
     path('delete-employee/<int:employee_id>/', employeesController.delete_employee, name='delete_employee'),
     path('delete-customer/<int:customer_id>/', customersController.delete_customer, name='delete_customer'),
     path('customer/delete/<int:customer_id>/', customersController.delete_customer),  # backward compatibility
