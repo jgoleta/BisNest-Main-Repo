@@ -1,5 +1,4 @@
 import re
-
 from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
@@ -135,37 +134,39 @@ class Order(models.Model):
     order_id = models.CharField(max_length=10, unique=True, blank=True, null=True)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE, null=True, blank=True)
     employee = models.ForeignKey('Employee', on_delete=models.CASCADE, null=True, blank=True)
-    product = models.ForeignKey('Product', on_delete=models.CASCADE, null=True, blank=True)
-    quantity = models.DecimalField(max_digits=10, decimal_places=2, default=1)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     date = models.DateField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if not self.order_id:
             last_order = Order.objects.order_by('-id').first()
+            last_number = 0
             if last_order and last_order.order_id:
-                try:
-                    # Extract number from order_id (handles both O0001 and ORD0001 formats)
-                    order_id_str = last_order.order_id.replace('ORD', '').replace('O', '')
-                    last_number = int(order_id_str) if order_id_str.isdigit() else 0
-                except ValueError:
-                    last_number = 0
-                new_number = last_number + 1
-            else:
-                new_number = 1
-            self.order_id = f'ORD{new_number:04d}'
-
-        #compute function
-        if self.product and self.quantity:
-            self.amount = self.product.price * self.quantity
+                num_part = last_order.order_id.replace('ORD', '').replace('O','')
+                last_number = int(num_part) if num_part.isdigit() else 0
+            
+            self.order_id = f'ORD{last_number + 1:04d}'
 
         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return f"{self.order_id}"
+    @property
+    def total_amount(self):
+        return sum(item.amount for item in self.order_items.all())
 
-    class Meta:
-        ordering = ['-date']
+    def __str__(self):
+        return self.order_id
+    
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2, default=1)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        self.amount = self.product.price * self.quantity
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.product.name} x {self.quantity}"
 
 class Payment(models.Model):
     payment_id = models.CharField(max_length=10, unique=True, null=True, blank=True)
@@ -182,7 +183,7 @@ class Payment(models.Model):
         super().save(*args, **kwargs)
     
     def outstandingBalance(self):
-        return f"Outstanding Balance: {self.amount - self.order.amount}"
+        return f"Outstanding Balance: {self.amount - self.order.total_amount}"
     
     def __str__(self):
         return self.payment_id

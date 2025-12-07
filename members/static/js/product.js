@@ -543,18 +543,45 @@ function displayCart() {
 
 // Place order - redirect to order page with cart data
 if (placeOrderBtn) {
-  placeOrderBtn.addEventListener('click', function() {
-    if (cart.length === 0) {
-      alert('Cart is empty');
-      return;
-    }
-    
-    // Store cart data for order page
-    localStorage.setItem('pendingOrderCart', JSON.stringify(cart));
-    
-    // Redirect to order page
-    window.location.href = '/order/';
-  });
+    placeOrderBtn.addEventListener('click', function() {
+        if (cart.length === 0) {
+            alert('Cart is empty');
+            return;
+        }
+
+            fetch("/order/create/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken"),
+                },
+                body: JSON.stringify({
+                    customer_id: document.getElementById('cart-customer').value,
+                    employee_id: document.getElementById('cart-employee').value,
+                    cart_items: cart
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                alert("Order successfully created! Order ID: " + data.order_id);
+
+                // clear cart
+                cart.length = 0;
+                localStorage.removeItem("productCart");
+
+                // close modal
+                window.closeModal(cartModal, modalOverlay);
+            })
+            .catch(err => {
+                console.error("Order creation error:", err);
+                alert("Failed to submit order.");
+            });
+    });
 }
 
 // Initialize on page load
@@ -564,3 +591,31 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Notification helper is provided globally by `notify.js` (window.showNotification)
+
+// Order creation on order page
+document.addEventListener('DOMContentLoaded', function() {
+    const cart = JSON.parse(localStorage.getItem('pendingOrderCart'));
+
+    // When confirming order:
+    document.getElementById("place-order-btn").addEventListener("click", function() {
+
+        fetch("/order/create/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: JSON.stringify({
+                customer_id: document.getElementById("customerSelect").value,
+                employee_id: document.getElementById("employeeSelect").value,
+                cart_items: cart
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert("Order created: " + data.order_id);
+            localStorage.removeItem("pendingOrderCart");
+            window.location.href = "/history/";
+        })
+    });
+});

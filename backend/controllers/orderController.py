@@ -1,98 +1,188 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from members.models import Order, Product, Customer, Employee
+from members.models import Order, Product, Customer, Employee, OrderItem
 from members.forms import OrderForm
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 import json
 
+
+# ----------------------------------------------------------
+# ORDER HISTORY PAGE
+# ----------------------------------------------------------
 def orderHistoryPage(request):
-    # Get the highest order number to generate next ID
+
+    # prepare next order_id
     last_order = Order.objects.order_by('-id').first()
     if last_order and last_order.order_id:
+        order_id_str = last_order.order_id.replace("ORD", "").replace("O", "")
         try:
-            # Extract number from order_id (handles both O0001 and ORD0001 formats)
-            order_id_str = last_order.order_id.replace('ORD', '').replace('O', '')
-            last_number = int(order_id_str) if order_id_str.isdigit() else 0
+            next_number = int(order_id_str) + 1
         except ValueError:
-            last_number = 0
-        next_number = last_number + 1
+            next_number = 1
     else:
         next_number = 1
-    form = OrderForm(initial={'order_id': f"ORD{next_number:04d}"})
 
-    if request.method == 'POST':
-        edit_id = request.POST.get('edit_id')
-        cart_data = request.POST.get('cart_data')
+    form = OrderForm(initial={"order_id": f"ORD{next_number:04d}"})
 
-        if edit_id:  # existing order edit
+    # ------------------------------------------------------
+    # CREATE / EDIT ORDER
+    # ------------------------------------------------------
+    if request.method == "POST":
+        edit_id = request.POST.get("edit_id")
+        cart_data = request.POST.get("cart_data")
+
+        # --------------------------------------------------
+        # 1. Editing existing order
+        # --------------------------------------------------
+        if edit_id:
             order = get_object_or_404(Order, pk=edit_id)
             form = OrderForm(request.POST, instance=order)
             if form.is_valid():
                 form.save()
-                return redirect('history')
-        elif cart_data:  # create orders from cart
+                return redirect("history")
+
+        # --------------------------------------------------
+        # 2. Creating multiple orders from cart (OLD LOGIC)
+        #    → Now changed to create ONE order with MANY items
+        # --------------------------------------------------
+        elif cart_data:
             try:
                 cart = json.loads(cart_data)
-                created_orders = []
-                
+
+                # get customer + employee from first item
+                first = cart[0]
+                customer = Customer.objects.get(pk=first["customerId"])
+                employee = Employee.objects.get(pk=first["employeeId"])
+
+                # create parent order
+                order = Order.objects.create(
+                    customer=customer,
+                    employee=employee
+                )
+
+                # add items
                 for item in cart:
-                    try:
-                        customer = Customer.objects.get(pk=item['customerId'])
-                        employee = Employee.objects.get(pk=item['employeeId'])
-                        product = Product.objects.get(pk=item['productId'])
-                        
-                        order = Order.objects.create(
-                            customer=customer,
-                            employee=employee,
-                            product=product,
-                            quantity=item['quantity']
-                        )
-                        created_orders.append(order)
-                    except Exception as e:
-                        print(f"Error creating order for item: {e}")
-                        continue
-                
-                if created_orders:
-                    return redirect('/payment/?open_form=true')
-                else:
-                    print("❌ No orders created from cart")
-            except json.JSONDecodeError:
-                print("❌ Invalid cart data JSON")
-        else:  # create new order
-            form = OrderForm(request.POST)
+                    product = Product.objects.get(pk=item["productId"])
+                    qty = item["quantity"]
+
+                    OrderItem.objects.create(
+                        order=order,
+                        product=product,
+                        quantity=qty,
+                        amount=product.price * qty
+                    )
+
+                    # Deduct stock
+                    product.stock -= qty
+                    if product.stock < 0:
+                        product.stock = 0
+                    product.save()
+
+                return redirect("/payment/?open_form=true")
+
+            except Exception as e:
+                print("❌ Error creating order from cart:", e)
+
+        # --------------------------------------------------
+        # 3. Simple single order form (fallback)
+        # --------------------------------------------------
+        else:
             if form.is_valid():
                 form.save()
-                return redirect('/payment/?open_form=true')
+                return redirect("/payment/?open_form=true")
             else:
-                print("❌ INVALID form")
+                print("❌ INVALID order form")
                 print(form.errors)
 
-    # Get unique product names for the filter dropdown
-    products = Product.objects.values_list('name', flat=True).distinct().order_by('name')
-    
-    return render(request, 'history.html', {
-        'form': form,
-        'products': products,
+    # product list
+    products = Product.objects.values_list("name", flat=True).distinct().order_by("name")
+
+    return render(request, "history.html", {
+        "form": form,
+        "products": products,
     })
 
+
+# ----------------------------------------------------------
+# JSON API FOR ORDER LIST (UPDATED TO MATCH NEW MODELS)
+# ----------------------------------------------------------
 def orders_json(request):
-    orders = Order.objects.select_related('customer', 'employee', 'product').all()
-
-    data = [{
-        "id": o.id,
-        "order_id": o.order_id,
-        "customer": {"id": o.customer.id, "name": o.customer.name},
-        "employee": {"id": o.employee.id, "name": o.employee.name},
-        "product": {"id": o.product.id, "name": o.product.name},
-        "amount": o.amount,
-        "quantity": o.quantity,
-        "date": o.date.strftime("%Y-%m-%d"),
-    } for o in orders]
-
+    orders = Order.objects.all().select_related('customer', 'employee').prefetch_related('order_items__product')
+    data = []
+    for order in orders:
+        items = [
+            {
+                "product_name": item.product.name,
+                "quantity": item.quantity
+            } for item in order.order_items.all()
+        ]
+        data.append({
+            "id": order.id,
+            "order_id": order.id,  # or order.order_id if you have that field
+            "customer": {"id": order.customer.id, "name": order.customer.name},
+            "employee": {"id": order.employee.id, "name": order.employee.name},
+            "items": items,
+            "total_amount": float(order.total_amount),
+            "date": order.date.strftime("%Y-%m-%d")
+        })
     return JsonResponse(data, safe=False)
 
+
+# ----------------------------------------------------------
+# DELETE ORDER (ALSO DELETE ORDER ITEMS)
+# ----------------------------------------------------------
 def delete_order(request, id):
     if request.method == "POST":
-        obj = get_object_or_404(Order, pk=id)
-        obj.delete()
+        order = get_object_or_404(Order, pk=id)
+        order.delete()  # cascades to OrderItem
         return JsonResponse({"success": True})
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+# ----------------------------------------------------------
+# CREATE ORDER DIRECTLY FROM CART (AJAX)
+# ----------------------------------------------------------
+@csrf_exempt
+def create_order(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        # IMPORTANT: match your frontend keys
+        customer = Customer.objects.get(id=data["customer_id"])
+        employee = Employee.objects.get(id=data["employee_id"])
+        cart_items = data["cart_items"]
+
+        # Create parent order
+        order = Order.objects.create(
+            customer=customer,
+            employee=employee,
+        )
+
+        # Create order items
+        for item in cart_items:
+            # IMPORTANT: match cart keys
+            product = Product.objects.get(id=item["productId"])
+            qty = item["quantity"]
+
+            # stock validation
+            if product.stock < qty:
+                return JsonResponse({
+                    "error": f"Not enough stock for {product.name}. Available: {product.stock}"
+                }, status=400)
+
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                quantity=qty,
+                amount=product.price * qty
+            )
+
+            product.save()
+
+        return JsonResponse({
+            "order_id": order.order_id,
+            "total_amount": float(order.total_amount)
+        })
+
     return JsonResponse({"error": "Invalid request"}, status=400)
