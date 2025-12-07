@@ -12,7 +12,7 @@ import re
 # import models used by views in this module
 from django.db.models import Sum
 from django.utils import timezone
-from members.models import Supply, Payment, Order, Customer, Product, Employee
+from members.models import Supply, Payment, Order, Customer, Product, Employee, OrderItem
 
 def login_view(request):
     if request.method == 'POST':
@@ -71,7 +71,7 @@ def menuPage(request):
     # Calculate Order Information
     orders_this_month = Order.objects.filter(date__year=current_year, date__month=timezone.now().month).count()
     recent_orders = Order.objects.filter(date__gte=thirty_days_ago).count()
-    total_order_value = Order.objects.aggregate(total=Sum('amount'))['total'] or 0
+    total_order_value = OrderItem.objects.aggregate(total=Sum('amount'))['total'] or 0
     average_order_value = total_order_value / total_orders if total_orders > 0 else 0
     
     # Calculate Customer Information

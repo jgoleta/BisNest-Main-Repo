@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.forms import inlineformset_factory
 from members.models import Order, Product, Customer, Employee, OrderItem
 from members.forms import OrderForm
 from django.http import JsonResponse
@@ -6,13 +7,16 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 import json
 
-
 # ----------------------------------------------------------
 # ORDER HISTORY PAGE
 # ----------------------------------------------------------
-def orderHistoryPage(request):
 
-    # prepare next order_id
+def orderHistoryPage(request, pk=None):
+
+    # --- COMMON: Product List & Next Order ID Calculation ---
+    products = Product.objects.values_list("name", flat=True).distinct().order_by("name")
+    
+    # Calculate next_number for the "Create" form
     last_order = Order.objects.order_by('-id').first()
     if last_order and last_order.order_id:
         order_id_str = last_order.order_id.replace("ORD", "").replace("O", "")
@@ -23,93 +27,74 @@ def orderHistoryPage(request):
     else:
         next_number = 1
 
-    form = OrderForm(initial={"order_id": f"ORD{next_number:04d}"})
+    # Define the Formset Class
+    OrderItemFormSet = inlineformset_factory(
+        Order, OrderItem, fields=('product', 'quantity', 'amount'),
+        extra=0, can_delete=True
+    )
 
-    # ------------------------------------------------------
-    # CREATE / EDIT ORDER
-    # ------------------------------------------------------
-    if request.method == "POST":
-        edit_id = request.POST.get("edit_id")
-        cart_data = request.POST.get("cart_data")
-
-        # --------------------------------------------------
-        # 1. Editing existing order
-        # --------------------------------------------------
-        if edit_id:
-            order = get_object_or_404(Order, pk=edit_id)
+    # ======================================================
+    # MODE A: EDIT EXISTING ORDER (pk is provided)
+    # ======================================================
+    if pk is not None:
+        order = get_object_or_404(Order, pk=pk)
+        
+        if request.method == 'POST':
             form = OrderForm(request.POST, instance=order)
-            if form.is_valid():
+            formset = OrderItemFormSet(request.POST, instance=order)
+            
+            if form.is_valid() and formset.is_valid():
                 form.save()
-                return redirect("history")
-
-        # --------------------------------------------------
-        # 2. Creating multiple orders from cart (OLD LOGIC)
-        #    → Now changed to create ONE order with MANY items
-        # --------------------------------------------------
-        elif cart_data:
-            try:
-                cart = json.loads(cart_data)
-                
-                with transaction.atomic():
-                    
-                    first = cart[0]
-                    customer = Customer.objects.get(pk=first["customerId"])
-                    employee = Employee.objects.get(pk=first["employeeId"])
-
-                    # Create parent order
-                    order = Order.objects.create(
-                        customer=customer,
-                        employee=employee
-                    )
-
-                    cart_map = {item["productId"]: item["quantity"] for item in cart}
-                    product_ids = cart_map.keys()
-                    
-                    products = Product.objects.filter(id__in=product_ids)
-                    
-                    order_items_to_create = []
-
-                    for product in products:
-                        qty = cart_map[product.id]
-                        
-                        if product.stock < qty:
-                            raise Exception(f"Not enough stock for {product.name}")
-
-                        order_items_to_create.append(OrderItem(
-                            order=order,
-                            product=product,
-                            quantity=qty,
-                            amount=product.price * qty
-                        ))
-
-                        Product.objects.filter(pk=product.id).update(stock=F('stock') - qty)
-
-                    # 4. BULK CREATE
-                    OrderItem.objects.bulk_create(order_items_to_create)
-
-                return redirect("/payment/?open_form=true")
-            except Exception as e:
-                print("❌ Error creating order from cart:", e)
-
-        # --------------------------------------------------
-        # 3. Simple single order form (fallback)
-        # --------------------------------------------------
+                formset.save()
+                return redirect('history') # Redirect back to main list after save
         else:
+            form = OrderForm(instance=order)
+            formset = OrderItemFormSet(instance=order)
+
+    # ======================================================
+    # MODE B: CREATE NEW ORDER (pk is None)
+    # ======================================================
+    else:
+        formset = None 
+        
+        if request.method == 'POST':
+            form = OrderForm(request.POST)
             if form.is_valid():
                 form.save()
-                return redirect("/payment/?open_form=true")
-            else:
-                print("❌ INVALID order form")
-                print(form.errors)
+                return redirect('history')
+        else:
+            form = OrderForm(initial={"order_id": f"ORD{next_number:04d}"})
 
-    # product list
-    products = Product.objects.values_list("name", flat=True).distinct().order_by("name")
-
-    return render(request, "history.html", {
+    # ======================================================
+    # RENDER RESPONSE
+    # ======================================================
+    context = {
         "form": form,
         "products": products,
-    })
+        "formset": formset, 
+        "is_edit_mode": pk is not None 
+    }
+    return render(request, "history.html", context)
 
+def get_order_form_html(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    
+    # Define the formset
+    OrderItemFormSet = inlineformset_factory(
+        Order, OrderItem, fields=('product', 'quantity', 'amount'),
+        extra=0, can_delete=True
+    )
+    
+    form = OrderForm(instance=order)
+    formset = OrderItemFormSet(instance=order)
+    
+    # We render a small snippet, not the whole page
+    context = {
+        'form': form,
+        'formset': formset,
+        'is_edit_mode': True
+    }
+    return render(request, 'partials/order_form_snippet.html', context)
 
 # ----------------------------------------------------------
 # JSON API FOR ORDER LIST
