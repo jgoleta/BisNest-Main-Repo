@@ -1,8 +1,8 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from ...models import Supply, Order, Product
+from ...models import Supply, OrderItem, Product
 
-@receiver(post_save, sender=Order)
+@receiver(post_save, sender=OrderItem)
 def update_product_stock_on_order(sender, instance, created, **kwargs):
     if created:
             product = instance.product

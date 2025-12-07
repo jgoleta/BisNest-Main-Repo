@@ -59,9 +59,10 @@ urlpatterns = [
     path('product/update/', productController.update_product, name='update_product'),
     path('product/delete/', productController.delete_product, name='delete_product'),
     path('product/low-stock/', productController.low_stock_products, name='low_stock_products'),
-
+    
     # --- order AJAX endpoints ---
     path("history/orders_json/", orderController.orders_json, name="orders_json"),
+    path("order/create/", orderController.create_order, name="create_order"),
 
     # --- payment AJAX endpoints ---
     path("payment/payments_json/", paymentsController.payments_json, name="payments_json"),
