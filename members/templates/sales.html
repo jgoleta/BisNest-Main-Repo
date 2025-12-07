@@ -67,17 +67,35 @@
                                 <th>Total (₱)</th>
                             </tr>
                         </thead>
-                        <tbody class="table-body">
-                            {% for sale in sales %}
-                            <tr>
-                                <td>{{ sale.date|date:"Y-m-d" }}</td>
-                                <td>{{ sale.order.product.name }}</td>
-                                <td>{{ sale.order.quantity }}</td>
-                                <td>₱{{ sale.order.product.price }}</td>
-                                <td class="row-total">₱{{ sale.amount }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
+                            <tbody class="table-body">
+                                {% for sale in sales %}
+                                <tr>
+                                    <td style="vertical-align: top;">{{ sale.date|date:"Y-m-d" }}</td>
+
+                                    <td style="vertical-align: top;">
+                                        {% for item in sale.order.order_items.all %}
+                                            {{ item.product.name }}<br>
+                                        {% endfor %}
+                                    </td>
+
+                                    <td style="vertical-align: top;">
+                                        {% for item in sale.order.order_items.all %}
+                                            {{ item.quantity }}<br>
+                                        {% endfor %}
+                                    </td>
+
+                                    <td style="vertical-align: top;">
+                                        {% for item in sale.order.order_items.all %}
+                                            ₱{{ item.product.price }}<br>
+                                        {% endfor %}
+                                    </td>
+
+                                    <td class="row-total" style="vertical-align: top;">
+                                        ₱{{ sale.amount }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
                         <tfoot>
                             <tr class="grand-total-row">
                                 <td colspan="4" style="text-align: right; font-weight: bold;">Grand Total:</td>

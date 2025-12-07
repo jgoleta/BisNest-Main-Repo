@@ -3,6 +3,7 @@ from members.models import Order, Product, Customer, Employee, OrderItem
 from members.forms import OrderForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db import transaction
 import json
 
 
@@ -48,38 +49,45 @@ def orderHistoryPage(request):
         elif cart_data:
             try:
                 cart = json.loads(cart_data)
+                
+                with transaction.atomic():
+                    
+                    first = cart[0]
+                    customer = Customer.objects.get(pk=first["customerId"])
+                    employee = Employee.objects.get(pk=first["employeeId"])
 
-                # get customer + employee from first item
-                first = cart[0]
-                customer = Customer.objects.get(pk=first["customerId"])
-                employee = Employee.objects.get(pk=first["employeeId"])
-
-                # create parent order
-                order = Order.objects.create(
-                    customer=customer,
-                    employee=employee
-                )
-
-                # add items
-                for item in cart:
-                    product = Product.objects.get(pk=item["productId"])
-                    qty = item["quantity"]
-
-                    OrderItem.objects.create(
-                        order=order,
-                        product=product,
-                        quantity=qty,
-                        amount=product.price * qty
+                    # Create parent order
+                    order = Order.objects.create(
+                        customer=customer,
+                        employee=employee
                     )
 
-                    # Deduct stock
-                    product.stock -= qty
-                    if product.stock < 0:
-                        product.stock = 0
-                    product.save()
+                    cart_map = {item["productId"]: item["quantity"] for item in cart}
+                    product_ids = cart_map.keys()
+                    
+                    products = Product.objects.filter(id__in=product_ids)
+                    
+                    order_items_to_create = []
+
+                    for product in products:
+                        qty = cart_map[product.id]
+                        
+                        if product.stock < qty:
+                            raise Exception(f"Not enough stock for {product.name}")
+
+                        order_items_to_create.append(OrderItem(
+                            order=order,
+                            product=product,
+                            quantity=qty,
+                            amount=product.price * qty
+                        ))
+
+                        Product.objects.filter(pk=product.id).update(stock=F('stock') - qty)
+
+                    # 4. BULK CREATE
+                    OrderItem.objects.bulk_create(order_items_to_create)
 
                 return redirect("/payment/?open_form=true")
-
             except Exception as e:
                 print("❌ Error creating order from cart:", e)
 
@@ -104,7 +112,7 @@ def orderHistoryPage(request):
 
 
 # ----------------------------------------------------------
-# JSON API FOR ORDER LIST (UPDATED TO MATCH NEW MODELS)
+# JSON API FOR ORDER LIST
 # ----------------------------------------------------------
 def orders_json(request):
     orders = Order.objects.all().select_related('customer', 'employee').prefetch_related('order_items__product')
