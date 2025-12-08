@@ -74,18 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${o.date}</td>
                     <td>
                         <div class="action-buttons">
-                            <button type="button" class="edit-button"
-                                  data-id="${o.id}"
-                                  data-order_id="${o.order_id}"
-                                  data-items='${JSON.stringify(o.items)}'
-                                  data-customer="${o.customer.id}"
-                                  data-employee="${o.employee.id}">
-                              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px"
-                                  fill="#FFFFFF">
-                                  <path
-                                  d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
-                              </svg>
-                            </button>
                             <button type="button" class="delete-button" data-id="${o.id}">
                               <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
                               fill="#FFFFFF">
@@ -120,70 +108,12 @@ document.addEventListener("DOMContentLoaded", () => {
         newBtn.addEventListener("click", (e) => {
             e.preventDefault();
             resetOrderForm();
-            const orderIdInput = orderForm.querySelector('[name="order_id"]');
-            if (orderIdInput) {
-                let maxNum = 0;
-                const rows = document.querySelectorAll("#order-table tbody tr");
-                rows.forEach(row => {
-                    const idText = row.cells[0].textContent.trim();
-                    const num = parseInt(idText.replace(/\D/g, "")) || 0;
-                    if (num > maxNum) maxNum = num;
-                });
-                orderIdInput.value = `ORD${(maxNum + 1).toString().padStart(4, "0")}`;
-            }
             openModal();
         });
     }
 
     // ================= Close Modal Button =================
     if (closeBtn) closeBtn.addEventListener("click", e => { e.preventDefault(); closeModal(); });
-
-    // ================= Edit Button =================
-    document.addEventListener("click", (e) => {
-        const btn = e.target.closest(".edit-button");
-        if (!btn) return;
-        e.preventDefault();
-
-        const id = btn.dataset.id;
-        const orderId = btn.dataset.order_id;
-        const customer = btn.dataset.customer;
-        const employee = btn.dataset.employee;
-        const items = JSON.parse(btn.dataset.items);
-
-        // Fill main fields
-        const orderIdInput = orderForm.querySelector('[name="order_id"]');
-        const customerInput = orderForm.querySelector('[name="customer"]');
-        const employeeInput = orderForm.querySelector('[name="employee"]');
-
-        if (orderIdInput) orderIdInput.value = orderId;
-        if (customerInput) customerInput.value = customer;
-        if (employeeInput) employeeInput.value = employee;
-
-        // Add hidden edit_id
-        let editIdInput = orderForm.querySelector('input[name="edit_id"]');
-        if (!editIdInput) {
-            editIdInput = document.createElement("input");
-            editIdInput.type = "hidden";
-            editIdInput.name = "edit_id";
-            orderForm.appendChild(editIdInput);
-        }
-        editIdInput.value = id;
-
-        // Add hidden cart_data with all items for submission
-        let cartDataInput = orderForm.querySelector('input[name="cart_data"]');
-        if (!cartDataInput) {
-            cartDataInput = document.createElement("input");
-            cartDataInput.type = "hidden";
-            cartDataInput.name = "cart_data";
-            orderForm.appendChild(cartDataInput);
-        }
-        cartDataInput.value = JSON.stringify(items);
-
-        const formTitle = document.getElementById("formTitle");
-        if (formTitle) formTitle.textContent = "Edit Order";
-
-        openModal();
-    });
 
     // ================= Delete Button =================
     document.addEventListener("click", async (e) => {

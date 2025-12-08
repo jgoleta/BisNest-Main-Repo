@@ -1120,3 +1120,7 @@
 .darkmode [style*="color:black"] {
   color: var(--text-clr) !important;
 }
+
+button:hover {
+  cursor: pointer;
+}

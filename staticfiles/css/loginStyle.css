@@ -719,38 +719,51 @@
 }
 
 
-/* Modal messages styling */
-.modal-messages {
-    margin: 0 20px 15px;
+/* Field error messages */
+.login-field-errors,
+.register-field-errors {
+    margin: 5px 0 15px;
+    animation: slideDown 0.3s ease;
 }
 
-.modal-messages .message {
-    padding: 12px 15px;
+.field-error-message {
+    padding: 10px 12px;
     border-radius: 6px;
-    margin-bottom: 10px;
+    font-size: 14px;
     font-weight: 500;
-    animation: fadeIn 0.3s ease;
+    margin-bottom: 8px;
+    border-left: 3px solid;
 }
 
-.modal-messages .message.error {
-    background-color: #fee2e2;
+.field-error-message.error {
+    background-color: rgba(239, 68, 68, 0.1);
     color: #991b1b;
-    border-left: 4px solid #ef4444;
+    border-left-color: #ef4444;
 }
 
-.modal-messages .message.success {
-    background-color: #d1fae5;
+.field-error-message.success {
+    background-color: rgba(16, 185, 129, 0.1);
     color: #065f46;
-    border-left: 4px solid #10b981;
+    border-left-color: #10b981;
 }
 
-.modal-messages .message.info {
-    background-color: #dbeafe;
-    color: #1e40af;
-    border-left: 4px solid #3b82f6;
+/* Highlight the problematic field */
+.input-box.error input {
+    border-color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.05);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+button:hover {
+    cursor: pointer;
 }

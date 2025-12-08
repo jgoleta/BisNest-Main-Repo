@@ -784,3 +784,7 @@ tr.selected {
     height: 36px;
   }
 }
+
+button:hover {
+    cursor: pointer;
+}

@@ -141,7 +141,7 @@ class Order(models.Model):
             last_order = Order.objects.order_by('-id').first()
             last_number = 0
             if last_order and last_order.order_id:
-                num_part = last_order.order_id.replace('ORD', '').replace('O','')
+                num_part = last_order.order_id.replace('ORD', '')
                 last_number = int(num_part) if num_part.isdigit() else 0
             
             self.order_id = f'ORD{last_number + 1:04d}'

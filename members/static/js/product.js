@@ -549,6 +549,8 @@ if (placeOrderBtn) {
             return;
         }
 
+        showLoading();
+
             fetch("/order/create/", {
                 method: "POST",
                 headers: {
@@ -563,6 +565,7 @@ if (placeOrderBtn) {
             })
             .then(res => res.json())
             .then(data => {
+                hideLoading();
                 if (data.error) {
                     alert(data.error);
                     return;
@@ -578,6 +581,7 @@ if (placeOrderBtn) {
                 window.closeModal(cartModal, modalOverlay);
             })
             .catch(err => {
+                hideLoading();
                 console.error("Order creation error:", err);
                 alert("Failed to submit order.");
             });

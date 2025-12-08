@@ -920,3 +920,7 @@ button {
         transform: translateY(0);
     }
 }
+
+button:hover {
+    cursor: pointer;
+}

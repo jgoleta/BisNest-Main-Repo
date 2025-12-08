@@ -240,3 +240,7 @@ footer {
   width: 16px;
   height: 16px;
 }
+
+button:hover {
+    cursor: pointer;
+}

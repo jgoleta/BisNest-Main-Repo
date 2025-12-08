@@ -466,3 +466,7 @@ body {
 .darkmode .theme-switch input:checked + .theme-slider {
   background-color: var(--accent-clr, #818cf8);
 }
+
+button:hover {
+    cursor: pointer;
+}
