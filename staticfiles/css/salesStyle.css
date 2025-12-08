@@ -151,9 +151,7 @@
   color: var(--w-text-clr);
 }
 
-.monthly-table tr:hover {
-  background-color: #f0f0f0;
-}
+
 
 /* Tabs */
 .tabs {
@@ -318,5 +316,19 @@
 #daily-pagination .pagination .ellipsis {
   padding: 8px 4px;
   color: var(--muted-clr);
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+#detailed-sales-table tbody tr:hover,
+.monthly-table tr:hover {
+    background-color: transparent !important;
+}
+
+.darkmode #detailed-sales-table tbody tr:hover,
+.darkmode .monthly-table tr:hover {
+    background-color: transparent !important;
 }
 

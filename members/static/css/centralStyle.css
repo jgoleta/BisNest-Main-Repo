@@ -1438,3 +1438,7 @@ main {
   background-color: #3b82f6;
   border-left-color: #1d4ed8;
 }
+
+button:hover {
+  cursor: pointer;
+}

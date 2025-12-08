@@ -162,3 +162,7 @@ select {
   font-size: 13px;
   color: var(--muted-clr);
 }
+
+button:hover {
+    cursor: pointer;
+}

@@ -278,3 +278,7 @@ select.readonly-select {
     transform: rotate(360deg);
   }
 }
+
+button:hover {
+    cursor: pointer;
+}

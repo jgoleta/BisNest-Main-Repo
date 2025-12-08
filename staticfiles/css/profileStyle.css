@@ -480,3 +480,7 @@ input:checked + .slider:before {
     border-left: 4px solid #10b981;
     display: block;
 }
+
+button:hover {
+    cursor: pointer;
+}
