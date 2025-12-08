@@ -111,7 +111,7 @@ def orders_json(request):
         ]
         data.append({
             "id": order.id,
-            "order_id": order.id,  # or order.order_id if you have that field
+            "order_id": order.order_id,
             "customer": {"id": order.customer.id, "name": order.customer.name},
             "employee": {"id": order.employee.id, "name": order.employee.name},
             "items": items,
