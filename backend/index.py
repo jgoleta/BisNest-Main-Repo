@@ -4,7 +4,6 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from members.forms import UserProfileForm
-from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 import re

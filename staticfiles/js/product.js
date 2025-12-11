@@ -79,7 +79,7 @@ function loadCustomersAndEmployees() {
     .catch(err => console.error('Error loading customers:', err));
 
   // Load employees
-  fetch('/employees_json/')
+  fetch('/employee/employees_json/')
     .then(response => response.json())
     .then(data => {
       employees = data;

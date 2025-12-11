@@ -55,9 +55,9 @@ def supplies_json(request):
 
     return JsonResponse(data, safe=False)
 
-def delete_supply(request, supply_id):
+def delete_supply(request, id):
     if request.method == "POST":
-        supply = get_object_or_404(Supply, supply_id=supply_id)
+        supply = get_object_or_404(Supply, id=id)
         supply.delete()
         return JsonResponse({"success": True})
     return JsonResponse({"error": "Invalid request"}, status=400)

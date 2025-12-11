@@ -15,13 +15,13 @@ def employeesInfoPage(request):
             employee.schedule = request.POST.get('schedule', employee.schedule)
             employee.salary = request.POST.get('salary', employee.salary)
             employee.save()
-            return redirect('employeesinfo')
+            return redirect('employee')
 
         else:  # create
             form = EmployeeForm(request.POST)
             if form.is_valid():
                 form.save()
-                return redirect('employeesinfo')  
+                return redirect('employee')  
     else:
         form = EmployeeForm()
 

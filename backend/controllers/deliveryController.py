@@ -38,7 +38,7 @@ def deliveries_json(request):
         "id": d.id,
         "delivery_id": d.delivery_id,
         "order": {"id": d.order.id, "order_id": d.order.order_id},
-        "customer": {"id": d.customer.id, "name": d.customer.name, "address": d.customer.address},
+        "customer": {"id": d.order.customer.id, "name": d.order.customer.name, "address": d.order.customer.address},
         "scheduled_date": d.scheduled_date.strftime("%Y-%m-%d"),
         "status": d.status,
     } for d in delivery]
