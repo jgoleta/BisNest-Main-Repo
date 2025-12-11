@@ -2,65 +2,45 @@ from django.shortcuts import render, redirect, get_object_or_404
 from members.models import Supply, Product
 from members.forms import SupplyForm
 from django.http import JsonResponse
+from backend.services import suppliesServices as services
 
 def supplyPage(request):
     if request.method == 'POST':
         edit_id = request.POST.get('edit_id')
-        
+
+        # --- UNIFIED FORM SETUP ---
         if edit_id:
-            # EDIT MODE
             supply = get_object_or_404(Supply, supply_id=edit_id)
             form = SupplyForm(request.POST, instance=supply)
         else:
             form = SupplyForm(request.POST)
-        
+
+        # --- UNIFIED SAVE ---
         if form.is_valid():
             form.save()
             return redirect('supply')
     else:
-        last_supply = Supply.objects.order_by('-id').first()
-        if last_supply and last_supply.supply_id:
-            supply_id_str = last_supply.supply_id.replace("SUP", "").replace("S", "")
-            try:
-                next_number = int(supply_id_str) + 1
-            except ValueError:
-                next_number = 1
-        else:
-            next_number = 1
-        form = SupplyForm(initial={
-            'supply_id': f"SUP{next_number:04d}"
-        })
+        # --- GET REQUEST ---
+        next_id = services.get_next_supply_id()
+        form = SupplyForm(initial={'supply_id': next_id})
 
-    supplies = Supply.objects.exclude(supply_id='').all()
-    # Get unique suppliers and products for the filter dropdowns
-    suppliers = Supply.objects.values_list('supplier', flat=True).distinct().order_by('supplier')
-    products = Product.objects.values_list('name', flat=True).distinct().order_by('name')
+    # Call service to get table data and dropdown options
+    context_data = services.get_supply_page_context()
     
-    return render(request, 'supply.html', {
+    # Merge form into context
+    context = {
         'form': form,
-        'supplies': supplies,
-        'suppliers': suppliers,
-        'products': products
-    })
+        **context_data # Unpack dictionary (supplies, suppliers, products)
+    }
+    
+    return render(request, 'supply.html', context)
 
 def supplies_json(request):
-    supplies = Supply.objects.select_related('product').all()
-
-    data = [{
-        "id": s.id,
-        "supply_id": s.supply_id,
-        "supplier": s.supplier,
-        "product": {"id": s.product.id, "name": s.product.name},
-        "quantity": s.quantity,
-        "date": s.date.strftime("%Y-%m-%d"),
-        "price": s.price,
-    } for s in supplies]
-
+    data = services.get_formatted_supplies()
     return JsonResponse(data, safe=False)
 
 def delete_supply(request, id):
     if request.method == "POST":
-        supply = get_object_or_404(Supply, id=id)
-        supply.delete()
+        services.delete_supply_by_id(id)
         return JsonResponse({"success": True})
     return JsonResponse({"error": "Invalid request"}, status=400)
