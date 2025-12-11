@@ -101,14 +101,9 @@ class OrderForm(forms.ModelForm):
         }
 
 class SupplyForm(forms.ModelForm):
-    supply_id = forms.CharField(
-        required=False,
-        widget=forms.TextInput(attrs={'readonly': True, 'class': 'form-control'})
-    )
-    
     class Meta:
         model = Supply
-        fields = '__all__'
+        fields = ['supplier', 'product', 'quantity', 'date', 'price']
         widgets = {
             'supplier': forms.TextInput(attrs={'class': 'form-control'}),
             'product': forms.Select(attrs={'class': 'form-control'}),

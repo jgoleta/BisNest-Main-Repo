@@ -8,24 +8,27 @@ def supplyPage(request):
         edit_id = request.POST.get('edit_id')
         
         if edit_id:
+            # EDIT MODE
             supply = get_object_or_404(Supply, supply_id=edit_id)
             form = SupplyForm(request.POST, instance=supply)
         else:
             form = SupplyForm(request.POST)
-            if not form.data.get('supply_id'):
-                count = Supply.objects.count() + 1
-                new_supply_id = f"SUP{count:04d}"
-                post_data = request.POST.copy()
-                post_data['supply_id'] = new_supply_id
-                form = SupplyForm(post_data)
         
         if form.is_valid():
             form.save()
             return redirect('supply')
     else:
-        count = Supply.objects.count() + 1
+        last_supply = Supply.objects.order_by('-id').first()
+        if last_supply and last_supply.supply_id:
+            supply_id_str = last_supply.supply_id.replace("SUP", "").replace("S", "")
+            try:
+                next_number = int(supply_id_str) + 1
+            except ValueError:
+                next_number = 1
+        else:
+            next_number = 1
         form = SupplyForm(initial={
-            'supply_id': f"SUP{count:04d}"
+            'supply_id': f"SUP{next_number:04d}"
         })
 
     supplies = Supply.objects.exclude(supply_id='').all()
