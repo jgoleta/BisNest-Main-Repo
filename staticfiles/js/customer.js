@@ -160,7 +160,7 @@ function openProfilePopup(customerRow) {
 
   if (deleteProfileForm && recordId) {
     deleteProfileForm.dataset.recordId = recordId;
-    deleteProfileForm.action = `/delete-customer/${recordId}/`;
+    deleteProfileForm.action = `customer/delete/${recordId}/`;
   }
 
   if (profileContainer && profileModalOverlay) {

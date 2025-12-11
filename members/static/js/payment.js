@@ -583,7 +583,7 @@ document.addEventListener("click", async (e) => {
         showLoading();
 
         try {
-            const response = await fetch(`/delete-payment/${paymentId}/`, {
+            const response = await fetch(`delete-payment/${paymentId}/`, {
                 method: "POST",
                 headers: {
                     "X-CSRFToken": csrfToken,

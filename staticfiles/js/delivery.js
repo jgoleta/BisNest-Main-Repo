@@ -49,7 +49,7 @@ function updateStatus(selectElement, deliveryId) {
   const newStatus = selectElement.value;
   selectElement.className = `status-select status-${newStatus.toLowerCase()}`;
 
-  fetch(`/update_delivery_status/${deliveryId}/`, {
+  fetch(`update_delivery_status/${deliveryId}/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -530,7 +530,7 @@ document.addEventListener("click", async (e) => {
 
         if (!confirm("Delete this delivery?")) return;
 
-        const response = await fetch(`/delete-delivery/${deliveryId}/`, {
+        const response = await fetch(`delete/${deliveryId}/`, {
             method: "POST",
             headers: {
                 "X-CSRFToken": csrfToken,

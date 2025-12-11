@@ -46,7 +46,7 @@ def orderHistoryPage(request, pk=None):
             if form.is_valid() and formset.is_valid():
                 form.save()
                 formset.save()
-                return redirect('history') # Redirect back to main list after save
+                return redirect('order') # Redirect back to main list after save
         else:
             form = OrderForm(instance=order)
             formset = OrderItemFormSet(instance=order)
@@ -61,7 +61,7 @@ def orderHistoryPage(request, pk=None):
             form = OrderForm(request.POST)
             if form.is_valid():
                 form.save()
-                return redirect('history')
+                return redirect('order')
         else:
             form = OrderForm(initial={"order_id": f"ORD{next_number:04d}"})
 

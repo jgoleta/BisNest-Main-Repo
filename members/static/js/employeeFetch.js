@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("/employees_json/")
+    fetch("employees_json/")
         .then(response => response.json())
         .then(employees => {
             const tbody = document.getElementById("employees-body");
@@ -58,7 +58,7 @@ document.addEventListener("click", async (e) => {
 
     const csrfToken = getCookie("csrftoken");
 
-    const response = await fetch(`/delete-employee/${employeeId}/`, {
+    const response = await fetch(`delete/${employeeId}/`, {
         method: "POST",
         headers: {
             "X-CSRFToken": csrfToken

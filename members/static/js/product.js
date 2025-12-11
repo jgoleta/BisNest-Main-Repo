@@ -79,7 +79,7 @@ function loadCustomersAndEmployees() {
     .catch(err => console.error('Error loading customers:', err));
 
   // Load employees
-  fetch('/employees_json/')
+  fetch('/employee/employees_json/')
     .then(response => response.json())
     .then(data => {
       employees = data;
@@ -571,8 +571,7 @@ if (placeOrderBtn) {
                     return;
                 }
 
-                alert("Order successfully created! Order ID: " + data.order_id);
-
+                showNotification(`Order with ID ${data.order_id} created successfully!`);
                 // clear cart
                 cart.length = 0;
                 localStorage.removeItem("productCart");
@@ -595,31 +594,3 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Notification helper is provided globally by `notify.js` (window.showNotification)
-
-// Order creation on order page
-document.addEventListener('DOMContentLoaded', function() {
-    const cart = JSON.parse(localStorage.getItem('pendingOrderCart'));
-
-    // When confirming order:
-    document.getElementById("place-order-btn").addEventListener("click", function() {
-
-        fetch("/order/create/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": getCookie("csrftoken"),
-            },
-            body: JSON.stringify({
-                customer_id: document.getElementById("customerSelect").value,
-                employee_id: document.getElementById("employeeSelect").value,
-                cart_items: cart
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            alert("Order created: " + data.order_id);
-            localStorage.removeItem("pendingOrderCart");
-            window.location.href = "/history/";
-        })
-    });
-});

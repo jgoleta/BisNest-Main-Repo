@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const orderId = btn.dataset.id;
         if (!confirm("Delete this order?")) return;
 
-        const response = await fetch(`/delete-order/${orderId}/`, {
+        const response = await fetch(`delete-order/${orderId}/`, {
             method: "POST",
             headers: { "X-CSRFToken": csrfToken },
         });
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 payload = { cart_items: JSON.parse(cartDataInput.value) };
             }
 
-            const response = await fetch("/history/create_order/", {
+            const response = await fetch("/order/create_order/", {
                 method: "POST",
                 headers: {
                     "X-CSRFToken": csrfToken,
