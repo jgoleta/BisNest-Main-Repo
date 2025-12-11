@@ -5,7 +5,7 @@ from backend import index
 
 urlpatterns = [
     # --- Admin ---
-    path('/', admin.site.urls),
+    path('/login', admin.site.urls),
     path('/accounts/', include("allauth.urls")),  # allauth URLs
 
     # -- Protected
