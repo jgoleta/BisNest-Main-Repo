@@ -225,7 +225,19 @@ class Supply(models.Model):
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     date = models.DateField()
-    
+
+    def save(self, *args, **kwargs):
+        if not self.supply_id:
+            last_supply = Supply.objects.order_by('-id').first()
+            last_number = 0
+            if last_supply and last_supply.supply_id:
+                num_part = last_supply.supply_id.replace('SUP', '')
+                last_number = int(num_part) if num_part.isdigit() else 0
+            
+            self.supply_id = f'SUP{last_number + 1:04d}'
+
+        super().save(*args, **kwargs)
+
     def __str__(self):
         product_name = self.product.name if self.product else "Unknown"
         return f"{self.supply_id} - {product_name} ({self.quantity}kg)"
