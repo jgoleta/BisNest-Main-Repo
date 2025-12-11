@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from members.models import Customer
 from members.forms import CustomerForm
+from backend.services import customerServices as services
 from django.http import JsonResponse
 
 def customerInfoPage(request):
@@ -8,12 +9,7 @@ def customerInfoPage(request):
         edit_id = request.POST.get('edit_id')
 
         if edit_id:  # existing customer edit
-            customer = get_object_or_404(Customer, pk=edit_id)
-            # mga pdeng iedit
-            customer.name = request.POST.get('name', customer.name)
-            customer.phone = request.POST.get('phone', customer.phone)
-            customer.address = request.POST.get('address', customer.address)
-            customer.save()
+            services.update_customer_details(edit_id, request.POST)
             return redirect('customer')
 
         else:  # create
@@ -28,17 +24,7 @@ def customerInfoPage(request):
     })
 
 def customers_json(request):
-    customers = Customer.objects.select_related().all()
-
-    data = [{
-        "id": c.id,
-        "customer_id": c.customer_id,
-        "name": c.name,
-        "phone": c.phone,
-        "address": c.address,
-        "date_added": c.date_added.strftime("%Y-%m-%d"),
-    } for c in customers]
-
+    data = services.get_all_customers_formatted()
     return JsonResponse(data, safe=False)
 
 def delete_customer(request, customer_id):

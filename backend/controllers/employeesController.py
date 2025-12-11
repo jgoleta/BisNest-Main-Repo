@@ -1,31 +1,32 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from members.models import Employee
 from members.forms import EmployeeForm
+from backend.services import employeeServices as services
 from django.http import JsonResponse
 
 def employeesInfoPage(request):
     if request.method == 'POST':
         edit_id = request.POST.get('edit_id')
 
-        if edit_id:  # existing employee edit
+        if edit_id:
+            # EDIT MODE: Fetch object and bind to form with 'instance'
             employee = get_object_or_404(Employee, pk=edit_id)
-            # mga pdeng iedit
-            employee.name = request.POST.get('name', employee.name)
-            employee.position = request.POST.get('position', employee.position)
-            employee.schedule = request.POST.get('schedule', employee.schedule)
-            employee.salary = request.POST.get('salary', employee.salary)
-            employee.save()
+            form = EmployeeForm(request.POST, instance=employee)
+        else:
+            # CREATE MODE: Bind new data to form
+            form = EmployeeForm(request.POST)
+
+        # Unified save logic for both Create and Edit
+        if form.is_valid():
+            form.save()
             return redirect('employee')
 
-        else:  # create
-            form = EmployeeForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('employee')  
+    # --- GET REQUEST (Load Page) ---
     else:
         form = EmployeeForm()
 
-    positions = Employee.objects.values_list('position', flat=True).distinct().order_by('position')
+    # Call service for the dropdown data
+    positions = services.get_distinct_positions()
     
     return render(request, 'employeesinfo.html', {
         'form': form,
@@ -33,18 +34,8 @@ def employeesInfoPage(request):
     })
 
 def employees_json(request):
-    employees = Employee.objects.select_related().all()
-
-    data = [{
-        "id": e.id,
-        "employee_id": e.employee_id,
-        "name": e.name,
-        "position": e.position,
-        "schedule": e.schedule,
-        "salary": e.salary,
-        "join_date": e.join_date.strftime("%Y-%m-%d"),
-    } for e in employees]
-
+    # Call service for the JSON data
+    data = services.get_all_employees_formatted()
     return JsonResponse(data, safe=False)
 
 def delete_employee(request, employee_id):
