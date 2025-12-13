@@ -3,9 +3,7 @@ from members.models import Feedback
 from members.forms import FeedbackForm
 from django.contrib import messages
 
-def feedbackPage(request):
-    """Handle feedback form submission WITHOUT messages"""
-    
+def feedbackPage(request):    
     # Clear any existing messages to ensure clean page
     list(messages.get_messages(request))
     
@@ -26,15 +24,12 @@ def feedbackPage(request):
             
             # No success message - just reset form
             form = FeedbackForm()
-            
-            # You could add a JavaScript-based success message instead
-            # by passing a context variable
+
             return render(request, 'feedback.html', {
                 'form': form,
-                'show_success': True  # Flag for JavaScript
+                'show_success': True  
             })
         else:
-            # Still no messages - form errors will be shown inline or handled by JS
             pass
     else:
         form = FeedbackForm()
