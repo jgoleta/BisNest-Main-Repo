@@ -29,7 +29,102 @@
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search Payment by Customer Name:" onkeyup="searchPaymentByCustomer()">
         <div class="button-container">
+          <button type="button" class="bnpl-open-button" id="bnplOpenBtn" title="Buy Now Pay Later">
+            <i class="fas fa-calendar-check"></i> Buy Now Pay Later
+          </button>
           <button class="toggle-form-button" onclick="togglePaymentForm()">+ New</button>
+        </div>
+      </div>
+
+      <!-- Buy Now Pay Later (frontend demo) -->
+      <div id="bnplModalOverlay" class="bnpl-modal-overlay"></div>
+      <div id="bnplModal" class="bnpl-modal" role="dialog" aria-labelledby="bnplModalTitle" aria-modal="true">
+        <span class="close-button" id="bnplCloseBtn" aria-label="Close">&times;</span>
+        <h2 class="bnpl-modal-title" id="bnplModalTitle">
+          <i class="fas fa-hand-holding-usd"></i> Buy Now, Pay Later
+        </h2>
+        <p class="bnpl-modal-subtitle">Split purchases into installments — demo data only</p>
+
+        <div class="bnpl-summary">
+          <div class="bnpl-summary-card">
+            <span class="bnpl-summary-label">Active Plans</span>
+            <span class="bnpl-summary-value" id="bnplStatActive">3</span>
+          </div>
+          <div class="bnpl-summary-card">
+            <span class="bnpl-summary-label">Outstanding</span>
+            <span class="bnpl-summary-value" id="bnplStatOutstanding">₱28,450</span>
+          </div>
+          <div class="bnpl-summary-card">
+            <span class="bnpl-summary-label">Due This Month</span>
+            <span class="bnpl-summary-value" id="bnplStatDue">₱4,200</span>
+          </div>
+        </div>
+
+        <div class="bnpl-tabs" role="tablist">
+          <button type="button" class="bnpl-tab active" data-bnpl-tab="active" role="tab" aria-selected="true">Active Plans</button>
+          <button type="button" class="bnpl-tab" data-bnpl-tab="apply" role="tab" aria-selected="false">Apply BNPL</button>
+        </div>
+
+        <div id="bnpl-panel-active" class="bnpl-tab-panel active" role="tabpanel">
+          <div class="bnpl-table-wrapper">
+            <table class="table bnpl-table" id="bnpl-active-table">
+              <thead>
+                <tr>
+                  <th>BNPL ID</th>
+                  <th>Customer</th>
+                  <th>Order</th>
+                  <th>Total</th>
+                  <th>Plan</th>
+                  <th>Progress</th>
+                  <th>Next Due</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="bnpl-active-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="bnpl-panel-apply" class="bnpl-tab-panel" role="tabpanel" hidden>
+          <form id="bnplApplyForm" class="bnpl-apply-form">
+            <div class="bnpl-form-row">
+              <div class="form-group">
+                <label for="bnplOrderSelect">Order</label>
+                <select id="bnplOrderSelect" name="order"></select>
+              </div>
+              <div class="form-group">
+                <label for="bnplAmountDisplay">Amount</label>
+                <input type="text" id="bnplAmountDisplay" readonly>
+              </div>
+            </div>
+            <fieldset class="bnpl-plan-fieldset">
+              <legend>Choose installment plan</legend>
+              <div class="bnpl-plan-options" id="bnplPlanOptions"></div>
+            </fieldset>
+            <div class="bnpl-installment-preview" id="bnplInstallmentPreview">
+              <h3>Installment schedule</h3>
+              <ul id="bnplScheduleList"></ul>
+            </div>
+            <button type="submit" class="bnpl-submit-button">Apply BNPL Plan</button>
+          </form>
+        </div>
+
+        <div id="bnplDetailPanel" class="bnpl-detail-panel" hidden>
+          <button type="button" class="bnpl-back-link" id="bnplDetailBack">&larr; Back to plans</button>
+          <h3 id="bnplDetailTitle">Installment details</h3>
+          <div class="bnpl-detail-meta" id="bnplDetailMeta"></div>
+          <table class="table bnpl-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Due Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="bnplDetailSchedule"></tbody>
+          </table>
         </div>
       </div>
 

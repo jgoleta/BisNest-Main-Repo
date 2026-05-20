@@ -522,7 +522,7 @@ document.addEventListener("click", async (e) => {
 
         if (!confirm("Delete this supply?")) return;
 
-        const response = await fetch(`/delete-supply/${supplyId}/`, {
+        const response = await fetch(`delete-supply/${supplyId}/`, {
             method: "POST",
             headers: {
                 "X-CSRFToken": csrfToken,
