@@ -620,6 +620,34 @@
   background-color: rgba(0, 0, 0, 0.7) !important;
 }
 
+.darkmode .bnpl-modal {
+  background: var(--surface) !important;
+  border-color: var(--card-border) !important;
+}
+
+.darkmode .bnpl-summary-card,
+.darkmode .bnpl-installment-preview,
+.darkmode .bnpl-detail-meta {
+  background: #0f172a !important;
+  border-color: var(--card-border) !important;
+}
+
+.darkmode .bnpl-plan-card {
+  background: var(--surface) !important;
+  border-color: var(--card-border) !important;
+}
+
+.darkmode .bnpl-plan-card.selected {
+  border-color: var(--accent-clr) !important;
+}
+
+.darkmode .bnpl-apply-form select,
+.darkmode .bnpl-apply-form input {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+  color: var(--text-clr) !important;
+}
+
 /* Delivery Page */
 .darkmode .delivery-form-container {
   background: var(--surface) !important;
